@@ -4,30 +4,32 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
-
-const contactSchema = z.object({
-  name: z
-    .string()
-    .min(2, "Nama minimal 2 karakter")
-    .max(100, "Nama maksimal 100 karakter"),
-  email: z.string().email("Email tidak valid"),
-  subject: z
-    .string()
-    .min(5, "Subjek minimal 5 karakter")
-    .max(200, "Subjek maksimal 200 karakter"),
-  message: z
-    .string()
-    .min(10, "Pesan minimal 10 karakter")
-    .max(1000, "Pesan maksimal 1000 karakter"),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
+import { useTranslations } from "next-intl";
 
 export default function ContactForm() {
+  const t = useTranslations("ContactForm");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
+
+  const contactSchema = z.object({
+    name: z
+      .string()
+      .min(2, t("validation.name_min"))
+      .max(100, t("validation.name_max")),
+    email: z.string().email(t("validation.email_invalid")),
+    subject: z
+      .string()
+      .min(5, t("validation.subject_min"))
+      .max(200, t("validation.subject_max")),
+    message: z
+      .string()
+      .min(10, t("validation.message_min"))
+      .max(1000, t("validation.message_max")),
+  });
+
+  type ContactFormData = z.infer<typeof contactSchema>;
 
   const {
     register,
@@ -71,7 +73,8 @@ export default function ContactForm() {
           htmlFor="name"
           className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
         >
-          Nama Lengkap <span className="text-red-500 dark:text-red-400">*</span>
+          {t("label_name")}{" "}
+          <span className="text-red-500 dark:text-red-400">*</span>
         </label>
         <input
           id="name"
@@ -83,7 +86,7 @@ export default function ContactForm() {
               ? "border-red-500 dark:border-red-400"
               : "border-gray-300 dark:border-gray-600"
           }`}
-          placeholder="Masukkan nama lengkap Anda"
+          placeholder={t("placeholder_name")}
           aria-invalid={errors.name ? "true" : "false"}
           aria-describedby={errors.name ? "name-error" : undefined}
         />
@@ -104,7 +107,8 @@ export default function ContactForm() {
           htmlFor="email"
           className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
         >
-          Email <span className="text-red-500 dark:text-red-400">*</span>
+          {t("label_email")}{" "}
+          <span className="text-red-500 dark:text-red-400">*</span>
         </label>
         <input
           id="email"
@@ -116,7 +120,7 @@ export default function ContactForm() {
               ? "border-red-500 dark:border-red-400"
               : "border-gray-300 dark:border-gray-600"
           }`}
-          placeholder="nama@email.com"
+          placeholder={t("placeholder_email")}
           aria-invalid={errors.email ? "true" : "false"}
           aria-describedby={errors.email ? "email-error" : undefined}
         />
@@ -137,7 +141,8 @@ export default function ContactForm() {
           htmlFor="subject"
           className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
         >
-          Subjek <span className="text-red-500 dark:text-red-400">*</span>
+          {t("label_subject")}{" "}
+          <span className="text-red-500 dark:text-red-400">*</span>
         </label>
         <input
           id="subject"
@@ -149,7 +154,7 @@ export default function ContactForm() {
               ? "border-red-500 dark:border-red-400"
               : "border-gray-300 dark:border-gray-600"
           }`}
-          placeholder="Subjek pesan Anda"
+          placeholder={t("placeholder_subject")}
           aria-invalid={errors.subject ? "true" : "false"}
           aria-describedby={errors.subject ? "subject-error" : undefined}
         />
@@ -170,7 +175,8 @@ export default function ContactForm() {
           htmlFor="message"
           className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
         >
-          Pesan <span className="text-red-500 dark:text-red-400">*</span>
+          {t("label_message")}{" "}
+          <span className="text-red-500 dark:text-red-400">*</span>
         </label>
         <textarea
           id="message"
@@ -182,7 +188,7 @@ export default function ContactForm() {
               ? "border-red-500 dark:border-red-400"
               : "border-gray-300 dark:border-gray-600"
           }`}
-          placeholder="Tulis pesan Anda di sini..."
+          placeholder={t("placeholder_message")}
           aria-invalid={errors.message ? "true" : "false"}
           aria-describedby={errors.message ? "message-error" : undefined}
         />
@@ -232,10 +238,10 @@ export default function ContactForm() {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
-              Mengirim...
+              {t("btn_sending")}
             </span>
           ) : (
-            "Kirim Pesan"
+            t("btn_submit")
           )}
         </button>
       </div>
@@ -248,7 +254,7 @@ export default function ContactForm() {
           aria-live="polite"
         >
           <p className="text-green-800 dark:text-green-300 font-medium">
-            ✅ Pesan berhasil dikirim! Kami akan segera menghubungi Anda.
+            {t("success_msg")}
           </p>
         </div>
       )}
@@ -261,7 +267,7 @@ export default function ContactForm() {
           aria-live="polite"
         >
           <p className="text-red-800 dark:text-red-300 font-medium">
-            ❌ Terjadi kesalahan. Silakan coba lagi atau hubungi kami via email.
+            {t("error_msg")}
           </p>
         </div>
       )}

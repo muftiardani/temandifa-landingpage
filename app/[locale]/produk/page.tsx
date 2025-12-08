@@ -1,5 +1,6 @@
 import Navbar from "@/components/layout/Navbar";
 import type { Metadata } from "next";
+import { useTranslations } from "next-intl";
 
 export const metadata: Metadata = {
   title: "Produk - TemanDifa",
@@ -8,16 +9,17 @@ export const metadata: Metadata = {
 };
 
 export default function ProdukPage() {
+  const t = useTranslations("ProductPage");
+
   return (
     <main className="bg-white dark:bg-gray-950 min-h-screen transition-colors">
       <Navbar />
       <section className="max-w-6xl mx-auto px-4 py-16">
         <h1 className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-4 text-center">
-          Fitur TemanDifa
+          {t("title")}
         </h1>
         <p className="text-center text-slate-600 dark:text-gray-300 text-lg mb-12 max-w-2xl mx-auto">
-          Teknologi AI yang dirancang khusus untuk membantu penyandang
-          disabilitas dalam aktivitas sehari-hari
+          {t("subtitle")}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -27,11 +29,10 @@ export default function ProdukPage() {
               <span className="text-white text-3xl">📷</span>
             </div>
             <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
-              Deteksi Objek Real-Time
+              {t("features.detection_title")}
             </h3>
             <p className="text-slate-700 dark:text-gray-300 leading-relaxed">
-              Kamera mendeteksi objek di sekitar pengguna secara langsung,
-              membantu mengenali kondisi sekitar pengguna dengan teknologi AI.
+              {t("features.detection_desc")}
             </p>
           </div>
 
@@ -43,11 +44,10 @@ export default function ProdukPage() {
               </span>
             </div>
             <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
-              Voice to Text
+              {t("features.voice_title")}
             </h3>
             <p className="text-slate-700 dark:text-gray-300 leading-relaxed">
-              Mengubah suara menjadi teks sehingga pengguna tunarungu dapat
-              mengikuti percakapan dengan mudah dan real-time.
+              {t("features.voice_desc")}
             </p>
           </div>
 
@@ -57,12 +57,10 @@ export default function ProdukPage() {
               <span className="text-white text-3xl">📄</span>
             </div>
             <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
-              Scan & Deteksi Teks
+              {t("features.scan_title")}
             </h3>
             <p className="text-slate-700 dark:text-gray-300 leading-relaxed">
-              Memindai dokumen atau tulisan menggunakan kamera, lalu mengubahnya
-              menjadi teks atau suara sehingga pengguna dapat langsung mendengar
-              isi dokumen.
+              {t("features.scan_desc")}
             </p>
           </div>
 
@@ -74,26 +72,22 @@ export default function ProdukPage() {
               </span>
             </div>
             <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
-              Emergency Call
+              {t("features.emergency_title")}
             </h3>
             <p className="text-slate-700 dark:text-gray-300 leading-relaxed">
-              Memberikan opsi untuk terhubung dengan relawan yang siap membantu
-              secara langsung melalui panggilan video kapan saja.
+              {t("features.emergency_desc")}
             </p>
           </div>
         </div>
 
         {/* CTA Section */}
         <div className="mt-16 bg-blue-600 dark:bg-blue-700 rounded-3xl p-12 text-center text-white transition-colors">
-          <h2 className="text-3xl font-bold mb-4">
-            Siap Menggunakan TemanDifa?
-          </h2>
+          <h2 className="text-3xl font-bold mb-4">{t("cta_title")}</h2>
           <p className="text-blue-100 dark:text-blue-200 text-lg mb-6 max-w-2xl mx-auto">
-            Download aplikasi TemanDifa sekarang dan rasakan kemudahan
-            aksesibilitas di ujung jari Anda
+            {t("cta_desc")}
           </p>
           <button className="bg-yellow-400 dark:bg-yellow-500 text-blue-600 dark:text-blue-900 px-8 py-3 rounded-full font-bold text-lg hover:bg-yellow-300 dark:hover:bg-yellow-400 transition">
-            Download Sekarang
+            {t("cta_button")}
           </button>
         </div>
       </section>

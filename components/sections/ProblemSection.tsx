@@ -2,14 +2,11 @@
 
 import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer, viewportOptions } from "@/lib/animations";
+import { useTranslations } from "next-intl";
 
 export default function ProblemSection() {
-  const problems = [
-    "Aksesibilitas Informasi Terbatas",
-    "Mobilitas & Navigasi",
-    "Kemandirian Sehari-hari",
-    "Minimnya Teknologi Pendukung",
-  ];
+  const t = useTranslations("ProblemSection");
+  const problems = ["item1", "item2", "item3", "item4"] as const;
 
   return (
     <section className="py-10 px-4 max-w-7xl mx-auto relative overflow-hidden md:overflow-visible bg-white dark:bg-gray-950 transition-colors">
@@ -22,7 +19,9 @@ export default function ProblemSection() {
       >
         <div className="w-2 bg-yellow-400 dark:bg-yellow-500 mr-6 rounded-full h-auto self-stretch"></div>
         <h2 className="text-4xl md:text-5xl font-bold text-[#3b82f6] dark:text-blue-400 leading-tight">
-          Latar Belakang <br /> Permasalahan
+          {t.rich("subtitle", {
+            br: () => <br />,
+          })}
         </h2>
       </motion.div>
 
@@ -35,25 +34,22 @@ export default function ProblemSection() {
           variants={fadeInUp}
         >
           <p>
-            Secara global, terdapat lebih dari
+            {t("global_stats_prefix")}{" "}
             <span className="bg-yellow-400 dark:bg-yellow-500 px-2 py-0.5 mx-1 rounded font-bold text-[#3b82f6] dark:text-blue-900">
-              2,2 miliar orang
+              {t("global_stats_highlight")}
             </span>
-            yang hidup dengan gangguan penglihatan mulai dari low vision hingga
-            <br />
-            kebutaan total.
+            {t.rich("global_stats_suffix", {
+              br: () => <br />,
+            })}
           </p>
           <p>
-            Di Indonesia, terdapat sekitar
+            {t("local_stats_prefix")}{" "}
             <span className="bg-yellow-400 dark:bg-yellow-500 px-2 py-0.5 mx-1 rounded font-bold text-[#3b82f6] dark:text-blue-900">
-              4 Juta
+              {t("local_stats_highlight")}
             </span>
-            penyandang tunanetra, dengan tambahan jumlah penyandang tunarungu
-            yang
-            <br />
-            juga signifikan. Banyak dari mereka menghadapi hambatan
-            <br />
-            besar dalam kemandirian sehari-hari.
+            {t.rich("local_stats_suffix", {
+              br: () => <br />,
+            })}
           </p>
         </motion.div>
 
@@ -64,7 +60,7 @@ export default function ProblemSection() {
           viewport={viewportOptions}
           variants={staggerContainer}
         >
-          {problems.map((text, index) => (
+          {problems.map((key, index) => (
             <motion.div
               key={index}
               className="flex items-stretch gap-3 h-14 md:h-16"
@@ -75,7 +71,7 @@ export default function ProblemSection() {
               </div>
               <div className="flex-1 border-2 border-[#3b82f6] dark:border-blue-500 rounded-md bg-white dark:bg-gray-800 px-6 flex items-center">
                 <span className="text-[#3b82f6] dark:text-blue-300 font-bold text-base md:text-lg">
-                  {text}
+                  {t(`problems.${key}`)}
                 </span>
               </div>
             </motion.div>

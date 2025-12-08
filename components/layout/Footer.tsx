@@ -1,7 +1,13 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 export default function Footer() {
+  const t = useTranslations("Footer");
+  const navT = useTranslations("Navbar");
+
   return (
     <footer
       className="bg-[#3b82f6] dark:bg-gray-900 text-white pt-16 pb-8 px-4 sm:px-8 border-t border-blue-400 dark:border-gray-700 transition-colors"
@@ -22,40 +28,36 @@ export default function Footer() {
               <span className="text-2xl font-bold">TemanDifa.</span>
             </div>
             <p className="text-blue-100 dark:text-gray-300 text-sm font-semibold leading-relaxed">
-              Melihat dengan percaya diri,
-              <br />
-              Mendengar dengan jelas,
-              <br />
-              Menjadi bantuan saat dibutuhkan.
+              {t.rich("tagline", {
+                br: () => <br />,
+              })}
             </p>
           </div>
 
           <div>
-            <h4 className="font-bold text-lg mb-4">Beranda</h4>
+            <h4 className="font-bold text-lg mb-4">{t("links_title")}</h4>
             <ul className="space-y-3 text-blue-100 dark:text-gray-300 font-semibold text-sm">
               <li>
                 <Link
                   href="/tentang"
                   className="hover:text-white hover:underline transition"
-                  aria-label="Link ke halaman tentang kami"
                 >
-                  Tentang Kami
+                  {navT("about")}
                 </Link>
               </li>
               <li>
                 <Link
                   href="/produk"
                   className="hover:text-white hover:underline transition"
-                  aria-label="Link ke halaman produk"
                 >
-                  Produk
+                  {navT("features")}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold text-lg mb-4">Social Media</h4>
+            <h4 className="font-semibold text-lg mb-4">{t("social_title")}</h4>
             <div className="flex items-center gap-4">
               <a
                 href="https://instagram.com/temandifa"
@@ -133,7 +135,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-bold text-lg mb-4">Bantuan</h4>
+            <h4 className="font-bold text-lg mb-4">{t("help_title")}</h4>
             <div className="bg-white dark:bg-gray-800 rounded-lg p-1 inline-block w-full max-w-[200px]">
               <a
                 href="mailto:hello@temandifa.com"
@@ -146,7 +148,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="text-center text-blue-200 dark:text-gray-400 text-sm font-medium">
-          © 2025 TemanDifa.com. Hak cipta dilindungi.
+          {t("copyright")}
         </div>
       </div>
     </footer>

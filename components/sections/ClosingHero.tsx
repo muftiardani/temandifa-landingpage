@@ -3,8 +3,11 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeInUp, viewportOptions } from "@/lib/animations";
+import { useTranslations } from "next-intl";
 
 export default function ClosingHero() {
+  const t = useTranslations("ClosingHero");
+
   return (
     <section className="py-20 px-4 relative bg-white dark:bg-gray-950 transition-colors">
       <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-10 w-70 h-70 md:w-80 md:h-80 border-60 border-yellow-400 dark:border-yellow-500 rounded-full z-0"></div>
@@ -37,17 +40,16 @@ export default function ClosingHero() {
               variants={fadeInUp}
             >
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-md">
-                Teman
+                {t("title_prefix")}
                 <span className="relative inline-block ml-1">
-                  Difa.
+                  {t("title_highlight")}
                   <span className="absolute bottom-1 left-0 w-full h-3 bg-yellow-400 dark:bg-yellow-500 -z-10"></span>
                 </span>
               </h2>
               <p className="text-white text-lg md:text-2xl max-w-3xl mx-auto font-medium leading-relaxed drop-shadow-md">
-                Aplikasi yang dirancang untuk memberdayakan
-                <br />
-                penyandang disabilitas agar lebih percaya diri menjelajahi dunia
-                - menjadi mata, telinga dan asisten bantu.
+                {t.rich("description", {
+                  br: () => <br />,
+                })}
               </p>
             </motion.div>
           </div>

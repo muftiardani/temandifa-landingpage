@@ -1,6 +1,7 @@
 import Navbar from "@/components/layout/Navbar";
 import ContactForm from "@/components/forms/ContactForm";
 import type { Metadata } from "next";
+import { useTranslations } from "next-intl";
 
 export const metadata: Metadata = {
   title: "Kontak - TemanDifa",
@@ -9,15 +10,17 @@ export const metadata: Metadata = {
 };
 
 export default function KontakPage() {
+  const t = useTranslations("ContactPage");
+
   return (
     <main className="bg-white dark:bg-gray-950 min-h-screen transition-colors">
       <Navbar />
       <section className="max-w-4xl mx-auto px-4 py-16">
         <h1 className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-4 text-center">
-          Hubungi Kami
+          {t("title")}
         </h1>
         <p className="text-center text-slate-600 dark:text-gray-300 text-lg mb-12">
-          Kami siap membantu Anda. Jangan ragu untuk menghubungi kami!
+          {t("subtitle")}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
@@ -28,7 +31,7 @@ export default function KontakPage() {
                 <span className="text-white text-xl">✉️</span>
               </div>
               <h3 className="font-bold text-lg text-blue-600 dark:text-blue-400">
-                Email
+                {t("email_label")}
               </h3>
             </div>
             <a
@@ -49,7 +52,7 @@ export default function KontakPage() {
                 </span>
               </div>
               <h3 className="font-bold text-lg text-blue-600 dark:text-blue-400">
-                Social Media
+                {t("social_label")}
               </h3>
             </div>
             <div className="space-y-2 text-sm">
@@ -96,11 +99,11 @@ export default function KontakPage() {
                 <span className="text-white text-xl">📍</span>
               </div>
               <h3 className="font-bold text-lg text-blue-600 dark:text-blue-400">
-                Kantor
+                {t("office_label")}
               </h3>
             </div>
             <p className="text-slate-700 dark:text-gray-300 text-sm">
-              Jakarta, Indonesia
+              {t("office_address")}
             </p>
           </div>
         </div>
@@ -108,7 +111,7 @@ export default function KontakPage() {
         {/* Contact Form */}
         <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-3xl transition-colors">
           <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-6 text-center">
-            Kirim Pesan
+            {t("form_title")}
           </h2>
           <ContactForm />
         </div>

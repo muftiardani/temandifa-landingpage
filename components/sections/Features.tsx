@@ -3,8 +3,10 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeInLeft, fadeInRight, viewportOptions } from "@/lib/animations";
+import { useTranslations } from "next-intl";
 
 export default function Features() {
+  const t = useTranslations("Features");
   return (
     <>
       <section className="bg-white dark:bg-gray-950 py-20 px-4 relative transition-colors">
@@ -37,16 +39,12 @@ export default function Features() {
                     <div className="absolute -bottom-6 right-8 w-[50%] h-10 bg-yellow-400 z-20"></div>
 
                     <h3 className="text-2xl font-bold text-yellow-400 mb-2">
-                      Deteksi Objek Real-Time
+                      {t("feature1_title")}
                     </h3>
                     <p className="text-sm pl-7 leading-relaxed">
-                      Kamera mendeteksi objek di sekitar
-                      <br />
-                      pengguna secara langsung,
-                      <br />
-                      membantu mengenali kondisi
-                      <br />
-                      sekitar pengguna.
+                      {t.rich("feature1_desc", {
+                        br: () => <br />,
+                      })}
                     </p>
                   </div>
 
@@ -83,12 +81,10 @@ export default function Features() {
                 <div className="absolute top-37 right-24 w-10 h-10 bg-[#3b82f6] z-20"></div>
                 <div className="bg-yellow-400 w-full md:w-[400px] h-auto md:h-[200px] top-41 text-slate-900 p-8 rounded-xl shadow-lg relative z-10">
                   <h3 className="text-xl font-bold text-[#2563eb] mb-2">
-                    Scan & Deteksi Teks
+                    {t("feature2_title")}
                   </h3>
                   <p className="text-sm leading-relaxed font-medium">
-                    Memindai dokumen atau tulisan menggunakan kamera, lalu
-                    mengubahnya menjadi teks atau suara sehingga pengguna dapat
-                    langsung mendengar isi dokumen.
+                    {t("feature2_desc")}
                   </p>
                 </div>
               </motion.div>
@@ -112,22 +108,20 @@ export default function Features() {
                 <div className="absolute top-40 -right-12 w-38 h-8 bg-[#072c68] z-20"></div>
 
                 <h3 className="text-2xl font-bold text-blue-400 mb-2">
-                  Voice to Text
+                  {t("feature3_title")}
                 </h3>
                 <p className="text-sm pl-7 text-black leading-relaxed">
-                  Mengubah suara menjadi teks sehingga pengguna tunarungu dapat
-                  mengikuti percakapan
+                  {t("feature3_desc")}
                 </p>
               </div>
 
               <div className="right-160 bottom-30 w-[420px] h-[200px] bg-[#0851D9] text-white rounded-xl p-8 shadow-lg relative z-10">
                 <div className="absolute top-7 -right-5 w-8 h-12 bg-yellow-400 z-20"></div>
                 <h3 className="text-2xl font-bold text-yellow-400 mb-2">
-                  Emergency Call
+                  {t("feature4_title")}
                 </h3>
                 <p className="text-sm pl-7 text-white leading-relaxed">
-                  Memberikan opsi untuk terhubung dengan relawan yang siap
-                  membantu secara langsung melalui panggilan video
+                  {t("feature4_desc")}
                 </p>
               </div>
 

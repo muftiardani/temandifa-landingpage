@@ -9,10 +9,111 @@
   "Hero": {
     "title1": "Teman",
     "title2": "Difa.",
-    "hero_headline": "Menjadi bantuan <br /> saat dibutuhkan.",
+    "hero_headline": "Menjadi bantuan saat dibutuhkan.",
     "hero_subheadline": "Aksesibilitas Nyata, Inklusi Tanpa Batas",
     "hero_description": "Sebuah kesempatan yang akan mengubah banyak hal. TemanDifa hadir untuk mendukung setiap langkah menuju kemandirian. Kami ada untuk menjadi bagian dari mereka yang membutuhkan di sekelilingmu.",
     "cta_primary": "Mulai Sekarang",
     "cta_secondary": "Pelajari Lebih Lanjut"
+  },
+  "AboutSection": {
+    "title": "TemanDifa",
+    "description": "TemanDifa lahir dari kepedulian terhadap aksesibilitas bagi difabel, Kami percaya bahwa teknologi seharusnya menjadi jembatan, bukan penghalang. Dengan menggabungkan Artificial Intelligence, TemanDifa hadir untuk memudahkan difabel dalam beraktivitas, belajar, dan berkomunikasi secara mandiri."
+  },
+  "ProblemSection": {
+    "subtitle": "Latar Belakang Permasalahan",
+    "global_stats_prefix": "Secara global, terdapat lebih dari",
+    "global_stats_highlight": "2,2 miliar orang",
+    "global_stats_suffix": "yang hidup dengan gangguan penglihatan mulai dari low vision hingga kebutaan total.",
+    "local_stats_prefix": "Di Indonesia, terdapat sekitar",
+    "local_stats_highlight": "4 Juta",
+    "local_stats_suffix": "penyandang tunanetra, dengan tambahan jumlah penyandang tunarungu yang juga signifikan. Banyak dari mereka menghadapi hambatan besar dalam kemandirian sehari-hari.",
+    "problems": {
+      "item1": "Aksesibilitas Informasi Terbatas",
+      "item2": "Mobilitas & Navigasi",
+      "item3": "Kemandirian Sehari-hari",
+      "item4": "Minimnya Teknologi Pendukung"
+    }
+  },
+  "Features": {
+    "feature1_title": "Deteksi Objek Real-Time",
+    "feature1_desc": "Kamera mendeteksi objek di sekitar pengguna secara langsung, membantu mengenali kondisi sekitar pengguna.",
+    "feature2_title": "Scan & Deteksi Teks",
+    "feature2_desc": "Memindai dokumen atau tulisan menggunakan kamera, lalu mengubahnya menjadi teks atau suara sehingga pengguna dapat langsung mendengar isi dokumen.",
+    "feature3_title": "Voice to Text",
+    "feature3_desc": "Mengubah suara menjadi teks sehingga pengguna tunarungu dapat mengikuti percakapan",
+    "feature4_title": "Emergency Call",
+    "feature4_desc": "Memberikan opsi untuk terhubung dengan relawan yang siap membantu secara langsung melalui panggilan video"
+  },
+  "ClosingHero": {
+    "title_prefix": "Teman",
+    "title_highlight": "Difa.",
+    "description": "Aplikasi yang dirancang untuk memberdayakan penyandang disabilitas agar lebih percaya diri menjelajahi dunia - menjadi mata, telinga dan asisten bantu."
+  },
+  "Footer": {
+    "tagline": "Melihat dengan percaya diri, Mendengar dengan jelas, Menjadi bantuan saat dibutuhkan.",
+    "links_title": "Beranda",
+    "social_title": "Social Media",
+    "help_title": "Bantuan",
+    "copyright": "© 2025 TemanDifa.com. Hak cipta dilindungi."
+  },
+  "AboutPage": {
+    "title": "Tentang TemanDifa",
+    "description_1": "TemanDifa lahir dari kepedulian terhadap aksesibilitas bagi difabel. Kami percaya bahwa teknologi seharusnya menjadi jembatan, bukan penghalang.",
+    "description_2": "Dengan menggabungkan Artificial Intelligence, TemanDifa hadir untuk memudahkan difabel dalam beraktivitas, belajar dan berkomunikasi secara mandiri.",
+    "vision_title": "Visi Kami",
+    "vision_text": "Menjadi platform teknologi terdepan yang memberdayakan penyandang disabilitas untuk hidup mandiri dan percaya diri dalam menjalani aktivitas sehari-hari.",
+    "mission_title": "Misi Kami",
+    "mission_1": "Menyediakan teknologi AI yang mudah diakses untuk difabel",
+    "mission_2": "Meningkatkan kemandirian penyandang disabilitas",
+    "mission_3": "Menciptakan inklusi digital tanpa batas"
+  },
+  "ProductPage": {
+    "title": "Fitur TemanDifa",
+    "subtitle": "Teknologi AI yang dirancang khusus untuk membantu penyandang disabilitas dalam aktivitas sehari-hari",
+    "cta_title": "Siap Menggunakan TemanDifa?",
+    "cta_desc": "Download aplikasi TemanDifa sekarang dan rasakan kemudahan aksesibilitas di ujung jari Anda",
+    "cta_button": "Download Sekarang",
+    "features": {
+      "detection_title": "Deteksi Objek Real-Time",
+      "detection_desc": "Kamera mendeteksi objek di sekitar pengguna secara langsung, membantu mengenali kondisi sekitar pengguna dengan teknologi AI.",
+      "voice_title": "Voice to Text",
+      "voice_desc": "Mengubah suara menjadi teks sehingga pengguna tunarungu dapat mengikuti percakapan dengan mudah dan real-time.",
+      "scan_title": "Scan & Deteksi Teks",
+      "scan_desc": "Memindai dokumen atau tulisan menggunakan kamera, lalu mengubahnya menjadi teks atau suara sehingga pengguna dapat langsung mendengar isi dokumen.",
+      "emergency_title": "Emergency Call",
+      "emergency_desc": "Memberikan opsi untuk terhubung dengan relawan yang siap membantu secara langsung melalui panggilan video kapan saja."
+    }
+  },
+  "ContactPage": {
+    "title": "Hubungi Kami",
+    "subtitle": "Kami siap membantu Anda. Jangan ragu untuk menghubungi kami!",
+    "email_label": "Email",
+    "social_label": "Social Media",
+    "office_label": "Kantor",
+    "office_address": "Jakarta, Indonesia",
+    "form_title": "Kirim Pesan"
+  },
+  "ContactForm": {
+    "label_name": "Nama Lengkap",
+    "placeholder_name": "Masukkan nama lengkap Anda",
+    "label_email": "Email",
+    "placeholder_email": "nama@email.com",
+    "label_subject": "Subjek",
+    "placeholder_subject": "Subjek pesan Anda",
+    "label_message": "Pesan",
+    "placeholder_message": "Tulis pesan Anda di sini...",
+    "btn_submit": "Kirim Pesan",
+    "btn_sending": "Mengirim...",
+    "success_msg": "✅ Pesan berhasil dikirim! Kami akan segera menghubungi Anda.",
+    "error_msg": "❌ Terjadi kesalahan. Silakan coba lagi atau hubungi kami via email.",
+    "validation": {
+      "name_min": "Nama minimal 2 karakter",
+      "name_max": "Nama maksimal 100 karakter",
+      "email_invalid": "Email tidak valid",
+      "subject_min": "Subjek minimal 5 karakter",
+      "subject_max": "Subjek maksimal 200 karakter",
+      "message_min": "Pesan minimal 10 karakter",
+      "message_max": "Pesan maksimal 1000 karakter"
+    }
   }
 }

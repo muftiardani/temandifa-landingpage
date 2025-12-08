@@ -9,10 +9,111 @@
   "Hero": {
     "title1": "Teman",
     "title2": "Difa.",
-    "hero_headline": "Being help <br /> when needed.",
+    "hero_headline": "Being help when needed.",
     "hero_subheadline": "Real Accessibility, Limitless Inclusion",
     "hero_description": "An opportunity that will change many things. TemanDifa is here to support every step towards independence. We exist to be part of those who need it around you.",
     "cta_primary": "Get Started",
     "cta_secondary": "Learn More"
+  },
+  "AboutSection": {
+    "title": "TemanDifa",
+    "description": "TemanDifa was born out of concern for accessibility for people with disabilities, We believe that technology should be a bridge, not a barrier. By combining Artificial Intelligence, TemanDifa is here to make it easier for people with disabilities to do activities, learn, and communicate independently."
+  },
+  "ProblemSection": {
+    "subtitle": "Background of the Problem",
+    "global_stats_prefix": "Globally, there are more than",
+    "global_stats_highlight": "2.2 billion people",
+    "global_stats_suffix": "living with vision impairment ranging from low vision to total blindness.",
+    "local_stats_prefix": "In Indonesia, there are about",
+    "local_stats_highlight": "4 Million",
+    "local_stats_suffix": "visually impaired people, with a significant number of hearing impaired people as well. Many of them face major obstacles in daily independence.",
+    "problems": {
+      "item1": "Limited Information Accessibility",
+      "item2": "Mobility & Navigation",
+      "item3": "Daily Independence",
+      "item4": "Lack of Assistive Technology"
+    }
+  },
+  "Features": {
+    "feature1_title": "Real-Time Object Detection",
+    "feature1_desc": "Camera detects objects around the user instantly, helping to recognize the user's surroundings.",
+    "feature2_title": "Scan & Text Detection",
+    "feature2_desc": "Scans documents or writing using the camera, then converts it into text or voice so users can immediately hear the document content.",
+    "feature3_title": "Voice to Text",
+    "feature3_desc": "Converts voice to text so hearing-impaired users can follow conversations",
+    "feature4_title": "Emergency Call",
+    "feature4_desc": "Provides an option to connect with volunteers ready to help directly via video call"
+  },
+  "ClosingHero": {
+    "title_prefix": "Teman",
+    "title_highlight": "Difa.",
+    "description": "An app designed to empower people with disabilities to explore the world with confidence - becoming their eyes, ears, and assistant."
+  },
+  "Footer": {
+    "tagline": "See with confidence, Hear clearly, Be help when needed.",
+    "links_title": "Home",
+    "social_title": "Social Media",
+    "help_title": "Help",
+    "copyright": "© 2025 TemanDifa.com. All rights reserved."
+  },
+  "AboutPage": {
+    "title": "About TemanDifa",
+    "description_1": "TemanDifa was born out of concern for accessibility for people with disabilities. We believe that technology should be a bridge, not a barrier.",
+    "description_2": "By combining Artificial Intelligence, TemanDifa is here to make it easier for people with disabilities to do activities, learn and communicate independently.",
+    "vision_title": "Our Vision",
+    "vision_text": "To be the leading technology platform that empowers people with disabilities to live independently and confidently in their daily activities.",
+    "mission_title": "Our Mission",
+    "mission_1": "Provide accessible AI technology for people with disabilities",
+    "mission_2": "Increase independence for people with disabilities",
+    "mission_3": "Create digital inclusion without limits"
+  },
+  "ProductPage": {
+    "title": "TemanDifa Features",
+    "subtitle": "AI technology designed specifically to assist people with disabilities in daily activities",
+    "cta_title": "Ready to Use TemanDifa?",
+    "cta_desc": "Download the TemanDifa app now and experience accessibility ease at your fingertips",
+    "cta_button": "Download Now",
+    "features": {
+      "detection_title": "Real-Time Object Detection",
+      "detection_desc": "Camera detects objects around the user instantly, helping to recognize the surroundings with AI technology.",
+      "voice_title": "Voice to Text",
+      "voice_desc": "Converts speech to text so hearing-impaired users can follow conversations easily and in real-time.",
+      "scan_title": "Scan & Text Detection",
+      "scan_desc": "Scans documents or writing using the camera, then converts it into text or voice so users can immediately hear the document content.",
+      "emergency_title": "Emergency Call",
+      "emergency_desc": "Provides an option to connect with volunteers ready to help directly via video call at any time."
+    }
+  },
+  "ContactPage": {
+    "title": "Contact Us",
+    "subtitle": "We are ready to help you. Do not hesitate to contact us!",
+    "email_label": "Email",
+    "social_label": "Social Media",
+    "office_label": "Office",
+    "office_address": "Jakarta, Indonesia",
+    "form_title": "Send Message"
+  },
+  "ContactForm": {
+    "label_name": "Full Name",
+    "placeholder_name": "Enter your full name",
+    "label_email": "Email",
+    "placeholder_email": "name@email.com",
+    "label_subject": "Subject",
+    "placeholder_subject": "Subject of your message",
+    "label_message": "Message",
+    "placeholder_message": "Write your message here...",
+    "btn_submit": "Send Message",
+    "btn_sending": "Sending...",
+    "success_msg": "✅ Message sent successfully! We will contact you shortly.",
+    "error_msg": "❌ An error occurred. Please try again or contact us via email.",
+    "validation": {
+      "name_min": "Name must be at least 2 characters",
+      "name_max": "Name must be at most 100 characters",
+      "email_invalid": "Invalid email",
+      "subject_min": "Subject must be at least 5 characters",
+      "subject_max": "Subject must be at most 200 characters",
+      "message_min": "Message must be at least 10 characters",
+      "message_max": "Message must be at most 1000 characters"
+    }
   }
 }
