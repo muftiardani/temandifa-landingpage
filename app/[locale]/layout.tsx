@@ -110,9 +110,7 @@ export default async function RootLayout({
           >
             {children}
             <Footer />
-            <GoogleAnalytics
-              gaId={process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX"}
-            />
+            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>
