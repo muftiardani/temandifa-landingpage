@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ThemeProvider } from "./providers/ThemeProvider";
+import Footer from "@/components/layout/Footer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -70,7 +71,7 @@ export default function RootLayout({
     sameAs: [
       "https://instagram.com/temandifa",
       "https://tiktok.com/@temandifa",
-      "https://linkedin.com/company/temandifa",
+      "https://linkedin.com/company/temandifa-com",
     ],
   };
 
@@ -94,6 +95,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <Footer />
           <GoogleAnalytics
             gaId={process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX"}
           />

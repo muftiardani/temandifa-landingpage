@@ -4,7 +4,6 @@ import AboutSection from "@/components/sections/AboutSection";
 import ProblemSection from "@/components/sections/ProblemSection";
 import ClosingHero from "@/components/sections/ClosingHero";
 import Features from "@/components/sections/Features";
-import Footer from "@/components/layout/Footer";
 
 export default function Home() {
   return (
@@ -15,7 +14,6 @@ export default function Home() {
       <ProblemSection />
       <Features />
       <ClosingHero />
-      <Footer />
     </main>
   );
 }

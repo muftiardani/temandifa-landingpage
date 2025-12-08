@@ -4,7 +4,7 @@ export default function Features() {
   return (
     <>
       <section className="bg-white dark:bg-gray-950 py-20 px-4 relative transition-colors">
-        <div className="absolute top-0 right-0 w-95 h-95 border-60 border-blue-900 bg-transparent rounded-full mix-blend-multiply filter translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-24 w-70 h-70 md:w-80 md:h-80 border-60 border-blue-600 dark:border-blue-500 rounded-full z-0 opacity-50"></div>
 
         <div className="max-w-6xl mx-auto relative z-10 space-y-32 md:space-y-40">
           {/* Mockup Baris 1 */}

@@ -12,7 +12,7 @@ import {
 export default function Hero() {
   return (
     <motion.section
-      className="px-4 sm:px-7 max-w-7xl mx-auto pb-10"
+      className="px-4 sm:px-7 max-w-7xl mx-auto pb-10 pt-1"
       initial="initial"
       whileInView="animate"
       viewport={viewportOptions}
@@ -70,8 +70,8 @@ export default function Hero() {
           className="relative z-20 w-full md:w-1/2 text-white space-y-6"
           variants={fadeInLeft}
         >
-          <h1 className="text-7xl md:text-8xl font-bold leading-tight">
-            Teman <br /> Difa.com
+          <h1 className="text-7xl md:text-6xl font-bold leading-tight">
+            Menjadi bantuan <br /> saat dibutuhkan.
           </h1>
           <h2 className="text-yellow-400 dark:text-yellow-300 font-bold text-xl md:text-2xl">
             Aksesibilitas Nyata, Inklusi Tanpa Batas

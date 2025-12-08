@@ -2,8 +2,8 @@ import Image from "next/image";
 
 export default function ClosingHero() {
   return (
-    <section className="py-20 px-4 relative overflow-hidden bg-white dark:bg-gray-950 transition-colors">
-      <div className="absolute top-0 left-0 -translate-x-1/2 translate-y-10 w-70 h-70 md:w-80 md:h-80 border-60 border-yellow-400 dark:border-yellow-500 rounded-full z-0"></div>
+    <section className="py-20 px-4 relative bg-white dark:bg-gray-950 transition-colors">
+      <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-10 w-70 h-70 md:w-80 md:h-80 border-60 border-yellow-400 dark:border-yellow-500 rounded-full z-0"></div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="relative w-full h-[400px] md:h-[600px] rounded-[5rem] overflow-hidden shadow-2xl bg-blue-600 dark:bg-blue-700">
