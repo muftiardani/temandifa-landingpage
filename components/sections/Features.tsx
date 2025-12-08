@@ -1,4 +1,8 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { fadeInLeft, fadeInRight, viewportOptions } from "@/lib/animations";
 
 export default function Features() {
   return (
@@ -6,65 +10,78 @@ export default function Features() {
       <section className="bg-white dark:bg-gray-950 py-20 px-4 relative transition-colors">
         <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-24 w-70 h-70 md:w-80 md:h-80 border-60 border-blue-600 dark:border-blue-500 rounded-full z-0 opacity-50"></div>
 
-        <div className="max-w-6xl mx-auto relative z-10 space-y-32 md:space-y-40">
+        <div className="max-w-6xl mx-auto relative z-10 space-y-10 md:space-y-40">
           {/* Mockup Baris 1 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 items-center">
-            <div className="relative w-full max-w-[450px] mx-auto h-[600px] -ml-4">
-              {/* Background */}
-              <div className="absolute top-0 left-0 w-[450px] h-[700px] bg-blue-900 rounded-4xl shadow-xl pt-4 px-2 overflow-visible">
-                <div className="text-2xl font-bold text-white px-2 py-1 mb-2 flex items-center justify-center gap-3">
-                  <Image
-                    src="/images/logo.png"
-                    alt="TemanDifa logo - accessibility app for people with disabilities"
-                    width={100}
-                    height={100}
-                    className="w-auto h-12 object-contain"
-                  />
-                  TemanDifa.
-                </div>
+            <div className="relative w-full h-[500px] md:h-[600px] flex justify-center items-center">
+              <motion.div
+                className="origin-center lg:origin-left transform scale-[0.6] sm:scale-75 md:scale-90 lg:scale-100 relative w-[450px] h-[600px]"
+                variants={fadeInLeft}
+                initial="initial"
+                whileInView="animate"
+                viewport={viewportOptions}
+              >
+                <div className="absolute top-0 left-0 w-[450px] h-[700px] bg-blue-900 rounded-4xl shadow-xl pt-4 px-2 overflow-visible">
+                  <div className="text-2xl font-bold text-white px-2 py-1 mb-2 flex items-center justify-center gap-3">
+                    <Image
+                      src="/images/logo.png"
+                      alt="TemanDifa logo - accessibility app for people with disabilities"
+                      width={100}
+                      height={100}
+                      className="w-auto h-12 object-contain"
+                    />
+                    TemanDifa.
+                  </div>
 
-                <div className="left-105 top-10 w-[400px] h-[200px] bg-[#3b82f6] text-white rounded-xl p-8 shadow-lg relative z-10">
-                  <div className="absolute -bottom-6 right-8 w-[50%] h-10 bg-yellow-400 z-20"></div>
+                  <div className="left-105 top-10 w-[400px] h-[200px] bg-[#3b82f6] text-white rounded-xl p-8 shadow-lg relative z-10">
+                    <div className="absolute -bottom-6 right-8 w-[50%] h-10 bg-yellow-400 z-20"></div>
 
-                  <h3 className="text-2xl font-bold text-yellow-400 mb-2">
-                    Deteksi Objek Real-Time
-                  </h3>
-                  <p className="text-sm pl-7 leading-relaxed">
-                    Kamera mendeteksi objek di sekitar
-                    <br />
-                    pengguna secara langsung,
-                    <br />
-                    membantu mengenali kondisi
-                    <br />
-                    sekitar pengguna.
-                  </p>
-                </div>
+                    <h3 className="text-2xl font-bold text-yellow-400 mb-2">
+                      Deteksi Objek Real-Time
+                    </h3>
+                    <p className="text-sm pl-7 leading-relaxed">
+                      Kamera mendeteksi objek di sekitar
+                      <br />
+                      pengguna secara langsung,
+                      <br />
+                      membantu mengenali kondisi
+                      <br />
+                      sekitar pengguna.
+                    </p>
+                  </div>
 
-                <div className="absolute top-25 left-4 w-[400px] h-[600px] z-10 transition-transform">
-                  <Image
-                    src="/images/menu-mockup.png"
-                    alt="TemanDifa app main menu showing accessibility features"
-                    fill
-                    className="object-contain"
-                  />
+                  <div className="absolute top-25 left-4 w-[400px] h-[600px] z-10 transition-transform">
+                    <Image
+                      src="/images/menu-mockup.png"
+                      alt="TemanDifa app main menu showing accessibility features"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <div className="absolute top-47 left-[220px] w-[290px] h-[580px] z-20 drop-shadow-2xl">
+                    <Image
+                      src="/images/camera-mockup.png"
+                      alt="TemanDifa app camera feature for real-time object detection"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
                 </div>
-                <div className="absolute top-47 left-[220px] w-[290px] h-[580px] z-20 drop-shadow-2xl">
-                  <Image
-                    src="/images/camera-mockup.png"
-                    alt="TemanDifa app camera feature for real-time object detection"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </div>
+              </motion.div>
             </div>
 
-            <div className="space-y-10 pl-0 lg:pl-10 ml-0 lg:-ml-10">
+            <div className="space-y-10 pl-0 lg:pl-10 ml-0 lg:-ml-10 mt-[-100px] lg:mt-0 relative z-20 flex justify-center lg:block">
               <div className="relative w-full max-w-lg"></div>
 
-              <div className="relative ml-0 lg:ml-16 w-full max-w-lg">
+              <motion.div
+                className="relative lg:ml-16 w-full max-w-[90%] md:max-w-lg transform scale-90 md:scale-100 origin-center lg:origin-left"
+                variants={fadeInRight}
+                initial="initial"
+                whileInView="animate"
+                viewport={viewportOptions}
+              >
                 <div className="absolute top-37 right-24 w-10 h-10 bg-[#3b82f6] z-20"></div>
-                <div className="bg-yellow-400 w-[400px] h-[200px] top-41 text-slate-900 p-8 rounded-xl shadow-lg relative z-10">
+                <div className="bg-yellow-400 w-full md:w-[400px] h-auto md:h-[200px] top-41 text-slate-900 p-8 rounded-xl shadow-lg relative z-10">
                   <h3 className="text-xl font-bold text-[#2563eb] mb-2">
                     Scan & Deteksi Teks
                   </h3>
@@ -74,17 +91,22 @@ export default function Features() {
                     langsung mendengar isi dokumen.
                   </p>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Mockup Baris 2 */}
-      <section className="relative w-full min-h-[800px] bg-white dark:bg-gray-950 overflow-hidden py-20 px-4 md:px-20 flex flex-col md:flex-row items-center justify-end transition-colors">
-        <div className="relative w-full md:w-1/2 h-[600px] flex justify-center md:justify-end mt-10 md:mt-0">
-          {/* Background */}
-          <div className="absolute top-0 right-50">
+      <section className="relative w-full min-h-[600px] md:min-h-[800px] bg-white dark:bg-gray-950 overflow-x-clip py-20 px-4 md:px-20 flex flex-col md:flex-row items-center justify-end transition-colors">
+        <div className="relative w-full md:w-1/2 h-[500px] md:h-[600px] flex justify-center md:justify-end mt-10 md:mt-0">
+          <motion.div
+            className="origin-center lg:origin-right transform scale-[0.6] sm:scale-75 md:scale-90 lg:scale-100 absolute top-0 lg:right-50"
+            variants={fadeInRight}
+            initial="initial"
+            whileInView="animate"
+            viewport={viewportOptions}
+          >
             <div className="absolute top-0 right-0 w-[350px] h-[500px] bg-blue-900 rounded-3xl shadow-xl overflow-visible">
               <div className="right-75 top-80 w-[380px] h-[180px] bg-yellow-400 text-white rounded-xl p-8 shadow-lg relative z-20">
                 <div className="absolute top-40 -right-12 w-38 h-8 bg-[#072c68] z-20"></div>
@@ -127,7 +149,7 @@ export default function Features() {
                 />
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
     </>

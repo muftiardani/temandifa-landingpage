@@ -84,10 +84,10 @@ export default function Hero() {
         </motion.div>
 
         <motion.div
-          className="relative z-10 w-full md:w-1/2 mt-8 md:mt-0 flex justify-center md:justify-end gap-6"
+          className="relative z-10 w-full md:w-1/2 mt-8 md:mt-0 flex justify-center md:justify-end gap-4 md:gap-6"
           variants={fadeInRight}
         >
-          <div className="relative w-[300px] h-[600px] transform translate-y-8">
+          <div className="relative w-[45%] md:w-[300px] h-[400px] md:h-[600px] transform translate-y-8">
             <Image
               src="/images/woman.png"
               alt="Smiling woman using smartphone, representing TemanDifa app user"
@@ -97,7 +97,7 @@ export default function Hero() {
             />
           </div>
 
-          <div className="relative w-[300px] h-[600px] transform -translate-y-8">
+          <div className="relative w-[45%] md:w-[300px] h-[400px] md:h-[600px] transform -translate-y-8">
             <Image
               src="/images/man.png"
               alt="Man with headphones using smartphone, representing TemanDifa app user"

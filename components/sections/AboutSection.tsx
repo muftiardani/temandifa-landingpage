@@ -18,10 +18,13 @@ export default function AboutSection() {
         </h2>
         <p className="text-slate-600 dark:text-gray-300 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto text-center mb-12">
           TemanDifa lahir dari kepedulian terhadap aksesibilitas bagi difabel,
+          <br />
           Kami percaya bahwa teknologi seharusnya menjadi jembatan, bukan
-          penghalang. Dengan menggabungkan Artificial Intelligence, TemanDifa
-          hadir untuk memudahkan difabel dalam beraktivitas, belajar, dan
-          berkomunikasi secara mandiri.
+          penghalang.
+          <br />
+          Dengan menggabungkan Artificial Intelligence, TemanDifa hadir untuk
+          memudahkan difabel dalam beraktivitas, belajar, dan berkomunikasi
+          secara mandiri.
         </p>
       </div>
     </motion.section>
