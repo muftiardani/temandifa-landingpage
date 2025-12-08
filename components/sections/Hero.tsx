@@ -8,8 +8,10 @@ import {
   fadeInRight,
   viewportOptions,
 } from "@/lib/animations";
+import { useTranslations } from "next-intl";
 
 export default function Hero() {
+  const t = useTranslations("Hero");
   return (
     <motion.section
       className="px-4 sm:px-7 max-w-7xl mx-auto pb-10 pt-1"
@@ -71,15 +73,15 @@ export default function Hero() {
           variants={fadeInLeft}
         >
           <h1 className="text-7xl md:text-6xl font-bold leading-tight">
-            Menjadi bantuan <br /> saat dibutuhkan.
+            {t.rich("hero_headline", {
+              br: () => <br />,
+            })}
           </h1>
           <h2 className="text-yellow-400 dark:text-yellow-300 font-bold text-xl md:text-2xl">
-            Aksesibilitas Nyata, Inklusi Tanpa Batas
+            {t("hero_subheadline")}
           </h2>
           <p className="text-white/90 dark:text-blue-100 md:text-lg leading-relaxed max-w-md">
-            Sebuah kesempatan yang akan mengubah banyak hal. TemanDifa hadir
-            untuk mendukung setiap langkah menuju kemandirian. Kami ada untuk
-            menjadi bagian dari mereka yang membutuhkan di sekelilingmu.
+            {t("hero_description")}
           </p>
         </motion.div>
 

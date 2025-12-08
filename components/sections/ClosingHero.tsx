@@ -11,7 +11,7 @@ export default function ClosingHero() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
-          className="relative w-full h-[400px] md:h-[600px] rounded-[5rem] overflow-hidden shadow-2xl bg-blue-600 dark:bg-blue-700"
+          className="relative w-full h-[400px] md:h-[600px] rounded-[2.5rem] overflow-hidden shadow-2xl bg-blue-600 dark:bg-blue-700"
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}

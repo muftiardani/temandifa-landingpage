@@ -1,0 +1,18 @@
+{
+  "Navbar": {
+    "home": "Beranda",
+    "about": "Tentang",
+    "features": "Fitur",
+    "contact": "Kontak",
+    "download": "Unduh Sekarang"
+  },
+  "Hero": {
+    "title1": "Teman",
+    "title2": "Difa.",
+    "hero_headline": "Menjadi bantuan <br /> saat dibutuhkan.",
+    "hero_subheadline": "Aksesibilitas Nyata, Inklusi Tanpa Batas",
+    "hero_description": "Sebuah kesempatan yang akan mengubah banyak hal. TemanDifa hadir untuk mendukung setiap langkah menuju kemandirian. Kami ada untuk menjadi bagian dari mereka yang membutuhkan di sekelilingmu.",
+    "cta_primary": "Mulai Sekarang",
+    "cta_secondary": "Pelajari Lebih Lanjut"
+  }
+}

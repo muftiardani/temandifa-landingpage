@@ -3,7 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import Footer from "@/components/layout/Footer";
-import "./globals.css";
+import "../globals.css";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { notFound } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,11 +53,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }>) {
+  const { locale } = await params;
+
+  if (!["en", "id"].includes(locale as "en" | "id")) {
+    notFound();
+  }
+
+  const messages = await getMessages();
+
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -76,7 +89,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="id" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
@@ -88,18 +101,20 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <Footer />
-          <GoogleAnalytics
-            gaId={process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX"}
-          />
-        </ThemeProvider>
+        <NextIntlClientProvider messages={messages}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <Footer />
+            <GoogleAnalytics
+              gaId={process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX"}
+            />
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

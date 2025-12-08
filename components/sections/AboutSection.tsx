@@ -14,7 +14,7 @@ export default function AboutSection() {
     >
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-6 text-center">
-          Tentang TemanDifa
+          TemanDifa
         </h2>
         <p className="text-slate-600 dark:text-gray-300 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto text-center mb-12">
           TemanDifa lahir dari kepedulian terhadap aksesibilitas bagi difabel,

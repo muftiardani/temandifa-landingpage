@@ -1,0 +1,18 @@
+{
+  "Navbar": {
+    "home": "Home",
+    "about": "About",
+    "features": "Features",
+    "contact": "Contact",
+    "download": "Download Now"
+  },
+  "Hero": {
+    "title1": "Teman",
+    "title2": "Difa.",
+    "hero_headline": "Being help <br /> when needed.",
+    "hero_subheadline": "Real Accessibility, Limitless Inclusion",
+    "hero_description": "An opportunity that will change many things. TemanDifa is here to support every step towards independence. We exist to be part of those who need it around you.",
+    "cta_primary": "Get Started",
+    "cta_secondary": "Learn More"
+  }
+}

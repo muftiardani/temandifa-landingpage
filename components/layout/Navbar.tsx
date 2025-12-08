@@ -1,12 +1,25 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { Link, usePathname, useRouter } from "@/i18n/routing";
+import { useLocale, useTranslations } from "next-intl";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const t = useTranslations("Navbar");
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isPending, startTransition] = useTransition();
+
+  const toggleLanguage = () => {
+    const nextLocale = locale === "id" ? "en" : "id";
+    startTransition(() => {
+      router.replace(pathname, { locale: nextLocale });
+    });
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 transition-colors">
@@ -33,32 +46,46 @@ const Navbar = () => {
           <Link
             href="/"
             className="hover:text-blue-700 dark:hover:text-blue-300 transition"
-            aria-label="Navigasi ke halaman beranda"
           >
-            Beranda
+            {t("home")}
           </Link>
           <Link
             href="/tentang"
             className="hover:text-blue-700 dark:hover:text-blue-300 transition"
-            aria-label="Navigasi ke halaman tentang kami"
           >
-            Tentang
+            {t("about")}
           </Link>
           <Link
             href="/produk"
             className="hover:text-blue-700 dark:hover:text-blue-300 transition"
-            aria-label="Navigasi ke halaman produk"
           >
-            Produk
+            {t("features")}
           </Link>
 
           <Link
             href="/kontak"
             className="bg-blue-500 dark:bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-600 dark:hover:bg-blue-700 transition shadow-md"
-            aria-label="Navigasi ke halaman kontak"
           >
-            Kontak
+            {t("contact")}
           </Link>
+
+          <button
+            onClick={toggleLanguage}
+            disabled={isPending}
+            className="w-8 h-8 rounded-full overflow-hidden border border-gray-200 dark:border-gray-700 hover:opacity-80 transition-opacity"
+            aria-label="Switch language"
+          >
+            {locale === "id" ? (
+              <div className="w-full h-full bg-red-600 relative">
+                <div className="absolute top-0 w-full h-1/2 bg-red-600"></div>
+                <div className="absolute bottom-0 w-full h-1/2 bg-white"></div>
+              </div>
+            ) : (
+              <div className="w-full h-full bg-blue-800 relative flex items-center justify-center text-[10px] text-white font-bold">
+                EN
+              </div>
+            )}
+          </button>
 
           <ThemeToggle />
         </div>
@@ -93,29 +120,39 @@ const Navbar = () => {
                 className="text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Beranda
+                {t("home")}
               </Link>
               <Link
                 href="/tentang"
                 className="text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Tentang
+                {t("about")}
               </Link>
               <Link
                 href="/produk"
                 className="text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Produk
+                {t("features")}
               </Link>
               <Link
                 href="/kontak"
                 className="bg-blue-500 dark:bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-600 dark:hover:bg-blue-700 transition shadow-md text-center"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Kontak
+                {t("contact")}
               </Link>
+
+              <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
+                <span className="text-gray-600 dark:text-gray-400">Bahasa</span>
+                <button
+                  onClick={toggleLanguage}
+                  className="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-md text-sm font-medium"
+                >
+                  {locale === "id" ? "Indonesia" : "English"}
+                </button>
+              </div>
             </div>
           </div>
         )}
