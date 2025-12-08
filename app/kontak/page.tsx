@@ -77,7 +77,7 @@ export default function KontakPage() {
               </div>
               <div>
                 <a
-                  href="https://linkedin.com/company/temandifa"
+                  href="https://linkedin.com/company/temandifa-com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 dark:text-blue-400 hover:underline"

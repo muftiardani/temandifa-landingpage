@@ -23,7 +23,7 @@ export default function Hero() {
                           rounded-[2.5rem] 
                           p-8 
                           md:p-12 
-                          md:py-18 
+                          md:py-2 
                           relative 
                           overflow-hidden 
                           flex flex-col 
@@ -84,10 +84,10 @@ export default function Hero() {
         </motion.div>
 
         <motion.div
-          className="relative z-10 w-full md:w-1/2 mt-8 md:mt-0 flex justify-center md:justify-end"
+          className="relative z-10 w-full md:w-1/2 mt-8 md:mt-0 flex justify-center md:justify-end gap-6"
           variants={fadeInRight}
         >
-          <div className="relative w-[200px] h-[400px]">
+          <div className="relative w-[300px] h-[600px] transform translate-y-8">
             <Image
               src="/images/woman.png"
               alt="Smiling woman using smartphone, representing TemanDifa app user"
@@ -97,7 +97,7 @@ export default function Hero() {
             />
           </div>
 
-          <div className="absolute right-0 top-0 w-[200px] h-[400px]">
+          <div className="relative w-[300px] h-[600px] transform -translate-y-8">
             <Image
               src="/images/man.png"
               alt="Man with headphones using smartphone, representing TemanDifa app user"
