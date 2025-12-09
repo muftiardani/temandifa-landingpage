@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
@@ -17,15 +16,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-blue-400 dark:border-gray-700 pb-12 mb-8">
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <Image
-                src="/images/logo.png"
-                alt="TemanDifa logo"
-                width={150}
-                height={150}
-                className="w-8 h-8 object-contain"
-              />
-              <span className="text-2xl font-bold">TemanDifa.</span>
+            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              Teman
+              <span className="text-yellow-500 dark:text-yellow-400">Difa</span>
             </div>
             <p className="text-blue-100 dark:text-gray-300 text-sm font-semibold leading-relaxed">
               {t.rich("tagline", {

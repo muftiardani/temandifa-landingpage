@@ -8,7 +8,7 @@
   },
   "Hero": {
     "title1": "Teman",
-    "title2": "Difa.",
+    "title2": "Difa",
     "hero_headline": "Menjadi bantuan saat dibutuhkan.",
     "hero_subheadline": "Aksesibilitas Nyata, Inklusi Tanpa Batas",
     "hero_description": "Sebuah kesempatan yang akan mengubah banyak hal. TemanDifa hadir untuk mendukung setiap langkah menuju kemandirian. Kami ada untuk menjadi bagian dari mereka yang membutuhkan di sekelilingmu.",
@@ -46,7 +46,7 @@
   },
   "ClosingHero": {
     "title_prefix": "Teman",
-    "title_highlight": "Difa.",
+    "title_highlight": "Difa",
     "description": "Aplikasi yang dirancang untuk memberdayakan penyandang disabilitas agar lebih percaya diri menjelajahi dunia - menjadi mata, telinga dan asisten bantu."
   },
   "Footer": {
@@ -90,7 +90,7 @@
     "email_label": "Email",
     "social_label": "Social Media",
     "office_label": "Kantor",
-    "office_address": "Jakarta, Indonesia",
+    "office_address": "Yogyakarta, Indonesia",
     "form_title": "Kirim Pesan"
   },
   "ContactForm": {

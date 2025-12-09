@@ -8,7 +8,7 @@
   },
   "Hero": {
     "title1": "Teman",
-    "title2": "Difa.",
+    "title2": "Difa",
     "hero_headline": "Being help when needed.",
     "hero_subheadline": "Real Accessibility, Limitless Inclusion",
     "hero_description": "An opportunity that will change many things. TemanDifa is here to support every step towards independence. We exist to be part of those who need it around you.",
@@ -46,7 +46,7 @@
   },
   "ClosingHero": {
     "title_prefix": "Teman",
-    "title_highlight": "Difa.",
+    "title_highlight": "Difa",
     "description": "An app designed to empower people with disabilities to explore the world with confidence - becoming their eyes, ears, and assistant."
   },
   "Footer": {
@@ -90,7 +90,7 @@
     "email_label": "Email",
     "social_label": "Social Media",
     "office_label": "Office",
-    "office_address": "Jakarta, Indonesia",
+    "office_address": "Yogyakarta, Indonesia",
     "form_title": "Send Message"
   },
   "ContactForm": {
