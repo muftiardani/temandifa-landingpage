@@ -5,12 +5,14 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer, viewportOptions } from "@/lib/animations";
+import PageTransition from "@/components/ui/PageTransition";
 
 export default function ProdukPage() {
   const t = useTranslations("ProductPage");
 
   return (
-    <main className="bg-white dark:bg-gray-950 min-h-screen transition-colors">
+    <PageTransition>
+      <main className="bg-white dark:bg-gray-950 min-h-screen transition-colors">
       <Navbar />
       <Breadcrumbs />
       <section className="max-w-6xl mx-auto px-4 py-16">
@@ -37,12 +39,18 @@ export default function ProdukPage() {
         >
           {/* Feature 1: Deteksi Objek */}
           <motion.div 
-            className="border-2 border-blue-500 dark:border-blue-600 rounded-2xl p-8 hover:shadow-xl transition-shadow bg-white dark:bg-gray-800"
+            className="border-2 border-blue-500 dark:border-blue-600 rounded-2xl p-8 
+                       hover:shadow-2xl hover:scale-105 transition-all duration-300 
+                       bg-white dark:bg-gray-800"
             variants={fadeInUp}
           >
-            <div className="bg-blue-500 dark:bg-blue-600 w-16 h-16 rounded-xl flex items-center justify-center mb-4">
+            <motion.div 
+              className="bg-blue-500 dark:bg-blue-600 w-16 h-16 rounded-xl flex items-center justify-center mb-4"
+              whileHover={{ rotate: 360, scale: 1.2 }}
+              transition={{ duration: 0.5 }}
+            >
               <span className="text-white text-3xl">📷</span>
-            </div>
+            </motion.div>
             <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
               {t("features.detection_title")}
             </h3>
@@ -53,14 +61,18 @@ export default function ProdukPage() {
 
           {/* Feature 2: Voice to Text */}
           <motion.div 
-            className="border-2 border-blue-500 dark:border-blue-600 rounded-2xl p-8 hover:shadow-xl transition-shadow bg-white dark:bg-gray-800"
+            className="border-2 border-blue-500 dark:border-blue-600 rounded-2xl p-8 
+                       hover:shadow-2xl hover:scale-105 transition-all duration-300 
+                       bg-white dark:bg-gray-800"
             variants={fadeInUp}
           >
-            <div className="bg-yellow-400 dark:bg-yellow-500 w-16 h-16 rounded-xl flex items-center justify-center mb-4">
-              <span className="text-blue-600 dark:text-blue-900 text-3xl">
-                🎤
-              </span>
-            </div>
+            <motion.div 
+              className="bg-yellow-400 dark:bg-yellow-500 w-16 h-16 rounded-xl flex items-center justify-center mb-4"
+              whileHover={{ rotate: 360, scale: 1.2 }}
+              transition={{ duration: 0.5 }}
+            >
+              <span className="text-blue-600 dark:text-blue-900 text-3xl">🎤</span>
+            </motion.div>
             <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
               {t("features.voice_title")}
             </h3>
@@ -71,12 +83,18 @@ export default function ProdukPage() {
 
           {/* Feature 3: Scan & Deteksi Teks */}
           <motion.div 
-            className="border-2 border-blue-500 dark:border-blue-600 rounded-2xl p-8 hover:shadow-xl transition-shadow bg-white dark:bg-gray-800"
+            className="border-2 border-blue-500 dark:border-blue-600 rounded-2xl p-8 
+                       hover:shadow-2xl hover:scale-105 transition-all duration-300 
+                       bg-white dark:bg-gray-800"
             variants={fadeInUp}
           >
-            <div className="bg-blue-500 dark:bg-blue-600 w-16 h-16 rounded-xl flex items-center justify-center mb-4">
+            <motion.div 
+              className="bg-blue-500 dark:bg-blue-600 w-16 h-16 rounded-xl flex items-center justify-center mb-4"
+              whileHover={{ rotate: 360, scale: 1.2 }}
+              transition={{ duration: 0.5 }}
+            >
               <span className="text-white text-3xl">📄</span>
-            </div>
+            </motion.div>
             <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
               {t("features.scan_title")}
             </h3>
@@ -87,14 +105,18 @@ export default function ProdukPage() {
 
           {/* Feature 4: Emergency Call */}
           <motion.div 
-            className="border-2 border-blue-500 dark:border-blue-600 rounded-2xl p-8 hover:shadow-xl transition-shadow bg-white dark:bg-gray-800"
+            className="border-2 border-blue-500 dark:border-blue-600 rounded-2xl p-8 
+                       hover:shadow-2xl hover:scale-105 transition-all duration-300 
+                       bg-white dark:bg-gray-800"
             variants={fadeInUp}
           >
-            <div className="bg-yellow-400 dark:bg-yellow-500 w-16 h-16 rounded-xl flex items-center justify-center mb-4">
-              <span className="text-blue-600 dark:text-blue-900 text-3xl">
-                📞
-              </span>
-            </div>
+            <motion.div 
+              className="bg-yellow-400 dark:bg-yellow-500 w-16 h-16 rounded-xl flex items-center justify-center mb-4"
+              whileHover={{ rotate: 360, scale: 1.2 }}
+              transition={{ duration: 0.5 }}
+            >
+              <span className="text-blue-600 dark:text-blue-900 text-3xl">📞</span>
+            </motion.div>
             <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
               {t("features.emergency_title")}
             </h3>
@@ -122,5 +144,6 @@ export default function ProdukPage() {
         </motion.div>
       </section>
     </main>
+    </PageTransition>
   );
 }

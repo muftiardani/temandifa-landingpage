@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import { SkipToContent } from "@/components/ui/SkipToContent";
 import Footer from "@/components/layout/Footer";
+import ScrollProgress from "@/components/ui/ScrollProgress";
 import "../globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -23,6 +24,13 @@ const geistMono = Geist_Mono({
   display: "swap",
   preload: true,
   fallback: ["monospace"],
+});
+
+const poppins = Poppins({
+  weight: ["400", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-poppins",
+  display: "swap",
 });
 
 const baseUrl = "https://temandifa.com";
@@ -186,8 +194,9 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
+        <ScrollProgress />
         <SkipToContent />
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider

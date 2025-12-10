@@ -23,6 +23,8 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@next/third-parties": "^16.0.7",
+    "@tsparticles/react": "^3.0.0",
+    "@tsparticles/slim": "^3.9.1",
     "framer-motion": "^12.23.25",
     "next": "16.0.7",
     "next-intl": "^4.5.8",

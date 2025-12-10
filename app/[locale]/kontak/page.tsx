@@ -6,12 +6,14 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { fadeInUp, fadeInRight, staggerContainer, viewportOptions } from "@/lib/animations";
+import PageTransition from "@/components/ui/PageTransition";
 
 export default function ContactPage() {
   const t = useTranslations("ContactPage");
 
   return (
-    <main className="bg-white dark:bg-gray-950 min-h-screen transition-colors">
+    <PageTransition>
+      <main className="bg-white dark:bg-gray-950 min-h-screen transition-colors">
       <Navbar />
       <Breadcrumbs />
       <section className="max-w-4xl mx-auto px-4 py-16">
@@ -38,13 +40,19 @@ export default function ContactPage() {
         >
           {/* Email */}
           <motion.div 
-            className="bg-blue-50 dark:bg-gray-800 p-6 rounded-2xl hover:shadow-lg transition-shadow"
+            className="bg-blue-50 dark:bg-gray-800 p-6 rounded-2xl border-2 border-transparent
+                       hover:border-blue-500 dark:hover:border-blue-600
+                       hover:shadow-2xl hover:scale-105 transition-all duration-300"
             variants={fadeInUp}
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="bg-blue-500 dark:bg-blue-600 w-10 h-10 rounded-xl flex items-center justify-center">
+              <motion.div 
+                className="bg-blue-500 dark:bg-blue-600 w-10 h-10 rounded-xl flex items-center justify-center"
+                whileHover={{ rotate: 360, scale: 1.2 }}
+                transition={{ duration: 0.5 }}
+              >
                 <span className="text-white text-xl">✉️</span>
-              </div>
+              </motion.div>
               <h3 className="font-bold text-lg text-blue-600 dark:text-blue-400">
                 {t("email_label")}
               </h3>
@@ -60,15 +68,19 @@ export default function ContactPage() {
 
           {/* Social Media */}
           <motion.div 
-            className="bg-yellow-50 dark:bg-gray-800 p-6 rounded-2xl hover:shadow-lg transition-shadow"
+            className="bg-yellow-50 dark:bg-gray-800 p-6 rounded-2xl border-2 border-transparent
+                       hover:border-yellow-400 dark:hover:border-yellow-500
+                       hover:shadow-2xl hover:scale-105 transition-all duration-300"
             variants={fadeInUp}
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="bg-yellow-400 dark:bg-yellow-500 w-10 h-10 rounded-xl flex items-center justify-center">
-                <span className="text-blue-600 dark:text-blue-900 text-xl">
-                  🌐
-                </span>
-              </div>
+              <motion.div 
+                className="bg-yellow-400 dark:bg-yellow-500 w-10 h-10 rounded-xl flex items-center justify-center"
+                whileHover={{ rotate: 360, scale: 1.2 }}
+                transition={{ duration: 0.5 }}
+              >
+                <span className="text-blue-600 dark:text-blue-900 text-xl">🌐</span>
+              </motion.div>
               <h3 className="font-bold text-lg text-blue-600 dark:text-blue-400">
                 {t("social_label")}
               </h3>
@@ -112,13 +124,19 @@ export default function ContactPage() {
 
           {/* Office */}
           <motion.div 
-            className="bg-blue-50 dark:bg-gray-800 p-6 rounded-2xl hover:shadow-lg transition-shadow"
+            className="bg-blue-50 dark:bg-gray-800 p-6 rounded-2xl border-2 border-transparent
+                       hover:border-blue-500 dark:hover:border-blue-600
+                       hover:shadow-2xl hover:scale-105 transition-all duration-300"
             variants={fadeInUp}
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="bg-blue-500 dark:bg-blue-600 w-10 h-10 rounded-xl flex items-center justify-center">
+              <motion.div 
+                className="bg-blue-500 dark:bg-blue-600 w-10 h-10 rounded-xl flex items-center justify-center"
+                whileHover={{ rotate: 360, scale: 1.2 }}
+                transition={{ duration: 0.5 }}
+              >
                 <span className="text-white text-xl">📍</span>
-              </div>
+              </motion.div>
               <h3 className="font-bold text-lg text-blue-600 dark:text-blue-400">
                 {t("office_label")}
               </h3>
@@ -144,5 +162,6 @@ export default function ContactPage() {
         </motion.div>
       </section>
     </main>
+    </PageTransition>
   );
 }

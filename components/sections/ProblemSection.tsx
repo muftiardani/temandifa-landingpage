@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer, viewportOptions } from "@/lib/animations";
 import { useTranslations } from "next-intl";
+import Counter from "@/components/ui/Counter";
 
 export default function ProblemSection() {
   const t = useTranslations("ProblemSection");
@@ -42,7 +43,7 @@ export default function ProblemSection() {
           <p>
             {t("global_stats_prefix")}{" "}
             <span className="bg-yellow-400 dark:bg-yellow-500 px-2 py-0.5 mx-1 rounded font-bold text-[#3b82f6] dark:text-blue-900">
-              {t("global_stats_highlight")}
+              <Counter end={2.2} decimals={1} /> {t("global_stats_highlight").replace(/2[.,]2/, "").trim()}
             </span>
             {t.rich("global_stats_suffix", {
               br: () => <br />,
@@ -51,7 +52,7 @@ export default function ProblemSection() {
           <p>
             {t("local_stats_prefix")}{" "}
             <span className="bg-yellow-400 dark:bg-yellow-500 px-2 py-0.5 mx-1 rounded font-bold text-[#3b82f6] dark:text-blue-900">
-              {t("local_stats_highlight")}
+              <Counter end={4} decimals={0} /> {t("local_stats_highlight").replace(/4/, "").trim()}
             </span>
             {t.rich("local_stats_suffix", {
               br: () => <br />,

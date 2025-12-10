@@ -1,17 +1,25 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
   fadeIn,
   fadeInLeft,
   fadeInRight,
   viewportOptions,
 } from "@/lib/animations";
+import ParticleBackground from "@/components/ui/ParticleBackground";
 import { useTranslations } from "next-intl";
 
 export default function Hero() {
   const t = useTranslations("Hero");
+  
+  // Parallax effect
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, 150]);
+  const y2 = useTransform(scrollY, [0, 500], [0, -100]);
+  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  
   return (
     <motion.section
       className="px-4 sm:px-7 max-w-7xl mx-auto pb-10 pt-1"
@@ -21,7 +29,9 @@ export default function Hero() {
       variants={fadeIn}
     >
       <div
-        className="bg-[#3b82f6] dark:bg-blue-700
+        className="bg-linear-to-br from-blue-500 via-blue-600 to-purple-600
+                          dark:bg-linear-to-br dark:from-blue-700 dark:via-blue-800 dark:to-purple-900
+                          animate-gradient
                           rounded-[2.5rem] 
                           p-8 
                           md:p-12 
@@ -31,8 +41,46 @@ export default function Hero() {
                           flex flex-col 
                           md:flex-row 
                           items-center
-                          transition-colors"
+                          transition-colors
+                          isolate"
       >
+        {/* Particle Background - Inside blue container */}
+        <ParticleBackground />
+        
+        {/* Floating Decorative Elements with Parallax */}
+        <motion.div
+          style={{ y: y1, opacity }}
+          animate={{
+            y: [0, -20, 0],
+            rotate: [0, 5, 0],
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute top-20 right-20 w-32 h-32 
+                     bg-yellow-400/20 dark:bg-yellow-500/20 
+                     rounded-full blur-3xl"
+          aria-hidden="true"
+        />
+        <motion.div
+          style={{ y: y2, opacity }}
+          animate={{
+            y: [0, 20, 0],
+            rotate: [0, -5, 0],
+          }}
+          transition={{
+            duration: 7,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute bottom-20 left-20 w-40 h-40 
+                     bg-purple-400/20 dark:bg-purple-500/20 
+                     rounded-full blur-3xl"
+          aria-hidden="true"
+        />
+
         <div
           className="absolute 
                           bottom-0 

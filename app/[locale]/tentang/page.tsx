@@ -5,12 +5,14 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer, viewportOptions } from "@/lib/animations";
+import PageTransition from "@/components/ui/PageTransition";
 
 export default function TentangPage() {
   const t = useTranslations("AboutPage");
 
   return (
-    <main className="bg-white dark:bg-gray-950 min-h-screen transition-colors">
+    <PageTransition>
+      <main className="bg-white dark:bg-gray-950 min-h-screen transition-colors">
       <Navbar />
       <Breadcrumbs />
       <motion.section 
@@ -72,5 +74,6 @@ export default function TentangPage() {
         </motion.div>
       </motion.section>
     </main>
+    </PageTransition>
   );
 }

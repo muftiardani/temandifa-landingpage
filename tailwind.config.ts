@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        poppins: ["var(--font-poppins)", "sans-serif"],
+      },
       spacing: {
         "70": "17.5rem", // 280px
         "75": "18.75rem", // 300px

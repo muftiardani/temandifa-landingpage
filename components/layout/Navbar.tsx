@@ -42,7 +42,12 @@ const Navbar = () => {
   }, [isMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 transition-colors">
+    <header className="sticky top-0 z-50 w-full 
+                       bg-white/70 dark:bg-gray-900/70 
+                       backdrop-blur-xl backdrop-saturate-150
+                       border-b border-white/20 dark:border-gray-700/20
+                       shadow-lg shadow-black/5
+                       transition-colors">
       <nav
         className="w-full py-4 px-4 sm:px-8 max-w-7xl mx-auto flex items-center justify-between relative"
         role="navigation"
