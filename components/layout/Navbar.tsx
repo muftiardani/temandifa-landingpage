@@ -176,11 +176,15 @@ const Navbar = () => {
               <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
                 <span className="text-gray-600 dark:text-gray-400">Bahasa</span>
                 <button
-                  onClick={toggleLanguage}
-                  className="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-md text-sm font-medium"
-                >
-                  {locale === "id" ? "Indonesia" : "English"}
-                </button>
+            onClick={toggleLanguage}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            aria-label={`Switch to ${locale === "id" ? "English" : "Bahasa Indonesia"}`}
+            title={locale === "id" ? "Switch to English" : "Ganti ke Bahasa Indonesia"}
+          >
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              {locale === "id" ? "EN" : "ID"}
+            </span>
+          </button>
               </div>
             </div>
           </div>

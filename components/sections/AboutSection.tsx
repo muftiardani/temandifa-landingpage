@@ -9,13 +9,17 @@ export default function AboutSection() {
   return (
     <motion.section
       className="bg-white dark:bg-gray-950 py-10 px-4 sm:px-8 transition-colors"
+      aria-labelledby="about-heading"
       initial="initial"
       whileInView="animate"
       viewport={viewportOptions}
       variants={fadeInUp}
     >
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-6 text-center">
+        <h2 
+          id="about-heading"
+          className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-6 text-center"
+        >
           {t("title")}
         </h2>
         <p className="text-slate-600 dark:text-gray-300 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto text-center mb-12">

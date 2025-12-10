@@ -77,7 +77,7 @@ export default function Hero() {
               br: () => <br />,
             })}
           </h1>
-          <h2 className="text-yellow-400 dark:text-yellow-300 font-bold text-xl md:text-2xl">
+          <h2 className="text-yellow-500 dark:text-yellow-300 font-bold text-xl md:text-2xl">
             {t("hero_subheadline")}
           </h2>
           <p className="text-white/90 dark:text-blue-100 md:text-lg leading-relaxed max-w-md">

@@ -19,7 +19,7 @@ export function FeatureCard({
   const bgColor = variant === "blue" ? "bg-blue-500" : "bg-yellow-400";
   const textColor = variant === "blue" ? "text-white" : "text-slate-900";
   const titleColor =
-    variant === "blue" ? "text-yellow-400" : "text-blue-600 dark:text-blue-400";
+    variant === "blue" ? "text-yellow-500 dark:text-yellow-300" : "text-blue-600 dark:text-blue-400";
 
   return (
     <div

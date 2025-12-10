@@ -9,7 +9,10 @@ export default function ProblemSection() {
   const problems = ["item1", "item2", "item3", "item4"] as const;
 
   return (
-    <section className="py-10 px-4 max-w-7xl mx-auto relative overflow-hidden md:overflow-visible bg-white dark:bg-gray-950 transition-colors">
+    <section 
+      className="py-10 px-4 max-w-7xl mx-auto relative overflow-hidden md:overflow-visible bg-white dark:bg-gray-950 transition-colors"
+      aria-labelledby="problem-heading"
+    >
       <motion.div
         className="mb-12 flex relative z-10"
         initial="initial"
@@ -18,7 +21,10 @@ export default function ProblemSection() {
         variants={fadeInUp}
       >
         <div className="w-2 bg-yellow-400 dark:bg-yellow-500 mr-6 rounded-full h-auto self-stretch"></div>
-        <h2 className="text-4xl md:text-5xl font-bold text-[#3b82f6] dark:text-blue-400 leading-tight">
+        <h2 
+          id="problem-heading"
+          className="text-4xl md:text-5xl font-bold text-[#3b82f6] dark:text-blue-400 leading-tight"
+        >
           {t.rich("subtitle", {
             br: () => <br />,
           })}

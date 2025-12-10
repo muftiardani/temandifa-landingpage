@@ -9,7 +9,7 @@
   "Hero": {
     "title1": "Teman",
     "title2": "Difa",
-    "hero_headline": "Being help when needed.",
+    "hero_headline": "Here to help when needed.",
     "hero_subheadline": "Real Accessibility, Limitless Inclusion",
     "hero_description": "An opportunity that will change many things. TemanDifa is here to support every step towards independence. We exist to be part of those who need it around you.",
     "cta_primary": "Get Started",
@@ -20,7 +20,7 @@
     "description": "TemanDifa was born out of concern for accessibility for people with disabilities, We believe that technology should be a bridge, not a barrier. By combining Artificial Intelligence, TemanDifa is here to make it easier for people with disabilities to do activities, learn, and communicate independently."
   },
   "ProblemSection": {
-    "subtitle": "Background of the Problem",
+    "subtitle": "Background",
     "global_stats_prefix": "Globally, there are more than",
     "global_stats_highlight": "2.2 billion people",
     "global_stats_suffix": "living with vision impairment ranging from low vision to total blindness.",
@@ -58,6 +58,7 @@
   },
   "AboutPage": {
     "title": "About TemanDifa",
+    "meta_description": "Learn more about TemanDifa, our vision and mission to create digital accessibility for people with disabilities in Indonesia",
     "description_1": "TemanDifa was born out of concern for accessibility for people with disabilities. We believe that technology should be a bridge, not a barrier.",
     "description_2": "By combining Artificial Intelligence, TemanDifa is here to make it easier for people with disabilities to do activities, learn and communicate independently.",
     "vision_title": "Our Vision",

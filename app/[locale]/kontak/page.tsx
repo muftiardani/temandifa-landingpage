@@ -1,7 +1,11 @@
+"use client";
+
 import Navbar from "@/components/layout/Navbar";
 import ContactForm from "@/components/forms/ContactForm";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
+import { fadeInUp, fadeInRight, staggerContainer, viewportOptions } from "@/lib/animations";
 
 export default function ContactPage() {
   const t = useTranslations("ContactPage");
@@ -11,16 +15,32 @@ export default function ContactPage() {
       <Navbar />
       <Breadcrumbs />
       <section className="max-w-4xl mx-auto px-4 py-16">
-        <h1 className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-4 text-center">
-          {t("title")}
-        </h1>
-        <p className="text-center text-slate-600 dark:text-gray-300 text-lg mb-12">
-          {t("subtitle")}
-        </p>
+        <motion.div
+          initial="initial"
+          whileInView="animate"
+          viewport={viewportOptions}
+          variants={fadeInUp}
+        >
+          <h1 className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-4 text-center">
+            {t("title")}
+          </h1>
+          <p className="text-center text-slate-600 dark:text-gray-300 text-lg mb-12">
+            {t("subtitle")}
+          </p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={viewportOptions}
+        >
           {/* Email */}
-          <div className="bg-blue-50 dark:bg-gray-800 p-6 rounded-2xl hover:shadow-lg transition-shadow">
+          <motion.div 
+            className="bg-blue-50 dark:bg-gray-800 p-6 rounded-2xl hover:shadow-lg transition-shadow"
+            variants={fadeInUp}
+          >
             <div className="flex items-center gap-3 mb-3">
               <div className="bg-blue-500 dark:bg-blue-600 w-10 h-10 rounded-xl flex items-center justify-center">
                 <span className="text-white text-xl">✉️</span>
@@ -36,10 +56,13 @@ export default function ContactPage() {
             >
               hello@temandifa.com
             </a>
-          </div>
+          </motion.div>
 
           {/* Social Media */}
-          <div className="bg-yellow-50 dark:bg-gray-800 p-6 rounded-2xl hover:shadow-lg transition-shadow">
+          <motion.div 
+            className="bg-yellow-50 dark:bg-gray-800 p-6 rounded-2xl hover:shadow-lg transition-shadow"
+            variants={fadeInUp}
+          >
             <div className="flex items-center gap-3 mb-3">
               <div className="bg-yellow-400 dark:bg-yellow-500 w-10 h-10 rounded-xl flex items-center justify-center">
                 <span className="text-blue-600 dark:text-blue-900 text-xl">
@@ -85,10 +108,13 @@ export default function ContactPage() {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Office */}
-          <div className="bg-blue-50 dark:bg-gray-800 p-6 rounded-2xl hover:shadow-lg transition-shadow">
+          <motion.div 
+            className="bg-blue-50 dark:bg-gray-800 p-6 rounded-2xl hover:shadow-lg transition-shadow"
+            variants={fadeInUp}
+          >
             <div className="flex items-center gap-3 mb-3">
               <div className="bg-blue-500 dark:bg-blue-600 w-10 h-10 rounded-xl flex items-center justify-center">
                 <span className="text-white text-xl">📍</span>
@@ -100,16 +126,22 @@ export default function ContactPage() {
             <p className="text-slate-700 dark:text-gray-300 text-sm">
               {t("office_address")}
             </p>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Contact Form */}
-        <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-3xl transition-colors">
+        <motion.div 
+          className="bg-gray-50 dark:bg-gray-800 p-8 rounded-3xl transition-colors"
+          initial="initial"
+          whileInView="animate"
+          viewport={viewportOptions}
+          variants={fadeInRight}
+        >
           <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-6 text-center">
             {t("form_title")}
           </h2>
           <ContactForm />
-        </div>
+        </motion.div>
       </section>
     </main>
   );

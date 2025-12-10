@@ -9,7 +9,10 @@ export default function ClosingHero() {
   const t = useTranslations("ClosingHero");
 
   return (
-    <section className="py-20 px-4 relative bg-white dark:bg-gray-950 transition-colors">
+    <section 
+      className="py-20 px-4 relative bg-white dark:bg-gray-950 transition-colors"
+      aria-labelledby="closing-heading"
+    >
       <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-10 w-70 h-70 md:w-80 md:h-80 border-60 border-yellow-400 dark:border-yellow-500 rounded-full z-0"></div>
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -42,7 +45,10 @@ export default function ClosingHero() {
               viewport={viewportOptions}
               variants={fadeInUp}
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-md">
+              <h2 
+                id="closing-heading"
+                className="text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-md"
+              >
                 {t("title_prefix")}
                 <span className="relative inline-block ml-1">
                   {t("title_highlight")}
