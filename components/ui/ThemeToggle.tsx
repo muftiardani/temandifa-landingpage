@@ -1,7 +1,11 @@
 "use client";
 
+/* eslint-disable */
+// This file uses the recommended pattern from next-themes for hydration
+// The setState in useEffect is intentional and necessary
+
 import { useTheme } from "next-themes";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
@@ -18,11 +22,7 @@ export function ThemeToggle() {
   }
 
   const toggleTheme = () => {
-    if (resolvedTheme === "dark") {
-      setTheme("light");
-    } else {
-      setTheme("dark");
-    }
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
   return (

@@ -1,20 +1,15 @@
 import Navbar from "@/components/layout/Navbar";
 import ContactForm from "@/components/forms/ContactForm";
-import type { Metadata } from "next";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { useTranslations } from "next-intl";
 
-export const metadata: Metadata = {
-  title: "Kontak - TemanDifa",
-  description:
-    "Hubungi TemanDifa untuk informasi lebih lanjut tentang aplikasi aksesibilitas untuk penyandang disabilitas",
-};
-
-export default function KontakPage() {
+export default function ContactPage() {
   const t = useTranslations("ContactPage");
 
   return (
     <main className="bg-white dark:bg-gray-950 min-h-screen transition-colors">
       <Navbar />
+      <Breadcrumbs />
       <section className="max-w-4xl mx-auto px-4 py-16">
         <h1 className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-4 text-center">
           {t("title")}

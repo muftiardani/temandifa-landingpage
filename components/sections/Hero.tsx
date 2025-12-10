@@ -96,6 +96,7 @@ export default function Hero() {
               fill
               priority
               className="object-contain"
+              sizes="(max-width: 768px) 45vw, 300px"
             />
           </div>
 
@@ -106,6 +107,7 @@ export default function Hero() {
               fill
               priority
               className="object-contain"
+              sizes="(max-width: 768px) 45vw, 300px"
             />
           </div>
         </motion.div>

@@ -1,4 +1,13 @@
-import type { FeatureCardProps } from "./types";
+interface FeatureCardProps {
+  title: string;
+  description: string;
+  variant: "blue" | "yellow";
+  className?: string;
+  decorativeSquare?: {
+    className: string;
+    bgColor: string;
+  };
+}
 
 export function FeatureCard({
   title,

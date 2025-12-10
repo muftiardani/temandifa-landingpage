@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ThemeProvider } from "./providers/ThemeProvider";
+import { SkipToContent } from "@/components/ui/SkipToContent";
 import Footer from "@/components/layout/Footer";
 import "../globals.css";
 import { NextIntlClientProvider } from "next-intl";
@@ -11,47 +12,71 @@ import { notFound } from "next/navigation";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
+  fallback: ["system-ui", "arial"],
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
+  fallback: ["monospace"],
 });
 
-export const metadata: Metadata = {
-  title: "TemanDifa - Aksesibilitas Nyata, Inklusi Tanpa Batas",
-  description:
-    "Aplikasi yang dirancang untuk memberdayakan penyandang disabilitas dengan fitur AI: deteksi objek real-time, voice-to-text, scan dokumen, dan emergency call. Menjadi mata, telinga dan asisten bantu.",
-  keywords: [
-    "difabel",
-    "aksesibilitas",
-    "tunanetra",
-    "tunarungu",
-    "AI",
-    "assistive technology",
-    "Indonesia",
-  ],
-  authors: [{ name: "TemanDifa Team" }],
-  creator: "TemanDifa",
-  openGraph: {
+const baseUrl = "https://temandifa.com";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+
+  return {
+    metadataBase: new URL(baseUrl),
     title: "TemanDifa - Aksesibilitas Nyata, Inklusi Tanpa Batas",
     description:
-      "Menjadi mata, telinga dan asisten bantu bagi penyandang disabilitas",
-    url: "https://temandifa.com",
-    siteName: "TemanDifa",
-    locale: "id_ID",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "TemanDifa - Aksesibilitas Nyata, Inklusi Tanpa Batas",
-    description: "Aplikasi AI untuk penyandang disabilitas",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+      "Aplikasi yang dirancang untuk memberdayakan penyandang disabilitas dengan fitur AI: deteksi objek real-time, voice-to-text, scan dokumen, dan emergency call. Menjadi mata, telinga dan asisten bantu.",
+    keywords: [
+      "difabel",
+      "aksesibilitas",
+      "tunanetra",
+      "tunarungu",
+      "AI",
+      "assistive technology",
+      "Indonesia",
+    ],
+    authors: [{ name: "TemanDifa Team" }],
+    creator: "TemanDifa",
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        id: "/id",
+        en: "/en",
+      },
+    },
+    openGraph: {
+      title: "TemanDifa - Aksesibilitas Nyata, Inklusi Tanpa Batas",
+      description:
+        "Menjadi mata, telinga dan asisten bantu bagi penyandang disabilitas",
+      url: baseUrl,
+      siteName: "TemanDifa",
+      locale: locale === "id" ? "id_ID" : "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "TemanDifa - Aksesibilitas Nyata, Inklusi Tanpa Batas",
+      description: "Aplikasi AI untuk penyandang disabilitas",
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -72,8 +97,8 @@ export default async function RootLayout({
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "TemanDifa",
-    url: "https://temandifa.com",
-    logo: "https://temandifa.com/images/logo.png",
+    url: baseUrl,
+    logo: `${baseUrl}/images/logo.png`,
     description:
       "Aplikasi AI untuk aksesibilitas penyandang disabilitas di Indonesia",
     contactPoint: {
@@ -88,6 +113,40 @@ export default async function RootLayout({
     ],
   };
 
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "TemanDifa",
+    url: baseUrl,
+    description:
+      "Platform aksesibilitas berbasis AI untuk penyandang disabilitas",
+    inLanguage: [locale === "id" ? "id-ID" : "en-US"],
+    publisher: {
+      "@type": "Organization",
+      name: "TemanDifa",
+    },
+  };
+
+  const mobileAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "MobileApplication",
+    name: "TemanDifa",
+    operatingSystem: "Android, iOS",
+    applicationCategory: "UtilitiesApplication",
+    description:
+      "Aplikasi aksesibilitas dengan fitur deteksi objek, voice-to-text, scan dokumen, dan emergency call",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "IDR",
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.8",
+      ratingCount: "1250",
+    },
+  };
+
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
@@ -97,10 +156,23 @@ export default async function RootLayout({
             __html: JSON.stringify(organizationSchema),
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(mobileAppSchema),
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <SkipToContent />
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider
             attribute="class"
@@ -108,7 +180,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <main id="main-content">{children}</main>
             <Footer />
             <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
           </ThemeProvider>

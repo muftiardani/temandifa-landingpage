@@ -115,5 +115,26 @@
       "message_min": "Pesan minimal 10 karakter",
       "message_max": "Pesan maksimal 1000 karakter"
     }
+  },
+  "Breadcrumbs": {
+    "home": "Beranda",
+    "tentang": "Tentang",
+    "produk": "Produk",
+    "kontak": "Kontak"
+  },
+  "Error": {
+    "title": "Terjadi Kesalahan",
+    "description": "Maaf, terjadi kesalahan yang tidak terduga. Silakan coba lagi atau kembali ke beranda.",
+    "retry": "Coba Lagi",
+    "backHome": "Kembali ke Beranda"
+  },
+  "NotFound": {
+    "title": "Halaman Tidak Ditemukan",
+    "description": "Maaf, halaman yang Anda cari tidak ditemukan atau telah dipindahkan.",
+    "backHome": "Kembali ke Beranda",
+    "quickLinks": "Atau kunjungi halaman lain:",
+    "aboutLink": "Tentang",
+    "featuresLink": "Fitur",
+    "contactLink": "Kontak"
   }
 }

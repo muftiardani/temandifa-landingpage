@@ -1,4 +1,5 @@
 import Navbar from "@/components/layout/Navbar";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import type { Metadata } from "next";
 import { useTranslations } from "next-intl";
 
@@ -13,6 +14,7 @@ export default function TentangPage() {
   return (
     <main className="bg-white dark:bg-gray-950 min-h-screen transition-colors">
       <Navbar />
+      <Breadcrumbs />
       <section className="max-w-4xl mx-auto px-4 py-16">
         <h1 className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-8">
           {t("title")}

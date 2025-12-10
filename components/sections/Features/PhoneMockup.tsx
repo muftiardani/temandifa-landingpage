@@ -1,5 +1,10 @@
 import Image from "next/image";
-import type { PhoneMockupProps } from "./types";
+
+interface PhoneMockupProps {
+  children: React.ReactNode;
+  className?: string;
+  showLogo?: boolean;
+}
 
 export function PhoneMockup({
   children,

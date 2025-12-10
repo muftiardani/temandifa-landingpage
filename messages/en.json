@@ -115,5 +115,26 @@
       "message_min": "Message must be at least 10 characters",
       "message_max": "Message must be at most 1000 characters"
     }
+  },
+  "Breadcrumbs": {
+    "home": "Home",
+    "tentang": "About",
+    "produk": "Product",
+    "kontak": "Contact"
+  },
+  "Error": {
+    "title": "Something Went Wrong",
+    "description": "Sorry, an unexpected error occurred. Please try again or return to the homepage.",
+    "retry": "Try Again",
+    "backHome": "Back to Home"
+  },
+  "NotFound": {
+    "title": "Page Not Found",
+    "description": "Sorry, the page you are looking for does not exist or has been moved.",
+    "backHome": "Back to Home",
+    "quickLinks": "Or visit other pages:",
+    "aboutLink": "About",
+    "featuresLink": "Features",
+    "contactLink": "Contact"
   }
 }

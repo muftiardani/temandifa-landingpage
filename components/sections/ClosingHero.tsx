@@ -27,6 +27,9 @@ export default function ClosingHero() {
               alt="Blue sky background representing hope and freedom"
               fill
               className="object-cover"
+              loading="lazy"
+              sizes="100vw"
+              quality={85}
             />
             <div className="absolute inset-0 bg-blue-900/10 dark:bg-blue-900/30"></div>
           </div>
@@ -68,6 +71,9 @@ export default function ClosingHero() {
                 alt="Diverse group of people including individuals with disabilities, representing TemanDifa community"
                 fill
                 className="object-contain object-bottom"
+                loading="lazy"
+                sizes="100vw"
+                quality={85}
               />
             </motion.div>
           </div>

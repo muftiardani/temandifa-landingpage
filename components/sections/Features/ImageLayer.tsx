@@ -1,5 +1,11 @@
 import Image from "next/image";
-import type { ImageLayerProps } from "./types";
+
+interface ImageLayerProps {
+  src: string;
+  alt: string;
+  className: string;
+  priority?: boolean;
+}
 
 export function ImageLayer({
   src,

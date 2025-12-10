@@ -62,28 +62,33 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="hidden md:flex items-center gap-8 text-blue-500 dark:text-blue-400 font-medium">
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-6">
           <Link
             href="/"
-            className="hover:text-blue-700 dark:hover:text-blue-300 transition"
+            data-testid="nav-home"
+            className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             {t("home")}
           </Link>
           <Link
             href="/tentang"
-            className="hover:text-blue-700 dark:hover:text-blue-300 transition"
+            data-testid="nav-about"
+            className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             {t("about")}
           </Link>
           <Link
             href="/produk"
-            className="hover:text-blue-700 dark:hover:text-blue-300 transition"
+            data-testid="nav-features"
+            className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             {t("features")}
           </Link>
 
           <Link
             href="/kontak"
+            data-testid="nav-contact"
             className="bg-blue-500 dark:bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-600 dark:hover:bg-blue-700 transition shadow-md"
           >
             {t("contact")}
@@ -137,28 +142,32 @@ const Navbar = () => {
             <div className="flex flex-col gap-4 p-6">
               <Link
                 href="/"
-                className="text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition"
+                data-testid="mobile-nav-home"
+                className="block py-3 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t("home")}
               </Link>
               <Link
                 href="/tentang"
-                className="text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition"
+                data-testid="mobile-nav-about"
+                className="block py-3 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t("about")}
               </Link>
               <Link
                 href="/produk"
-                className="text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition"
+                data-testid="mobile-nav-features"
+                className="block py-3 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t("features")}
               </Link>
               <Link
                 href="/kontak"
-                className="bg-blue-500 dark:bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-600 dark:hover:bg-blue-700 transition shadow-md text-center"
+                data-testid="mobile-nav-contact"
+                className="block py-3 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t("contact")}
