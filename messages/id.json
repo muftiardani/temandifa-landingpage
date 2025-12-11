@@ -123,6 +123,20 @@
     "produk": "Produk",
     "kontak": "Kontak"
   },
+  "Newsletter": {
+    "title": "📬 Berlangganan Newsletter",
+    "description": "Dapatkan update terbaru tentang TemanDifa dan tips aksesibilitas langsung ke email Anda",
+    "label_email": "Email",
+    "placeholder_email": "nama@email.com",
+    "btn_subscribe": "Berlangganan",
+    "btn_subscribing": "Mengirim...",
+    "btn_subscribed": "Berhasil!",
+    "success_msg": "✅ Terima kasih! Cek email Anda untuk konfirmasi.",
+    "error_msg": "❌ Terjadi kesalahan. Silakan coba lagi.",
+    "validation": {
+      "email_invalid": "Email tidak valid"
+    }
+  },
   "Error": {
     "title": "Terjadi Kesalahan",
     "description": "Maaf, terjadi kesalahan yang tidak terduga. Silakan coba lagi atau kembali ke beranda.",

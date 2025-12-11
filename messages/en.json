@@ -123,6 +123,20 @@
     "produk": "Product",
     "kontak": "Contact"
   },
+  "Newsletter": {
+    "title": "📬 Subscribe to Newsletter",
+    "description": "Get the latest updates about TemanDifa and accessibility tips directly to your email",
+    "label_email": "Email",
+    "placeholder_email": "name@email.com",
+    "btn_subscribe": "Subscribe",
+    "btn_subscribing": "Sending...",
+    "btn_subscribed": "Subscribed!",
+    "success_msg": "✅ Thank you! Check your email for confirmation.",
+    "error_msg": "❌ An error occurred. Please try again.",
+    "validation": {
+      "email_invalid": "Invalid email"
+    }
+  },
   "Error": {
     "title": "Something Went Wrong",
     "description": "Sorry, an unexpected error occurred. Please try again or return to the homepage.",

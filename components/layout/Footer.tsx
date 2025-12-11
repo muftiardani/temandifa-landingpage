@@ -2,10 +2,12 @@
 
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import NewsletterForm from "@/components/forms/NewsletterForm";
 
 export default function Footer() {
   const t = useTranslations("Footer");
   const navT = useTranslations("Navbar");
+  const newsletterT = useTranslations("Newsletter");
 
   return (
     <footer
@@ -140,6 +142,20 @@ export default function Footer() {
             </div>
           </div>
         </div>
+
+        {/* Newsletter Section */}
+        <div className="border-b border-blue-400 dark:border-gray-700 pb-12 mb-8">
+          <div className="max-w-2xl mx-auto text-center">
+            <h3 className="text-2xl font-bold mb-3">{newsletterT("title")}</h3>
+            <p className="text-blue-100 dark:text-gray-300 mb-6">
+              {newsletterT("description")}
+            </p>
+            <div className="flex justify-center">
+              <NewsletterForm />
+            </div>
+          </div>
+        </div>
+
         <div className="text-center text-blue-200 dark:text-gray-400 text-sm font-medium">
           {t("copyright")}
         </div>
@@ -147,3 +163,4 @@ export default function Footer() {
     </footer>
   );
 }
+

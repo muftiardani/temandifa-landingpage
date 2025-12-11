@@ -9,6 +9,10 @@ import "../globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { reportWebVitals } from "@/lib/web-vitals";
+import SentryInitializer from "@/components/providers/SentryInitializer";
+
+export { reportWebVitals };
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -196,6 +200,9 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
+        {/* Initialize Sentry on client side */}
+        <SentryInitializer />
+        
         <ScrollProgress />
         <SkipToContent />
         <NextIntlClientProvider messages={messages}>

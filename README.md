@@ -20,6 +20,9 @@ Landing page untuk TemanDifa - aplikasi AI yang memberdayakan penyandang disabil
 - 🚀 **Performance** - Next.js 16 dengan image optimization
 - 📊 **SEO Optimized** - Metadata, Open Graph, JSON-LD schema
 - 📝 **Form Validation** - React Hook Form + Zod schema validation
+- 🐛 **Error Tracking** - Sentry integration untuk real-time error monitoring
+- 📈 **Web Vitals** - Performance metrics tracking dengan Google Analytics
+- 📬 **Newsletter** - Email subscription dengan welcome automation
 
 ## 🛠️ Tech Stack
 
@@ -34,7 +37,10 @@ Landing page untuk TemanDifa - aplikasi AI yang memberdayakan penyandang disabil
 | **Theme**      | next-themes 0.4        |
 | **Forms**      | react-hook-form 7.68   |
 | **Validation** | Zod 4.1                |
+| **Email**      | Resend + React Email   |
 | **Analytics**  | Google Analytics (GA4) |
+| **Monitoring** | Sentry + Web Vitals    |
+| **Rate Limit** | Upstash Redis          |
 
 ## 🚀 Getting Started
 
