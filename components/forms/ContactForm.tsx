@@ -27,6 +27,7 @@ export default function ContactForm() {
       .string()
       .min(10, t("validation.message_min"))
       .max(1000, t("validation.message_max")),
+    website: z.string().optional(),
   });
 
   type ContactFormData = z.infer<typeof contactSchema>;
@@ -212,6 +213,21 @@ export default function ContactForm() {
           </p>
         )}
       </div>
+
+      {/* Honeypot Field - Hidden from users, catches bots */}
+      <input
+        type="text"
+        {...register("website")}
+        style={{ 
+          position: 'absolute',
+          left: '-9999px',
+          width: '1px',
+          height: '1px'
+        }}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+      />
 
       {/* Submit Button */}
       <div>

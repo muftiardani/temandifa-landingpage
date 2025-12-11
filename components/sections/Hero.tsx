@@ -14,7 +14,6 @@ import { useTranslations } from "next-intl";
 export default function Hero() {
   const t = useTranslations("Hero");
   
-  // Parallax effect
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 150]);
   const y2 = useTransform(scrollY, [0, 500], [0, -100]);
