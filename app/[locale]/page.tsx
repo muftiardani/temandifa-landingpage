@@ -9,7 +9,7 @@ import PageTransition from "@/components/ui/PageTransition";
 export default function Home() {
   return (
     <PageTransition>
-      <main className="bg-white dark:bg-gray-950 min-h-screen text-slate-800 dark:text-gray-100">
+      <main className="bg-white dark:bg-gray-950 min-h-screen text-gray-800 dark:text-gray-100">
         <Navbar />
         <Hero />
         <AboutSection />

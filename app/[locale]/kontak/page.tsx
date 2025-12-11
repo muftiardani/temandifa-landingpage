@@ -26,7 +26,7 @@ export default function ContactPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-4 text-center">
             {t("title")}
           </h1>
-          <p className="text-center text-slate-600 dark:text-gray-300 text-lg mb-12">
+          <p className="text-center text-gray-600 dark:text-gray-300 text-lg mb-12">
             {t("subtitle")}
           </p>
         </motion.div>
@@ -141,7 +141,7 @@ export default function ContactPage() {
                 {t("office_label")}
               </h3>
             </div>
-            <p className="text-slate-700 dark:text-gray-300 text-sm">
+            <p className="text-gray-700 dark:text-gray-300 text-sm">
               {t("office_address")}
             </p>
           </motion.div>

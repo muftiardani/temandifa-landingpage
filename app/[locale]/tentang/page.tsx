@@ -26,7 +26,7 @@ export default function TentangPage() {
           {t("title")}
         </h1>
         <motion.div 
-          className="space-y-6 text-slate-700 dark:text-gray-300 text-lg leading-relaxed"
+          className="space-y-6 text-gray-700 dark:text-gray-300 text-lg leading-relaxed"
           variants={staggerContainer}
           initial="initial"
           whileInView="animate"

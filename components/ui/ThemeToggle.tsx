@@ -1,8 +1,6 @@
 "use client";
 
 /* eslint-disable */
-// This file uses the recommended pattern from next-themes for hydration
-// The setState in useEffect is intentional and necessary
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";

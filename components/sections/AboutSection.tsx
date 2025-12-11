@@ -22,7 +22,7 @@ export default function AboutSection() {
         >
           {t("title")}
         </h2>
-        <p className="text-slate-600 dark:text-gray-300 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto text-center mb-12">
+        <p className="text-gray-600 dark:text-gray-300 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto text-center mb-12">
           {t.rich("description", {
             br: () => <br />,
           })}

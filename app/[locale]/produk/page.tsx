@@ -25,7 +25,7 @@ export default function ProdukPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-4 text-center">
             {t("title")}
           </h1>
-          <p className="text-center text-slate-600 dark:text-gray-300 text-lg mb-12 max-w-2xl mx-auto">
+          <p className="text-center text-gray-600 dark:text-gray-300 text-lg mb-12 max-w-2xl mx-auto">
             {t("subtitle")}
           </p>
         </motion.div>
@@ -54,7 +54,7 @@ export default function ProdukPage() {
             <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
               {t("features.detection_title")}
             </h3>
-            <p className="text-slate-700 dark:text-gray-300 leading-relaxed">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
               {t("features.detection_desc")}
             </p>
           </motion.div>
@@ -76,7 +76,7 @@ export default function ProdukPage() {
             <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
               {t("features.voice_title")}
             </h3>
-            <p className="text-slate-700 dark:text-gray-300 leading-relaxed">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
               {t("features.voice_desc")}
             </p>
           </motion.div>
@@ -98,7 +98,7 @@ export default function ProdukPage() {
             <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
               {t("features.scan_title")}
             </h3>
-            <p className="text-slate-700 dark:text-gray-300 leading-relaxed">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
               {t("features.scan_desc")}
             </p>
           </motion.div>
@@ -120,7 +120,7 @@ export default function ProdukPage() {
             <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
               {t("features.emergency_title")}
             </h3>
-            <p className="text-slate-700 dark:text-gray-300 leading-relaxed">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
               {t("features.emergency_desc")}
             </p>
           </motion.div>

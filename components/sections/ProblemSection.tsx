@@ -34,7 +34,7 @@ export default function ProblemSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
         <motion.div
-          className="space-y-8 text-slate-700 dark:text-gray-300 text-lg md:pr-12 leading-relaxed flex flex-col justify-center"
+          className="space-y-8 text-gray-700 dark:text-gray-300 text-lg md:pr-12 leading-relaxed flex flex-col justify-center"
           initial="initial"
           whileInView="animate"
           viewport={viewportOptions}

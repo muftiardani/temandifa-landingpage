@@ -133,29 +133,19 @@ export default function Hero() {
           </p>
         </motion.div>
 
+        {/* Hero Image */}
         <motion.div
-          className="relative z-10 w-full md:w-1/2 mt-8 md:mt-0 flex justify-center md:justify-end gap-4 md:gap-6"
+          className="relative z-10 w-full md:w-1/2 mt-8 md:mt-0 flex justify-center md:justify-end"
           variants={fadeInRight}
         >
-          <div className="relative w-[45%] md:w-[300px] h-[400px] md:h-[600px] transform translate-y-8">
+          <div className="relative w-full max-w-[600px] h-[400px] md:h-[500px]">
             <Image
-              src="/images/woman.png"
-              alt="Smiling woman using smartphone, representing TemanDifa app user"
+              src="/images/woman-man.png"
+              alt="TemanDifa app users - accessibility for visually impaired"
               fill
               priority
               className="object-contain"
-              sizes="(max-width: 768px) 45vw, 300px"
-            />
-          </div>
-
-          <div className="relative w-[45%] md:w-[300px] h-[400px] md:h-[600px] transform -translate-y-8">
-            <Image
-              src="/images/man.png"
-              alt="Man with headphones using smartphone, representing TemanDifa app user"
-              fill
-              priority
-              className="object-contain"
-              sizes="(max-width: 768px) 45vw, 300px"
+              sizes="(max-width: 768px) 100vw, 600px"
             />
           </div>
         </motion.div>
