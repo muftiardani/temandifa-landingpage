@@ -28,7 +28,7 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 ### 🌐 Internationalization
 - Support penuh untuk **Bahasa Indonesia** & **English**
 - SEO-friendly URL structure (`/id/*`, `/en/*`)
-- 156+ translation keys
+- 150+ translation keys
 - Easy to add more languages
 
 ### 🌙 Dark Mode

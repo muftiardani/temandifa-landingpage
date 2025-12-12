@@ -23,7 +23,7 @@ export function FeatureCard({
 
   return (
     <div
-      className={`${bgColor} ${textColor} rounded-xl p-8 shadow-lg relative z-10 ${className}`}
+      className={`${bgColor} ${textColor} rounded-xl p-4 sm:p-6 md:p-8 shadow-lg relative z-10 ${className}`}
     >
       {decorativeSquare && (
         <div
@@ -31,8 +31,8 @@ export function FeatureCard({
           aria-hidden="true"
         />
       )}
-      <h3 className={`text-2xl font-bold ${titleColor} mb-2`}>{title}</h3>
-      <p className="text-sm pl-7 leading-relaxed">{description}</p>
+      <h3 className={`text-lg sm:text-xl md:text-2xl font-bold ${titleColor} mb-2`}>{title}</h3>
+      <p className="text-sm sm:text-base pl-4 sm:pl-7 leading-relaxed">{description}</p>
     </div>
   );
 }

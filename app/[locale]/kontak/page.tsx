@@ -5,7 +5,7 @@ import ContactForm from "@/components/forms/ContactForm";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-import { fadeInUp, fadeInRight, staggerContainer, viewportOptions } from "@/lib/animations";
+import { fadeInUp, fadeInLeft, fadeInRight, staggerContainer, viewportOptions } from "@/lib/animations";
 import PageTransition from "@/components/ui/PageTransition";
 
 export default function ContactPage() {
@@ -32,7 +32,7 @@ export default function ContactPage() {
         </motion.div>
 
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12"
           variants={staggerContainer}
           initial="initial"
           whileInView="animate"
@@ -43,7 +43,7 @@ export default function ContactPage() {
             className="bg-blue-50 dark:bg-gray-800 p-6 rounded-2xl border-2 border-transparent
                        hover:border-blue-500 dark:hover:border-blue-600
                        hover:shadow-2xl hover:scale-105 transition-all duration-300"
-            variants={fadeInUp}
+            variants={fadeInLeft}
           >
             <div className="flex items-center gap-3 mb-3">
               <motion.div 
@@ -66,68 +66,12 @@ export default function ContactPage() {
             </a>
           </motion.div>
 
-          {/* Social Media */}
-          <motion.div 
-            className="bg-yellow-50 dark:bg-gray-800 p-6 rounded-2xl border-2 border-transparent
-                       hover:border-yellow-400 dark:hover:border-yellow-500
-                       hover:shadow-2xl hover:scale-105 transition-all duration-300"
-            variants={fadeInUp}
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <motion.div 
-                className="bg-yellow-400 dark:bg-yellow-500 w-10 h-10 rounded-xl flex items-center justify-center"
-                whileHover={{ rotate: 360, scale: 1.2 }}
-                transition={{ duration: 0.5 }}
-              >
-                <span className="text-blue-600 dark:text-blue-900 text-xl">🌐</span>
-              </motion.div>
-              <h3 className="font-bold text-lg text-blue-600 dark:text-blue-400">
-                {t("social_label")}
-              </h3>
-            </div>
-            <div className="space-y-2 text-sm">
-              <div>
-                <a
-                  href="https://instagram.com/temandifa"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 dark:text-blue-400 hover:underline"
-                  aria-label="Kunjungi Instagram TemanDifa"
-                >
-                  Instagram
-                </a>
-              </div>
-              <div>
-                <a
-                  href="https://tiktok.com/@temandifa"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 dark:text-blue-400 hover:underline"
-                  aria-label="Kunjungi TikTok TemanDifa"
-                >
-                  TikTok
-                </a>
-              </div>
-              <div>
-                <a
-                  href="https://linkedin.com/company/temandifa-com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 dark:text-blue-400 hover:underline"
-                  aria-label="Kunjungi LinkedIn TemanDifa"
-                >
-                  LinkedIn
-                </a>
-              </div>
-            </div>
-          </motion.div>
-
           {/* Office */}
           <motion.div 
             className="bg-blue-50 dark:bg-gray-800 p-6 rounded-2xl border-2 border-transparent
                        hover:border-blue-500 dark:hover:border-blue-600
                        hover:shadow-2xl hover:scale-105 transition-all duration-300"
-            variants={fadeInUp}
+            variants={fadeInRight}
           >
             <div className="flex items-center gap-3 mb-3">
               <motion.div 
@@ -153,7 +97,8 @@ export default function ContactPage() {
           initial="initial"
           whileInView="animate"
           viewport={viewportOptions}
-          variants={fadeInRight}
+          variants={fadeInUp}
+          transition={{ delay: 0.3 }}
         >
           <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-6 text-center">
             {t("form_title")}

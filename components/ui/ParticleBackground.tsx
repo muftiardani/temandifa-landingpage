@@ -101,25 +101,13 @@ export default function ParticleBackground() {
 
   return (
     <div 
-      style={{ 
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: 0,
-        pointerEvents: 'none',
-      }}
+      className="absolute inset-0 z-0 pointer-events-none"
     >
       <Particles
         id="hero-particles"
         particlesLoaded={particlesLoaded}
         options={options}
-        style={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-        }}
+        className="absolute inset-0 pointer-events-auto"
       />
     </div>
   );

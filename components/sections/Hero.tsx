@@ -21,7 +21,7 @@ export default function Hero() {
   
   return (
     <motion.section
-      className="px-4 sm:px-7 max-w-7xl mx-auto pb-10 pt-1"
+      className="px-4 sm:px-7 max-w-7xl mx-auto pb-10 pt-4"
       initial="initial"
       whileInView="animate"
       viewport={viewportOptions}
@@ -41,7 +41,9 @@ export default function Hero() {
                           md:flex-row 
                           items-center
                           transition-colors
-                          isolate"
+                          isolate
+                          min-h-[700px]
+                          md:min-h-[550px]"
       >
         {/* Particle Background - Inside blue container */}
         <ParticleBackground />
@@ -119,7 +121,7 @@ export default function Hero() {
           className="relative z-20 w-full md:w-1/2 text-white space-y-6"
           variants={fadeInLeft}
         >
-          <h1 className="text-7xl md:text-6xl font-bold leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
             {t.rich("hero_headline", {
               br: () => <br />,
             })}
