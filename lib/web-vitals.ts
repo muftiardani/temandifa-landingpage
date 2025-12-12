@@ -78,32 +78,6 @@ export function reportWebVitals(metric: Metric) {
   logToConsole(metric);
 }
 
-/**
- * Get rating color for UI display
- */
-export function getMetricColor(rating: string): string {
-  switch (rating) {
-    case "good":
-      return "green";
-    case "needs-improvement":
-      return "orange";
-    case "poor":
-      return "red";
-    default:
-      return "gray";
-  }
-}
-
-/**
- * Format metric value for display
- */
-export function formatMetricValue(name: string, value: number): string {
-  if (name === "CLS") {
-    return value.toFixed(3);
-  }
-  return `${Math.round(value)}ms`;
-}
-
 // Type declarations for global objects
 declare global {
   interface Window {

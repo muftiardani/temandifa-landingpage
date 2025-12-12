@@ -9,20 +9,33 @@ describe("ThemeToggle", () => {
     expect(button).toBeInTheDocument();
   });
 
-  it("should have proper aria-label", () => {
+  it("should have proper aria-label for light mode", () => {
     render(<ThemeToggle />);
     const button = screen.getByRole("button");
-    expect(button).toHaveAttribute("aria-label");
+    expect(button).toHaveAttribute("aria-label", "Switch to dark mode");
   });
 
-  it("should display sun emoji in light mode", () => {
+  it("should display moon emoji in light mode", () => {
     render(<ThemeToggle />);
-    expect(screen.getByText("☀️")).toBeInTheDocument();
+    // Component shows moon (🌙) in light mode
+    expect(screen.getByText("🌙")).toBeInTheDocument();
   });
 
   it("should have hover styles", () => {
     render(<ThemeToggle />);
     const button = screen.getByRole("button");
     expect(button).toHaveClass("hover:bg-gray-100");
+  });
+
+  it("should have transition classes", () => {
+    render(<ThemeToggle />);
+    const button = screen.getByRole("button");
+    expect(button).toHaveClass("transition-colors");
+  });
+
+  it("should have proper title attribute", () => {
+    render(<ThemeToggle />);
+    const button = screen.getByRole("button");
+    expect(button).toHaveAttribute("title", "Dark mode");
   });
 });
