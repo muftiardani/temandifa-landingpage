@@ -49,7 +49,6 @@ describe("NewsletterForm Integration", () => {
   it("should have honeypot field hidden", () => {
     render(<NewsletterForm />);
 
-    // Query by name attribute since there are multiple textboxes
     const form = screen.getByRole("form");
     const honeypotField = form.querySelector('input[name="honeypot"]');
     

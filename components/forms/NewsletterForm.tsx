@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { logger } from "@/lib/logger";
 
 export default function NewsletterForm() {
   const t = useTranslations("Newsletter");
@@ -15,7 +16,6 @@ export default function NewsletterForm() {
   const [csrfToken, setCSRFToken] = useState<string>("");
   const [csrfHash, setCSRFHash] = useState<string>("");
 
-  // Fetch CSRF token on mount
   useEffect(() => {
     fetch("/api/csrf")
       .then((res) => res.json())
@@ -24,7 +24,7 @@ export default function NewsletterForm() {
         setCSRFHash(data.hash);
       })
       .catch((error) => {
-        console.error("Failed to fetch CSRF token:", error);
+        logger.error("Failed to fetch CSRF token", error, "Newsletter");
       });
   }, []);
 
@@ -72,7 +72,7 @@ export default function NewsletterForm() {
 
       setTimeout(() => setSubmitStatus("idle"), 5000);
     } catch (error) {
-      console.error("Error subscribing to newsletter:", error);
+      logger.error("Error subscribing to newsletter", error, "Newsletter");
       setSubmitStatus("error");
       
       setTimeout(() => setSubmitStatus("idle"), 5000);

@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
 import { randomUUID } from "crypto";
-import { checkRateLimit } from "@/lib/redis-rate-limit";
+import { checkRateLimit } from "@/lib/security/redis-rate-limit";
 import { escape } from "html-escaper";
 import {
   validateCSRFToken,
   getCSRFTokenFromHeaders,
   getCSRFSecret,
   createCSRFErrorResponse,
-} from "@/lib/csrf";
+} from "@/lib/security/csrf";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -210,14 +210,12 @@ Unsubscribe: https://temandifa.com/unsubscribe?email=${encodeURIComponent(valida
 
         if (contactError) {
           console.error(`[${requestId}] Failed to add to audience:`, contactError);
-          // Don't fail the request - welcome email was already sent
         } else {
           audienceId = contactData?.id;
           console.log(`[${requestId}] Added to audience:`, contactData?.id);
         }
       } catch (audienceError) {
         console.error(`[${requestId}] Audience error:`, audienceError);
-        // Don't fail the request - welcome email was already sent
       }
     } else {
       console.warn(`[${requestId}] RESEND_AUDIENCE_ID not configured - subscriber not stored`);

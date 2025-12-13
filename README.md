@@ -18,10 +18,6 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 - [Struktur Proyek](#-struktur-proyek)
 - [Konfigurasi](#-konfigurasi)
 - [API Routes](#-api-routes)
-- [Testing](#-testing)
-- [Deployment](#-deployment)
-- [Troubleshooting](#-troubleshooting)
-- [Contributing](#-contributing)
 
 ## ✨ Fitur Utama
 
@@ -78,11 +74,26 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 - Auto-reply emails
 
 ### 🐛 Monitoring & Analytics
-- Google Analytics (GA4)
-- Sentry error tracking
-- Web Vitals monitoring
-- Performance metrics
-- Real-time error alerts
+- **Google Analytics (GA4)** - Web analytics
+- **Sentry error tracking** - Production-optimized
+  - Environment-aware sampling (10% in production)
+  - Session replay (100% errors, 10% sessions)
+  - Debug mode (development only)
+  - Performance monitoring
+- **Web Vitals monitoring** - LCP, FID, CLS, FCP, TTFB, INP
+- **Logger Service** - Centralized logging
+  - Environment-aware (dev vs production)
+  - Auto-integration with Sentry
+  - Context tagging
+  - Performance measurement
+
+### 📝 Logger Service
+- **Environment-aware logging** - Different behavior for dev/production
+- **Multiple log levels** - debug, info, warn, error, success
+- **Sentry integration** - Auto-sends errors to Sentry
+- **Context tagging** - Organize logs by feature
+- **Performance utilities** - time(), timeEnd(), group()
+- **Production-ready** - No debug noise in production
 
 ### 🔒 Security
 - **CSRF Protection** - Token-based validation
@@ -325,33 +336,7 @@ npm, yarn, or pnpm
    cp .env.example .env
    ```
 
-   Edit `.env` dengan konfigurasi Anda:
-
-   ```env
-   # Required
-   NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
-   RESEND_API_KEY=re_xxxxx
-   RESEND_FROM_EMAIL=noreply@temandifa.com
-   CONTACT_EMAIL=hello@temandifa.com
-   
-   # Optional (Development)
-   NEXT_PUBLIC_BASE_URL=http://localhost:3000
-   
-   # REQUIRED for Production
-   UPSTASH_REDIS_REST_URL=https://xxxxx.upstash.io
-   UPSTASH_REDIS_REST_TOKEN=xxxxxxxxxxxxx
-   
-   # Optional (Monitoring)
-   NEXT_PUBLIC_SENTRY_DSN=https://xxxxx@xxxxx.ingest.sentry.io/xxxxx
-   SENTRY_ORG=your-org-name
-   SENTRY_PROJECT=temandifa-web
-   SENTRY_AUTH_TOKEN=xxxxxxxxxxxxx
-   ```
-
-   > **⚠️ Production Warning:**  
-   > Redis is **REQUIRED** for production deployments. File-based rate limiting is only for development.  
-   > Get free Redis from [Upstash](https://upstash.com) (10,000 commands/day free tier).
-
+   Edit `.env` dengan konfigurasi Anda
 
 4. **Run development server**
 
@@ -393,6 +378,8 @@ temandifa-web/
 │   │   ├── loading.tsx          # Loading state
 │   │   └── not-found.tsx        # 404 page
 │   ├── api/                     # API routes
+│   │   ├── csrf/                # CSRF token endpoint
+│   │   │   └── route.ts
 │   │   ├── contact/
 │   │   │   └── route.ts         # Contact form API
 │   │   └── newsletter/
@@ -416,12 +403,13 @@ temandifa-web/
 │   │   ├── Navbar.tsx           # Navigation bar
 │   │   └── Footer.tsx           # Footer with newsletter
 │   ├── forms/                   # Form components
-│   │   ├── ContactForm.tsx      # Contact form
+│   │   ├── ContactForm.tsx      # Contact form with CSRF
 │   │   └── NewsletterForm.tsx   # Newsletter subscription
 │   ├── ui/                      # Reusable UI components
 │   │   ├── ThemeToggle.tsx      # Dark mode toggle
 │   │   ├── Breadcrumbs.tsx      # Navigation breadcrumbs
 │   │   ├── Counter.tsx          # Animated counter
+│   │   ├── ErrorBoundary.tsx    # Error boundary
 │   │   ├── LoadingSkeleton.tsx  # Loading skeletons
 │   │   ├── PageTransition.tsx   # Page transitions
 │   │   ├── ParticleBackground.tsx # Particle effects
@@ -430,15 +418,54 @@ temandifa-web/
 │   └── providers/               # Context providers
 │       └── SentryInitializer.tsx # Sentry client init
 │
+├── types/                       # TypeScript type definitions
+│   ├── forms.ts                 # Form types
+│   ├── api.ts                   # API response types
+│   ├── components.ts            # Component prop types
+│   └── index.ts                 # Centralized exports
+│
+├── constants/                   # Application constants
+│   ├── routes.ts                # Route definitions
+│   ├── rate-limits.ts           # Rate limit configurations
+│   ├── i18n.ts                  # i18n constants
+│   └── index.ts                 # Centralized exports
+│
+├── hooks/                       # Custom React hooks
+│   ├── useMediaQuery.ts         # Media query detection
+│   ├── useScrollPosition.ts     # Scroll position tracking
+│   ├── useLocalStorage.ts       # LocalStorage sync
+│   ├── useDebounce.ts           # Value debouncing
+│   └── index.ts                 # Centralized exports
+│
+├── utils/                       # Pure utility functions
+│   ├── date.ts                  # Date formatting
+│   ├── string.ts                # String manipulation
+│   ├── number.ts                # Number formatting
+│   └── index.ts                 # Centralized exports
+│
+├── styles/                      # Styling utilities
+│   └── animations.ts            # Framer Motion presets
+│
 ├── i18n/                        # Internationalization
 │   └── routing.ts               # i18n routing configuration
 │
 ├── lib/                         # Utility functions & helpers
-│   ├── animations.ts            # Framer Motion presets
-│   ├── email-templates.ts       # Email HTML templates
-│   ├── rate-limit.ts            # File-based rate limiting
-│   ├── redis-rate-limit.ts      # Redis rate limiting
-│   └── web-vitals.ts            # Performance tracking
+│   ├── security/                # Security utilities
+│   │   ├── csrf.ts              # CSRF protection
+│   │   ├── rate-limit.ts        # File-based rate limiting
+│   │   └── redis-rate-limit.ts  # Redis rate limiting
+│   ├── email/                   # Email utilities
+│   │   └── templates.ts         # Email HTML templates
+│   ├── validation/              # Validation utilities
+│   │   └── schemas.ts           # Zod schemas
+│   ├── analytics/               # Analytics utilities
+│   │   └── web-vitals.ts        # Performance tracking
+│   ├── seo/                     # SEO utilities
+│   │   ├── structured-data.ts   # JSON-LD generation
+│   │   └── image-placeholders.ts # Blur placeholders
+│   ├── logger.ts                # Logger service
+│   ├── config.ts                # App configuration
+│   └── env.ts                   # Environment validation
 │
 ├── messages/                    # Translation files
 │   ├── id.json                  # Indonesian translations
@@ -463,6 +490,9 @@ temandifa-web/
 ├── .env.example                 # Environment template
 ├── middleware.ts                # Next.js middleware (i18n)
 ├── next.config.ts               # Next.js configuration
+├── sentry.client.config.js      # Sentry client configuration
+├── sentry.server.config.js      # Sentry server configuration
+├── sentry.edge.config.js        # Sentry edge configuration
 ├── tailwind.config.ts           # Tailwind CSS configuration
 ├── tsconfig.json                # TypeScript configuration
 ├── vitest.config.ts             # Vitest configuration
@@ -470,109 +500,6 @@ temandifa-web/
 ├── eslint.config.mjs            # ESLint configuration
 ├── .prettierrc.js               # Prettier configuration
 └── package.json                 # Dependencies & scripts
-```
-
-## ⚙️ Konfigurasi
-
-### Tailwind CSS Custom Configuration
-
-```typescript
-// tailwind.config.ts
-{
-  darkMode: "selector",
-  theme: {
-    extend: {
-      fontFamily: {
-        poppins: ["var(--font-poppins)", "sans-serif"],
-      },
-      spacing: {
-        "70": "17.5rem",   // 280px
-        "75": "18.75rem",  // 300px
-        "80": "20rem",     // 320px
-        "95": "23.75rem",  // 380px
-        "105": "26.25rem", // 420px
-        "160": "40rem"     // 640px
-      },
-      borderWidth: {
-        "50": "50px",
-        "60": "60px",
-      },
-      zIndex: {
-        "12": "12",
-      },
-    },
-  },
-}
-```
-
-### Next.js Configuration Highlights
-
-```typescript
-// next.config.ts
-{
-  images: {
-    formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: 31536000, // 1 year
-  },
-  compress: true,
-  poweredByHeader: false,
-  // Security headers, Sentry, Bundle analyzer
-}
-```
-
-### TypeScript Configuration
-
-```json
-{
-  "compilerOptions": {
-    "strict": true,
-    "target": "ES2017",
-    "paths": {
-      "@/*": ["./*"]
-    }
-  }
-}
-```
-
-### Internationalization Setup
-
-```typescript
-// i18n/routing.ts
-export const routing = defineRouting({
-  locales: ["en", "id"],
-  defaultLocale: "id",
-});
-```
-
-### Dark Mode Setup
-
-```tsx
-// app/[locale]/providers/ThemeProvider.tsx
-<ThemeProvider
-  attribute="class"
-  defaultTheme="system"
-  enableSystem
-  disableTransitionOnChange
->
-  {children}
-</ThemeProvider>
-```
-
-### Animation Presets
-
-```typescript
-// lib/animations.ts
-export const fadeInUp = {
-  initial: { opacity: 0, y: 60 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, ease: "easeOut" },
-};
-
-export const fadeIn = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  transition: { duration: 0.8, ease: "easeOut" },
-};
 ```
 
 ## 🔌 API Routes
@@ -653,65 +580,6 @@ X-RateLimit-Reset: 1702345678000
 }
 ```
 
-## 🧪 Testing
-
-### Available Scripts
-
-```bash
-# Unit & Integration Tests (Vitest)
-npm run test              # Run tests
-npm run test:ui           # Run with UI
-npm run test:coverage     # Generate coverage report
-npm run test:watch        # Watch mode
-
-# E2E Tests (Playwright)
-npm run test:e2e          # Run E2E tests
-npm run test:e2e:ui       # Run with UI
-npm run test:e2e:headed   # Headed mode (see browser)
-npm run test:e2e:debug    # Debug mode
-
-# Run All Tests
-npm run test:all          # Unit + E2E tests
-```
-
-### Unit Tests (Vitest)
-
-**Configuration:**
-- Framework: Vitest 4.0.15
-- Environment: jsdom
-- Coverage: v8 provider
-- Testing Library: @testing-library/react
-
-**Example Test:**
-```typescript
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import Hero from '@/components/sections/Hero';
-
-describe('Hero Component', () => {
-  it('renders hero section', () => {
-    render(<Hero />);
-    expect(screen.getByRole('heading')).toBeInTheDocument();
-  });
-});
-```
-
-### E2E Tests (Playwright)
-
-**Configuration:**
-- Framework: Playwright 1.57.0
-- Browsers: Chrome, Firefox, Safari, Mobile Chrome, Mobile Safari
-
-**Example Test:**
-```typescript
-import { test, expect } from '@playwright/test';
-
-test('homepage loads correctly', async ({ page }) => {
-  await page.goto('/');
-  await expect(page.locator('h1')).toBeVisible();
-});
-```
-
 ## 📝 Available Scripts
 
 ### Development
@@ -755,377 +623,6 @@ npm run test:all          # Run all tests
 npm run analyze      # Analyze bundle size
 ```
 
-## 🚀 Deployment
-
-### Vercel (Recommended)
-
-1. **Push to GitHub**
-   ```bash
-   git push origin main
-   ```
-
-2. **Import to Vercel**
-   - Go to [vercel.com](https://vercel.com)
-   - Import your repository
-   - Configure environment variables
-   - Deploy
-
-3. **Environment Variables**
-   Add these in Vercel dashboard:
-   ```
-   NEXT_PUBLIC_GA_ID
-   RESEND_API_KEY
-   RESEND_FROM_EMAIL
-   CONTACT_EMAIL
-   UPSTASH_REDIS_REST_URL
-   UPSTASH_REDIS_REST_TOKEN
-   NEXT_PUBLIC_SENTRY_DSN
-   SENTRY_ORG
-   SENTRY_PROJECT
-   SENTRY_AUTH_TOKEN
-   ```
-
-### Other Platforms
-
-#### Netlify
-```bash
-npm run build
-# Deploy .next folder
-```
-
-#### Docker
-```dockerfile
-FROM node:20-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "start"]
-```
-
-### Pre-deployment Checklist
-
-- [ ] Update environment variables
-- [ ] Test production build locally
-- [ ] Run all tests
-- [ ] Check bundle size
-- [ ] Verify SEO metadata
-- [ ] Test on multiple devices
-- [ ] Check accessibility
-- [ ] Configure domain & SSL
-- [ ] Setup monitoring (Sentry)
-- [ ] Configure analytics (GA4)
-
-## 🛡️ Security Features
-
-### Rate Limiting
-
-**Dual Strategy:**
-1. **Redis-based (Production)**
-   - Upstash Redis
-   - Sliding window algorithm
-   - 3 requests per 60 seconds
-
-2. **File-based (Development)**
-   - JSON file storage
-   - Automatic fallback
-   - Same limits as Redis
-
-### Spam Protection
-
-- Honeypot fields in forms
-- Email validation with Zod
-- IP-based rate limiting
-- Input sanitization
-
-### Security Headers
-
-```typescript
-Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Referrer-Policy: origin-when-cross-origin
-Permissions-Policy: camera=(), microphone=(), geolocation=()
-```
-
-## 📊 Monitoring & Analytics
-
-### Google Analytics (GA4)
-
-Track page views, user interactions, and conversions.
-
-```env
-NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
-```
-
-**Tracked Events:**
-- Page views
-- Button clicks
-- Form submissions
-- Newsletter subscriptions
-- Language changes
-- Theme toggles
-
-### Sentry Error Tracking
-
-Real-time error monitoring and performance tracking.
-
-```env
-NEXT_PUBLIC_SENTRY_DSN=https://xxxxx@xxxxx.ingest.sentry.io/xxxxx
-SENTRY_ORG=your-org-name
-SENTRY_PROJECT=temandifa-web
-```
-
-**Features:**
-- Error tracking
-- Performance monitoring
-- Source maps upload
-- React component annotations
-- Breadcrumbs
-- Session replay
-
-### Web Vitals
-
-Automatic tracking of Core Web Vitals:
-- **CLS** - Cumulative Layout Shift
-- **FID** - First Input Delay
-- **FCP** - First Contentful Paint
-- **LCP** - Largest Contentful Paint
-- **TTFB** - Time to First Byte
-- **INP** - Interaction to Next Paint
-
-## 🔧 Troubleshooting
-
-### Common Issues
-
-#### 1. Build Errors
-
-**Problem:** `Module not found` errors
-
-**Solution:**
-```bash
-# Clear cache and reinstall
-rm -rf .next node_modules
-npm install
-npm run build
-```
-
-#### 2. Environment Variables Not Working
-
-**Problem:** Environment variables undefined
-
-**Solution:**
-- Ensure `.env` file exists
-- Restart dev server after changes
-- Check variable names (must start with `NEXT_PUBLIC_` for client-side)
-
-#### 3. Dark Mode Not Working
-
-**Problem:** Theme not persisting
-
-**Solution:**
-```typescript
-// Check ThemeProvider is wrapping your app
-// Ensure suppressHydrationWarning on <html>
-<html lang={locale} suppressHydrationWarning>
-```
-
-#### 4. Rate Limiting Issues
-
-**Problem:** Rate limit not working
-
-**Solution:**
-- Check Redis connection (production)
-- Verify `tmp` folder exists (development)
-- Check IP detection in headers
-
-#### 5. Email Not Sending
-
-**Problem:** Contact form emails not delivered
-
-**Solution:**
-- Verify `RESEND_API_KEY` is correct
-- Check sender email is verified in Resend
-- Review Resend dashboard for errors
-- Check spam folder
-
-#### 6. i18n Issues
-
-**Problem:** Translations not loading
-
-**Solution:**
-- Verify JSON files in `/messages`
-- Check locale in URL (`/id` or `/en`)
-- Restart dev server
-
-### Debug Mode
-
-Enable debug logging:
-
-```bash
-# Development
-DEBUG=* npm run dev
-
-# Specific modules
-DEBUG=next:* npm run dev
-```
-
-## 🤝 Contributing
-
-We welcome contributions! Please follow these guidelines:
-
-### Getting Started
-
-1. **Fork the repository**
-2. **Clone your fork**
-   ```bash
-   git clone https://github.com/your-username/temandifa-web.git
-   ```
-3. **Create a branch**
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-### Development Workflow
-
-1. **Make your changes**
-2. **Run tests**
-   ```bash
-   npm run test
-   npm run test:e2e
-   ```
-3. **Check code quality**
-   ```bash
-   npm run lint
-   npm run format
-   ```
-4. **Commit your changes**
-   ```bash
-   git commit -m "feat: add new feature"
-   ```
-5. **Push to your fork**
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-6. **Create a Pull Request**
-
-### Commit Convention
-
-We use [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-feat: add new feature
-fix: fix bug
-docs: update documentation
-style: format code
-refactor: refactor code
-test: add tests
-chore: update dependencies
-```
-
-### Code Style
-
-- Use TypeScript
-- Follow ESLint rules
-- Format with Prettier
-- Write meaningful commit messages
-- Add tests for new features
-- Update documentation
-
-### Pull Request Guidelines
-
-- Keep PRs focused and small
-- Update tests if needed
-- Update documentation
-- Ensure all tests pass
-- Follow code style guidelines
-
-## 🔐 Environment Variables
-
-### Required Variables
-
-```env
-# Google Analytics
-NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
-
-# Email Service (Resend)
-RESEND_API_KEY=re_xxxxx
-RESEND_FROM_EMAIL=noreply@temandifa.com
-CONTACT_EMAIL=hello@temandifa.com
-```
-
-### Optional Variables (Production Recommended)
-
-```env
-# Upstash Redis (Rate Limiting)
-UPSTASH_REDIS_REST_URL=https://xxxxx.upstash.io
-UPSTASH_REDIS_REST_TOKEN=xxxxxxxxxxxxx
-
-# Sentry (Error Tracking)
-NEXT_PUBLIC_SENTRY_DSN=https://xxxxx@xxxxx.ingest.sentry.io/xxxxx
-SENTRY_ORG=your-org-name
-SENTRY_PROJECT=temandifa-web
-SENTRY_AUTH_TOKEN=xxxxxxxxxxxxx
-```
-
-### Getting API Keys
-
-| Service | URL | Free Tier |
-|---------|-----|-----------|
-| **Google Analytics** | [analytics.google.com](https://analytics.google.com/) | Unlimited |
-| **Resend** | [resend.com](https://resend.com/api-keys) | 100 emails/day |
-| **Upstash Redis** | [console.upstash.com](https://console.upstash.com) | 10,000 commands/day |
-| **Sentry** | [sentry.io](https://sentry.io/) | 5,000 errors/month |
-
-## 🌟 Key Features Implementation
-
-### Keyboard Accessibility
-
-- **ESC key** - Closes mobile menu
-- **Tab navigation** - All interactive elements
-- **Enter/Space** - Activate buttons
-- **Arrow keys** - Navigate menus
-- **Focus indicators** - Visible focus states
-
-### Performance Optimization
-
-- Next.js Image component with priority loading
-- AVIF & WebP image formats
-- 1-year cache for static assets
-- Compression enabled
-- Code splitting & lazy loading
-- Font optimization with variable fonts
-- Minimal JavaScript bundle
-
-### SEO Features
-
-- Comprehensive metadata
-- Open Graph tags
-- Twitter Card support
-- JSON-LD structured data (Organization, Website, MobileApp)
-- Dynamic sitemap & robots.txt
-- Canonical URLs
-- Multi-language support
-- Semantic HTML structure
-
-## 📚 Additional Resources
-
-### Documentation
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [React Documentation](https://react.dev)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [Framer Motion Documentation](https://www.framer.com/motion/)
-- [next-intl Documentation](https://next-intl-docs.vercel.app/)
-
-### Tutorials
-
-- [Next.js App Router Tutorial](https://nextjs.org/learn)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
-- [Accessibility Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
-
 ## 📄 License
 
 This project is private and proprietary to TemanDifa.
@@ -1137,13 +634,6 @@ This project is private and proprietary to TemanDifa.
 - **TikTok:** [@temandifa](https://tiktok.com/@temandifa)
 - **LinkedIn:** [temandifa-com](https://linkedin.com/company/temandifa-com)
 - **Email:** hello@temandifa.com
-
-## 🙏 Acknowledgments
-
-- Next.js team for the amazing framework
-- Vercel for hosting and deployment
-- All open-source contributors
-- TemanDifa team for the vision
 
 ---
 

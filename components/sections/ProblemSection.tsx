@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeInUp, staggerContainer, viewportOptions } from "@/lib/animations";
+import { fadeInUp, staggerContainer, viewportOptions } from "@/styles/animations";
 import { useTranslations } from "next-intl";
 import Counter from "@/components/ui/Counter";
 

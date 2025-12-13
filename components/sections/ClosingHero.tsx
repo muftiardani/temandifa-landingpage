@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { fadeInUp, viewportOptions } from "@/lib/animations";
+import { fadeInUp, viewportOptions } from "@/styles/animations";
 import { useTranslations } from "next-intl";
 
 export default function ClosingHero() {
@@ -37,7 +37,6 @@ export default function ClosingHero() {
             <div className="absolute inset-0 bg-blue-900/10 dark:bg-blue-900/30"></div>
           </div>
 
-          {/* Bagian Teks Judul */}
           <div className="absolute -top-12 left-0 w-full pt-16 md:pt-24 px-4 text-center z-20">
             <motion.div
               initial="initial"
@@ -63,7 +62,6 @@ export default function ClosingHero() {
             </motion.div>
           </div>
 
-          {/* Bagian Gambar Sekelompok Orang */}
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[500px] md:h-[550px] z-10">
             <motion.div
               className="relative w-full h-full"

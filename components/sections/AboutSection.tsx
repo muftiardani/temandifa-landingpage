@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeInUp, viewportOptions } from "@/lib/animations";
+import { fadeInUp, viewportOptions } from "@/styles/animations";
 import { useTranslations } from "next-intl";
 
 export default function AboutSection() {

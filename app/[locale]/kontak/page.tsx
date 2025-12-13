@@ -5,7 +5,7 @@ import ContactForm from "@/components/forms/ContactForm";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-import { fadeInUp, fadeInLeft, fadeInRight, staggerContainer, viewportOptions } from "@/lib/animations";
+import { fadeInUp, fadeInLeft, fadeInRight, staggerContainer, viewportOptions } from "@/styles/animations";
 import PageTransition from "@/components/ui/PageTransition";
 
 export default function ContactPage() {

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { promisify } from 'util';
-import { config } from './config';
+import { config } from '../config';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -41,7 +41,6 @@ async function readRateLimitData(): Promise<RateLimitData> {
     const data = await readFile(RATE_LIMIT_FILE, 'utf-8');
     return JSON.parse(data);
   } catch {
-    // File doesn't exist or is invalid, return empty object
     return {};
   }
 }

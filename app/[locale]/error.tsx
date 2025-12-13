@@ -14,7 +14,6 @@ export default function Error({
   const t = useTranslations("Error");
 
   useEffect(() => {
-    // Log error to console in development
     console.error("Error boundary caught:", error);
   }, [error]);
 

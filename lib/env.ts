@@ -1,13 +1,13 @@
 import { z } from "zod";
+import { logger } from "./logger";
+
 
 const envSchema = z.object({
-  // Required for all environments
   NEXT_PUBLIC_GA_ID: z.string().min(1, "Google Analytics ID is required"),
   RESEND_API_KEY: z.string().min(1, "Resend API key is required"),
   RESEND_FROM_EMAIL: z.string().email("Invalid sender email"),
   CONTACT_EMAIL: z.string().email("Invalid contact email"),
 
-  // Optional (with defaults or fallbacks)
   UPSTASH_REDIS_REST_URL: z.string().url().optional(),
   UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
   NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
@@ -27,14 +27,13 @@ export function validateEnv(): Env {
     return envSchema.parse(process.env);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.error("❌ Invalid environment variables:");
+      logger.error("Invalid environment variables", null, "Env");
       error.issues.forEach((issue) => {
-        console.error(`  - ${issue.path.join(".")}: ${issue.message}`);
+        logger.error(`${issue.path.join(".")}: ${issue.message}`, null, "Env");
       });
       
-      // In development, provide helpful message
       if (process.env.NODE_ENV === "development") {
-        console.error("\n💡 Tip: Copy .env.example to .env and fill in the values");
+        logger.info("Tip: Copy .env.example to .env and fill in the values", null, "Env");
       }
       
       throw new Error("Environment validation failed. Check the errors above.");
@@ -43,15 +42,13 @@ export function validateEnv(): Env {
   }
 }
 
-// Validate on import (server-side only)
 let validatedEnv: Env | null = null;
 
 if (typeof window === "undefined") {
   try {
     validatedEnv = validateEnv();
-    console.log("✅ Environment variables validated successfully");
+    logger.success("Environment variables validated successfully", null, "Env");
   } catch (error) {
-    // Let the error propagate
     throw error;
   }
 }

@@ -13,13 +13,11 @@ describe("ThemeToggle", () => {
     render(<ThemeToggle />);
     const button = screen.getByRole("button");
     
-    // Now uses i18n translation key
     expect(button).toHaveAttribute("aria-label", "switch_to_dark");
   });
 
   it("should display moon emoji in light mode", () => {
     render(<ThemeToggle />);
-    // Component shows moon (🌙) in light mode
     expect(screen.getByText("🌙")).toBeInTheDocument();
   });
 
@@ -39,7 +37,6 @@ describe("ThemeToggle", () => {
     render(<ThemeToggle />);
     const button = screen.getByRole("button");
     
-    // Now uses i18n translation key
     expect(button).toHaveAttribute("title", "dark_mode");
   });
 });

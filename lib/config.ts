@@ -31,5 +31,4 @@ export const config = {
   defaultLocale: "id" as const,
 } as const;
 
-// Type exports
 export type Locale = (typeof config.locales)[number];

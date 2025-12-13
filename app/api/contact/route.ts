@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { randomUUID } from "crypto";
-import { checkRateLimit, getRateLimitMethod } from "@/lib/redis-rate-limit";
-import { contactFormEmailTemplate } from "@/lib/email-templates";
-import { contactFormSchema } from "@/lib/validation-schemas";
+import { checkRateLimit, getRateLimitMethod } from "@/lib/security/redis-rate-limit";
+import { contactFormEmailTemplate } from "@/lib/email/templates";
+import { contactFormSchema } from "@/lib/validation/schemas";
 import { z } from "zod";
 import {
   validateCSRFToken,
   getCSRFTokenFromHeaders,
   getCSRFSecret,
   createCSRFErrorResponse,
-} from "@/lib/csrf";
+} from "@/lib/security/csrf";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 

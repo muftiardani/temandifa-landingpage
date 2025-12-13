@@ -138,7 +138,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Newsletter Section - Moved to Column 4 */}
+          {/* Newsletter Section */}
           <div>
             <h4 className="font-bold text-lg mb-4">{newsletterT("title")}</h4>
             <p className="text-blue-100 dark:text-gray-300 text-sm mb-4">

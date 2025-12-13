@@ -4,7 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-import { fadeInUp, staggerContainer, viewportOptions } from "@/lib/animations";
+import { fadeInUp, staggerContainer, viewportOptions } from "@/styles/animations";
 import PageTransition from "@/components/ui/PageTransition";
 
 export default function TentangPage() {

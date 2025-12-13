@@ -11,7 +11,6 @@ export function Breadcrumbs() {
 
   const paths = pathname.split("/").filter(Boolean);
 
-  // Don't show breadcrumbs on homepage
   if (paths.length === 0) {
     return null;
   }

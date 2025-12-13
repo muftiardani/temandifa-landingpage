@@ -7,7 +7,8 @@ import { useTranslations } from "next-intl";
 import {
   contactFormSchema,
   type ContactFormData,
-} from "@/lib/validation-schemas";
+} from "@/lib/validation/schemas";
+import { logger } from "@/lib/logger";
 
 export default function ContactForm() {
   const t = useTranslations("ContactForm");
@@ -18,7 +19,6 @@ export default function ContactForm() {
   const [csrfToken, setCSRFToken] = useState<string>("");
   const [csrfHash, setCSRFHash] = useState<string>("");
 
-  // Fetch CSRF token on mount
   useEffect(() => {
     fetch("/api/csrf")
       .then((res) => res.json())
@@ -27,7 +27,7 @@ export default function ContactForm() {
         setCSRFHash(data.hash);
       })
       .catch((error) => {
-        console.error("Failed to fetch CSRF token:", error);
+        logger.error("Failed to fetch CSRF token", error, "Contact");
       });
   }, []);
 
@@ -68,7 +68,7 @@ export default function ContactForm() {
 
       setTimeout(() => setSubmitStatus("idle"), 5000);
     } catch (error) {
-      console.error("Error submitting form:", error);
+      logger.error("Error submitting form", error, "Contact");
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);

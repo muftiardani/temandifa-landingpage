@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import * as Sentry from "@sentry/nextjs";
+import { logger } from "@/lib/logger";
 
 let sentryInitialized = false;
 
@@ -11,16 +12,15 @@ let sentryInitialized = false;
  */
 export default function SentryInitializer() {
   useEffect(() => {
-    // Only initialize once
     if (sentryInitialized) {
-      console.log("⚠️ Sentry already initialized, skipping");
+      logger.info("Sentry already initialized, skipping", null, "Sentry");
       return;
     }
 
     const dsn = process.env.NEXT_PUBLIC_SENTRY_DSN;
 
     if (!dsn) {
-      console.error("❌ Sentry DSN not configured");
+      logger.error("Sentry DSN not configured", null, "Sentry");
       return;
     }
 
@@ -28,18 +28,14 @@ export default function SentryInitializer() {
       Sentry.init({
         dsn: dsn,
         
-        // Adjust this value in production
-        tracesSampleRate: 1.0,
-        
-        // Debug mode for troubleshooting
-        debug: true,
-        
-        // Environment
         environment: process.env.NODE_ENV || "development",
         
-        // Session Replay
+        tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
+        
+        debug: process.env.NODE_ENV === "development",
+        
         replaysOnErrorSampleRate: 1.0,
-        replaysSessionSampleRate: 0.1,
+        replaysSessionSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
         
         integrations: [
           Sentry.replayIntegration({
@@ -48,7 +44,6 @@ export default function SentryInitializer() {
           }),
         ],
         
-        // Ignore common browser extension errors
         ignoreErrors: [
           "top.GLOBALS",
           "originalCreateNotification",
@@ -63,21 +58,20 @@ export default function SentryInitializer() {
 
       sentryInitialized = true;
       
-      console.log("✅ Sentry manually initialized", {
+      logger.success("Sentry manually initialized", {
         dsn: `${dsn.substring(0, 30)}...`,
         environment: process.env.NODE_ENV,
-        debug: true,
-      });
+        debug: process.env.NODE_ENV === "development",
+      }, "Sentry");
 
-      // Make Sentry globally available
       if (typeof window !== "undefined") {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).Sentry = Sentry;
       }
     } catch (error) {
-      console.error("❌ Failed to initialize Sentry:", error);
+      logger.error("Failed to initialize Sentry", error, "Sentry");
     }
   }, []);
 
-  return null; // This component doesn't render anything
+  return null;
 }

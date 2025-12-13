@@ -1,13 +1,13 @@
 import { z } from "zod";
 
 /**
- * Centralized validation schemas for forms
- * Ensures consistency between client and server validation
+ * Validation Schemas
+ * Zod schemas for form validation with TypeScript type inference
  */
 
 /**
- * Contact form validation schema
- * Used in both ContactForm component and /api/contact route
+ * Contact Form Schema
+ * Validates contact form submissions
  */
 export const contactFormSchema = z.object({
   name: z
@@ -34,7 +34,7 @@ export const contactFormSchema = z.object({
     .min(10, "Pesan minimal 10 karakter")
     .max(1000, "Pesan maksimal 1000 karakter")
     .trim(),
-  website: z.string().optional(), // Honeypot field
+  website: z.string().optional(),
 });
 
 /**
@@ -48,10 +48,9 @@ export const newsletterSchema = z.object({
     .email("Format email tidak valid")
     .toLowerCase()
     .trim(),
-  website: z.string().optional(), // Honeypot field
+  website: z.string().optional(),
 });
 
-// Type exports for TypeScript
 export type ContactFormData = z.infer<typeof contactFormSchema>;
 export type NewsletterData = z.infer<typeof newsletterSchema>;
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeInLeft, fadeInRight, viewportOptions } from "@/lib/animations";
+import { fadeInLeft, fadeInRight, viewportOptions } from "@/styles/animations";
 import { useTranslations } from "next-intl";
 import { FeatureCard } from "./Features/FeatureCard";
 import { ImageLayer } from "./Features/ImageLayer";

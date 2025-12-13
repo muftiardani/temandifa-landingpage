@@ -3,7 +3,7 @@
  * SEO-optimized schemas for TemanDifa
  */
 
-import { config } from "./config";
+import { config } from "../config";
 
 export interface OrganizationSchema {
   "@context": "https://schema.org";

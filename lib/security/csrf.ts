@@ -37,11 +37,9 @@ export function validateCSRFToken(
   try {
     const tokenHash = hashCSRFToken(token, secret);
     
-    // Convert to buffers for timing-safe comparison
     const tokenBuffer = Buffer.from(tokenHash);
     const expectedBuffer = Buffer.from(expectedHash);
 
-    // Ensure same length to prevent timing attacks
     if (tokenBuffer.length !== expectedBuffer.length) {
       return false;
     }
@@ -64,7 +62,6 @@ export function getCSRFSecret(): string {
       throw new Error("CSRF_SECRET environment variable is required in production");
     }
     
-    // Development fallback (NOT secure for production!)
     console.warn(
       "⚠️  WARNING: Using default CSRF secret. Set CSRF_SECRET environment variable for production!"
     );

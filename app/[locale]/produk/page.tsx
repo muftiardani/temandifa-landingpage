@@ -4,7 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-import { fadeInUp, staggerContainer, viewportOptions } from "@/lib/animations";
+import { fadeInUp, staggerContainer, viewportOptions } from "@/styles/animations";
 import PageTransition from "@/components/ui/PageTransition";
 
 export default function ProdukPage() {
@@ -37,7 +37,7 @@ export default function ProdukPage() {
           whileInView="animate"
           viewport={viewportOptions}
         >
-          {/* Feature 1: Deteksi Objek */}
+          {/* Feature 1 */}
           <motion.div 
             className="border-2 border-blue-500 dark:border-blue-600 rounded-2xl p-8 
                        hover:shadow-2xl hover:scale-105 transition-all duration-300 
@@ -59,7 +59,7 @@ export default function ProdukPage() {
             </p>
           </motion.div>
 
-          {/* Feature 2: Voice to Text */}
+          {/* Feature 2 */}
           <motion.div 
             className="border-2 border-blue-500 dark:border-blue-600 rounded-2xl p-8 
                        hover:shadow-2xl hover:scale-105 transition-all duration-300 
@@ -81,7 +81,7 @@ export default function ProdukPage() {
             </p>
           </motion.div>
 
-          {/* Feature 3: Scan & Deteksi Teks */}
+          {/* Feature 3 */}
           <motion.div 
             className="border-2 border-blue-500 dark:border-blue-600 rounded-2xl p-8 
                        hover:shadow-2xl hover:scale-105 transition-all duration-300 
@@ -103,7 +103,7 @@ export default function ProdukPage() {
             </p>
           </motion.div>
 
-          {/* Feature 4: Emergency Call */}
+          {/* Feature 4 */}
           <motion.div 
             className="border-2 border-blue-500 dark:border-blue-600 rounded-2xl p-8 
                        hover:shadow-2xl hover:scale-105 transition-all duration-300 

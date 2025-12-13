@@ -3,6 +3,7 @@
 import { Component, ReactNode } from "react";
 import * as Sentry from "@sentry/nextjs";
 import { useTranslations } from "next-intl";
+import { logger } from "@/lib/logger";
 
 interface Props {
   children: ReactNode;
@@ -15,7 +16,6 @@ interface State {
   error?: Error;
 }
 
-// Error fallback component with i18n support
 function ErrorFallback({ error, onReload }: { error?: Error; onReload: () => void }) {
   const t = useTranslations("Error");
   
@@ -63,7 +63,6 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    // Log to Sentry if available
     if (typeof window !== "undefined" && window.Sentry) {
       Sentry.captureException(error, {
         contexts: {
@@ -74,11 +73,9 @@ export class ErrorBoundary extends Component<Props, State> {
       });
     }
 
-    // Custom error handler
     this.props.onError?.(error, errorInfo);
 
-    // Log to console
-    console.error("ErrorBoundary caught:", error, errorInfo);
+    logger.error("ErrorBoundary caught error", error, "ErrorBoundary");
   }
 
   render() {

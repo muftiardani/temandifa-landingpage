@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
 import { randomUUID } from "crypto";
-import { checkRateLimit } from "@/lib/redis-rate-limit";
+import { checkRateLimit } from "@/lib/security/redis-rate-limit";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -51,10 +51,8 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const validatedData = unsubscribeSchema.parse(body);
 
-    // Remove from Resend Audiences
     if (process.env.RESEND_AUDIENCE_ID) {
       try {
-        // First, try to find the contact
         const { data: contacts } = await resend.contacts.list({
           audienceId: process.env.RESEND_AUDIENCE_ID,
         });
@@ -64,7 +62,6 @@ export async function POST(request: NextRequest) {
         );
 
         if (contact) {
-          // Remove contact from audience
           await resend.contacts.remove({
             audienceId: process.env.RESEND_AUDIENCE_ID,
             id: contact.id,
@@ -76,7 +73,6 @@ export async function POST(request: NextRequest) {
         }
       } catch (audienceError) {
         console.error(`[${requestId}] Audience error:`, audienceError);
-        // Continue anyway - email might not be in audience
       }
     }
 

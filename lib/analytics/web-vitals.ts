@@ -1,4 +1,5 @@
 import type { Metric } from "web-vitals";
+import { logger } from "@/lib/logger";
 
 /**
  * Web Vitals Reporter
@@ -51,7 +52,6 @@ function sendToGoogleAnalytics(metric: Metric) {
 
   window.gtag("event", metric.name, eventData);
   
-  // Also send as custom event for easier tracking
   window.gtag("event", "performance_metric", {
     metric_name: metric.name,
     metric_value: metric.value,
@@ -67,10 +67,8 @@ function sendToSentry(metric: Metric) {
     return;
   }
 
-  // Set measurement for performance monitoring
   window.Sentry.setMeasurement(metric.name, metric.value, "millisecond");
   
-  // Capture poor metrics as breadcrumbs
   if (metric.rating === "poor") {
     window.Sentry.addBreadcrumb({
       category: "performance",
@@ -97,33 +95,30 @@ function logToConsole(metric: Metric) {
   const emoji = metric.rating === "good" ? "✅" : metric.rating === "needs-improvement" ? "⚠️" : "❌";
   const threshold = THRESHOLDS[metric.name as keyof typeof THRESHOLDS];
   
-  console.group(`${emoji} ${metric.name}: ${metric.value.toFixed(2)}ms (${metric.rating})`);
-  console.log("Value:", metric.value);
-  console.log("Rating:", metric.rating);
-  console.log("Delta:", metric.delta);
-  console.log("ID:", metric.id);
-  
-  if (threshold) {
-    console.log("Thresholds:", {
-      good: `≤ ${threshold.good}ms`,
-      needsImprovement: `≤ ${threshold.needsImprovement}ms`,
-      poor: `> ${threshold.needsImprovement}ms`,
-    });
-  }
-  
-  console.groupEnd();
+  logger.group(`${emoji} ${metric.name}: ${metric.value.toFixed(2)}ms (${metric.rating})`, () => {
+    logger.debug("Value", metric.value, "WebVitals");
+    logger.debug("Rating", metric.rating, "WebVitals");
+    logger.debug("Delta", metric.delta, "WebVitals");
+    logger.debug("ID", metric.id, "WebVitals");
+    
+    if (threshold) {
+      logger.debug("Thresholds", {
+        good: `≤ ${threshold.good}ms`,
+        needsImprovement: `≤ ${threshold.needsImprovement}ms`,
+        poor: `> ${threshold.needsImprovement}ms`,
+      }, "WebVitals");
+    }
+  });
 }
 
 /**
  * Send performance data to custom endpoint (optional)
  */
 function sendToCustomEndpoint(metric: Metric) {
-  // Only in production
   if (process.env.NODE_ENV !== "production") {
     return;
   }
 
-  // Send to your analytics endpoint
   const endpoint = "/api/analytics/performance";
   
   if (navigator.sendBeacon) {
@@ -146,23 +141,20 @@ function sendToCustomEndpoint(metric: Metric) {
  * Called by Next.js when metrics are available
  */
 export function reportWebVitals(metric: Metric) {
-  // Send to multiple destinations
   sendToGoogleAnalytics(metric);
   sendToSentry(metric);
   logToConsole(metric);
   sendToCustomEndpoint(metric);
   
-  // Warn about poor metrics in development
   if (process.env.NODE_ENV === "development" && metric.rating === "poor") {
-    console.warn(
-      `⚠️ Poor ${metric.name} detected!`,
-      `Value: ${metric.value}`,
-      `Consider optimizing for better performance.`
+    logger.warn(
+      `Poor ${metric.name} detected! Value: ${metric.value}. Consider optimizing for better performance.`,
+      null,
+      "WebVitals"
     );
   }
 }
 
-// Type declarations for global objects
 declare global {
   interface Window {
     gtag?: (
@@ -171,6 +163,7 @@ declare global {
       eventParams?: Record<string, unknown>
     ) => void;
     Sentry?: {
+      captureException: (error: Error) => void;
       setMeasurement: (name: string, value: number, unit: string) => void;
       addBreadcrumb: (breadcrumb: {
         category: string;

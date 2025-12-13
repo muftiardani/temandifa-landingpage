@@ -5,7 +5,7 @@ import { useState, useTransition, useEffect } from "react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Link, usePathname, useRouter } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
-import { blurDataURL } from "@/lib/image-placeholders";
+import { blurDataURL } from "@/lib/seo/image-placeholders";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -1,11 +1,5 @@
 import { escape } from 'html-escaper';
-
-export interface ContactFormData {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-}
+import type { ContactFormData } from '@/types';
 
 export interface EmailTemplate {
   html: string;

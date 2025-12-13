@@ -7,10 +7,10 @@ import {
   fadeInLeft,
   fadeInRight,
   viewportOptions,
-} from "@/lib/animations";
+} from "@/styles/animations";
 import ParticleBackground from "@/components/ui/ParticleBackground";
 import { useTranslations } from "next-intl";
-import { blurDataURL } from "@/lib/image-placeholders";
+import { blurDataURL } from "@/lib/seo/image-placeholders";
 
 export default function Hero() {
   const t = useTranslations("Hero");

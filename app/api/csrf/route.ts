@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { generateCSRFToken, hashCSRFToken, getCSRFSecret } from "@/lib/csrf";
+import { generateCSRFToken, hashCSRFToken, getCSRFSecret } from "@/lib/security/csrf";
 
 /**
  * CSRF Token API Route

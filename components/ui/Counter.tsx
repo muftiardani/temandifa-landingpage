@@ -30,7 +30,6 @@ export default function Counter({
       if (!startTime) startTime = currentTime;
       const progress = Math.min((currentTime - startTime) / duration, 1);
 
-      // Easing function (easeOutExpo)
       const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
       
       setCount(easeProgress * end);

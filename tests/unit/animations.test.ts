@@ -7,7 +7,7 @@ import {
   staggerContainer,
   scaleIn,
   viewportOptions,
-} from "@/lib/animations";
+} from "@/styles/animations";
 
 describe("Animation Variants", () => {
   describe("fadeIn", () => {

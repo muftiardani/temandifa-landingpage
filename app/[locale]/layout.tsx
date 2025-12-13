@@ -9,7 +9,7 @@ import "../globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { reportWebVitals } from "@/lib/web-vitals";
+import { reportWebVitals } from "@/lib/analytics/web-vitals";
 import SentryInitializer from "@/components/providers/SentryInitializer";
 import { config } from "@/lib/config";
 
@@ -176,7 +176,6 @@ export default async function RootLayout({
     },
   };
 
-  // Get translations for accessibility
   const accessibilityT = await getTranslations("Accessibility");
   
   return (
