@@ -332,7 +332,10 @@ npm, yarn, or pnpm
    RESEND_FROM_EMAIL=noreply@temandifa.com
    CONTACT_EMAIL=hello@temandifa.com
    
-   # Optional (Production)
+   # Optional (Development)
+   NEXT_PUBLIC_BASE_URL=http://localhost:3000
+   
+   # REQUIRED for Production
    UPSTASH_REDIS_REST_URL=https://xxxxx.upstash.io
    UPSTASH_REDIS_REST_TOKEN=xxxxxxxxxxxxx
    
@@ -342,6 +345,11 @@ npm, yarn, or pnpm
    SENTRY_PROJECT=temandifa-web
    SENTRY_AUTH_TOKEN=xxxxxxxxxxxxx
    ```
+
+   > **⚠️ Production Warning:**  
+   > Redis is **REQUIRED** for production deployments. File-based rate limiting is only for development.  
+   > Get free Redis from [Upstash](https://upstash.com) (10,000 commands/day free tier).
+
 
 4. **Run development server**
 

@@ -51,10 +51,9 @@
   },
   "Footer": {
     "tagline": "Melihat dengan percaya diri, Mendengar dengan jelas, Menjadi bantuan saat dibutuhkan.",
-    "links_title": "Beranda",
+    "menu_title": "Menu",
     "social_title": "Media Sosial",
-    "help_title": "Bantuan",
-    "copyright": "© 2025 TemanDifa.com. Hak cipta dilindungi."
+    "copyright": "© TemanDifa 2026. Hak cipta dilindungi."
   },
   "AboutPage": {
     "title": "Tentang TemanDifa",
@@ -124,7 +123,7 @@
     "kontak": "Kontak"
   },
   "Newsletter": {
-    "title": "📬 Berlangganan Newsletter",
+    "title": "Newsletter",
     "description": "Dapatkan update terbaru tentang TemanDifa dan tips aksesibilitas langsung ke email Anda",
     "label_email": "Email",
     "placeholder_email": "nama@email.com",

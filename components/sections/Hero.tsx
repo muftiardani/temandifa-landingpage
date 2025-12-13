@@ -10,6 +10,7 @@ import {
 } from "@/lib/animations";
 import ParticleBackground from "@/components/ui/ParticleBackground";
 import { useTranslations } from "next-intl";
+import { blurDataURL } from "@/lib/image-placeholders";
 
 export default function Hero() {
   const t = useTranslations("Hero");
@@ -145,6 +146,8 @@ export default function Hero() {
               alt="TemanDifa app users - accessibility for visually impaired"
               fill
               priority
+              placeholder="blur"
+              blurDataURL={blurDataURL.womanMan}
               className="object-contain"
               sizes="(max-width: 768px) 100vw, 600px"
             />

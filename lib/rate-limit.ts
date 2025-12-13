@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { promisify } from 'util';
+import { config } from './config';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -22,8 +23,8 @@ interface RateLimitResult {
 }
 
 const RATE_LIMIT_FILE = path.join(process.cwd(), 'tmp', 'rate-limit.json');
-const RATE_LIMIT_WINDOW = 60 * 1000; // 60 seconds
-const MAX_REQUESTS = 3;
+const RATE_LIMIT_WINDOW = config.rateLimit.windowMs;
+const MAX_REQUESTS = config.rateLimit.maxRequests;
 
 async function ensureTmpDir() {
   const tmpDir = path.dirname(RATE_LIMIT_FILE);

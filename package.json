@@ -18,7 +18,10 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:debug": "playwright test --debug",
     "test:all": "npm run test && npm run test:e2e",
-    "analyze": "cross-env ANALYZE=true npm run build"
+    "analyze": "cross-env ANALYZE=true npm run build",
+    "lighthouse": "lhci autorun",
+    "lighthouse:ci": "lhci autorun --config=.lighthouserc.json",
+    "perf:monitor": "npm run build && npm run lighthouse"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

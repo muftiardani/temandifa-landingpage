@@ -51,10 +51,9 @@
   },
   "Footer": {
     "tagline": "See with confidence, Hear clearly, Be help when needed.",
-    "links_title": "Home",
+    "menu_title": "Menu",
     "social_title": "Social Media",
-    "help_title": "Help",
-    "copyright": "© 2025 TemanDifa.com. All rights reserved."
+    "copyright": "© TemanDifa 2026. All rights reserved."
   },
   "AboutPage": {
     "title": "About TemanDifa",
@@ -124,7 +123,7 @@
     "kontak": "Contact"
   },
   "Newsletter": {
-    "title": "📬 Subscribe to Newsletter",
+    "title": "Newsletter",
     "description": "Get the latest updates about TemanDifa and accessibility tips directly to your email",
     "label_email": "Email",
     "placeholder_email": "name@email.com",

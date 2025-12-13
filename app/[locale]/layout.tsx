@@ -11,6 +11,7 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { reportWebVitals } from "@/lib/web-vitals";
 import SentryInitializer from "@/components/providers/SentryInitializer";
+import { config } from "@/lib/config";
 
 export { reportWebVitals };
 
@@ -37,7 +38,7 @@ const poppins = Poppins({
   display: "swap",
 });
 
-const baseUrl = "https://temandifa.com";
+const baseUrl = config.baseUrl;
 
 export async function generateMetadata({
   params,
@@ -214,7 +215,9 @@ export default async function RootLayout({
           >
             <main id="main-content">{children}</main>
             <Footer />
-            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
+            {process.env.NEXT_PUBLIC_GA_ID && (
+              <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+            )}
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

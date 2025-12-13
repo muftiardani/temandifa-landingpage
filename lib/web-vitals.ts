@@ -2,7 +2,8 @@ import type { Metric } from "web-vitals";
 
 /**
  * Web Vitals Reporter
- * Sends performance metrics to Google Analytics and console
+ * Sends performance metrics to Google Analytics, Sentry, and console
+ * Tracks: LCP, FID, CLS, FCP, TTFB, INP
  */
 
 interface AnalyticsEvent extends Record<string, unknown> {
@@ -15,6 +16,19 @@ interface AnalyticsEvent extends Record<string, unknown> {
   metric_delta: number;
   metric_rating: string;
 }
+
+/**
+ * Performance thresholds for Core Web Vitals
+ * Based on Google's recommendations
+ */
+const THRESHOLDS = {
+  LCP: { good: 2500, needsImprovement: 4000 },
+  FID: { good: 100, needsImprovement: 300 },
+  CLS: { good: 0.1, needsImprovement: 0.25 },
+  FCP: { good: 1800, needsImprovement: 3000 },
+  TTFB: { good: 800, needsImprovement: 1800 },
+  INP: { good: 200, needsImprovement: 500 },
+};
 
 /**
  * Send metric to Google Analytics via gtag
@@ -36,6 +50,13 @@ function sendToGoogleAnalytics(metric: Metric) {
   };
 
   window.gtag("event", metric.name, eventData);
+  
+  // Also send as custom event for easier tracking
+  window.gtag("event", "performance_metric", {
+    metric_name: metric.name,
+    metric_value: metric.value,
+    metric_rating: metric.rating,
+  });
 }
 
 /**
@@ -46,7 +67,23 @@ function sendToSentry(metric: Metric) {
     return;
   }
 
+  // Set measurement for performance monitoring
   window.Sentry.setMeasurement(metric.name, metric.value, "millisecond");
+  
+  // Capture poor metrics as breadcrumbs
+  if (metric.rating === "poor") {
+    window.Sentry.addBreadcrumb({
+      category: "performance",
+      message: `Poor ${metric.name}: ${metric.value}`,
+      level: "warning",
+      data: {
+        metric: metric.name,
+        value: metric.value,
+        rating: metric.rating,
+        id: metric.id,
+      },
+    });
+  }
 }
 
 /**
@@ -58,13 +95,50 @@ function logToConsole(metric: Metric) {
   }
 
   const emoji = metric.rating === "good" ? "✅" : metric.rating === "needs-improvement" ? "⚠️" : "❌";
+  const threshold = THRESHOLDS[metric.name as keyof typeof THRESHOLDS];
   
-  console.log(
-    `${emoji} ${metric.name}:`,
-    metric.value.toFixed(2),
-    `(${metric.rating})`,
-    metric
-  );
+  console.group(`${emoji} ${metric.name}: ${metric.value.toFixed(2)}ms (${metric.rating})`);
+  console.log("Value:", metric.value);
+  console.log("Rating:", metric.rating);
+  console.log("Delta:", metric.delta);
+  console.log("ID:", metric.id);
+  
+  if (threshold) {
+    console.log("Thresholds:", {
+      good: `≤ ${threshold.good}ms`,
+      needsImprovement: `≤ ${threshold.needsImprovement}ms`,
+      poor: `> ${threshold.needsImprovement}ms`,
+    });
+  }
+  
+  console.groupEnd();
+}
+
+/**
+ * Send performance data to custom endpoint (optional)
+ */
+function sendToCustomEndpoint(metric: Metric) {
+  // Only in production
+  if (process.env.NODE_ENV !== "production") {
+    return;
+  }
+
+  // Send to your analytics endpoint
+  const endpoint = "/api/analytics/performance";
+  
+  if (navigator.sendBeacon) {
+    const body = JSON.stringify({
+      metric: metric.name,
+      value: metric.value,
+      rating: metric.rating,
+      id: metric.id,
+      timestamp: Date.now(),
+      url: window.location.href,
+      userAgent: navigator.userAgent,
+    });
+    
+    navigator.sendBeacon(endpoint, body);
+  }
 }
 
 /**
@@ -76,6 +150,16 @@ export function reportWebVitals(metric: Metric) {
   sendToGoogleAnalytics(metric);
   sendToSentry(metric);
   logToConsole(metric);
+  sendToCustomEndpoint(metric);
+  
+  // Warn about poor metrics in development
+  if (process.env.NODE_ENV === "development" && metric.rating === "poor") {
+    console.warn(
+      `⚠️ Poor ${metric.name} detected!`,
+      `Value: ${metric.value}`,
+      `Consider optimizing for better performance.`
+    );
+  }
 }
 
 // Type declarations for global objects
@@ -88,6 +172,12 @@ declare global {
     ) => void;
     Sentry?: {
       setMeasurement: (name: string, value: number, unit: string) => void;
+      addBreadcrumb: (breadcrumb: {
+        category: string;
+        message: string;
+        level: string;
+        data?: Record<string, unknown>;
+      }) => void;
     };
   }
 }

@@ -1,7 +1,8 @@
 import { MetadataRoute } from "next";
+import { config } from "@/lib/config";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://temandifa.com";
+  const baseUrl = config.baseUrl;
   const currentDate = new Date();
   const locales = ["id", "en"];
   const pages = ["", "tentang", "produk", "kontak"];
@@ -42,6 +43,50 @@ export default function sitemap(): MetadataRoute.Sitemap {
           },
         },
       });
+    });
+  });
+
+  // Add image URLs for better SEO
+  const images = [
+    {
+      url: `${baseUrl}/images/logo.png`,
+      title: "TemanDifa Logo",
+      description: "TemanDifa - AI Assistant for Visually Impaired",
+    },
+    {
+      url: `${baseUrl}/images/woman-man.png`,
+      title: "TemanDifa App Users",
+      description: "People using TemanDifa accessibility app",
+    },
+    {
+      url: `${baseUrl}/images/menu-mockup.png`,
+      title: "TemanDifa Menu Interface",
+      description: "TemanDifa app menu mockup showing main features",
+    },
+    {
+      url: `${baseUrl}/images/camera-mockup.png`,
+      title: "TemanDifa Object Detection",
+      description: "Object detection feature using camera",
+    },
+    {
+      url: `${baseUrl}/images/mic-mockup.png`,
+      title: "TemanDifa Voice Assistant",
+      description: "Voice assistant feature for hands-free interaction",
+    },
+    {
+      url: `${baseUrl}/images/video-mockup.png`,
+      title: "TemanDifa Video Call",
+      description: "Video call assistance feature",
+    },
+  ];
+
+  // Add image entries to sitemap
+  images.forEach((image) => {
+    sitemapEntries.push({
+      url: image.url,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.5,
     });
   });
 

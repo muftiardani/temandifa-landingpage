@@ -5,15 +5,21 @@
 
 interface LoadingSkeletonProps {
   className?: string;
+  animation?: "pulse" | "shimmer";
 }
 
 /**
- * Base skeleton component with pulse animation
+ * Base skeleton component with pulse or shimmer animation
  */
-export function LoadingSkeleton({ className = "" }: LoadingSkeletonProps) {
+export function LoadingSkeleton({
+  className = "",
+  animation = "pulse",
+}: LoadingSkeletonProps) {
+  const animationClass = animation === "shimmer" ? "animate-shimmer" : "animate-pulse";
+  
   return (
     <div
-      className={`animate-pulse bg-gray-200 dark:bg-gray-700 rounded ${className}`}
+      className={`${animationClass} bg-gray-200 dark:bg-gray-700 rounded ${className}`}
       aria-hidden="true"
     />
   );

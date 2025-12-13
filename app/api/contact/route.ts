@@ -1,19 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { z } from "zod";
 import { randomUUID } from "crypto";
 import { checkRateLimit, getRateLimitMethod } from "@/lib/redis-rate-limit";
 import { contactFormEmailTemplate } from "@/lib/email-templates";
+import { contactFormSchema } from "@/lib/validation-schemas";
+import { z } from "zod";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-const contactSchema = z.object({
-  name: z.string().min(2).max(100),
-  email: z.string().email(),
-  subject: z.string().min(5).max(200),
-  message: z.string().min(10).max(1000),
-  website: z.string().optional(),
-});
 
 function getClientIp(request: NextRequest): string {
   const forwardedFor = request.headers.get("x-forwarded-for");
@@ -72,7 +65,7 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    const validatedData = contactSchema.parse(body);
+    const validatedData = contactFormSchema.parse(body);
 
     const emailTemplate = contactFormEmailTemplate(validatedData);
 

@@ -2,9 +2,12 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import {
+  contactFormSchema,
+  type ContactFormData,
+} from "@/lib/validation-schemas";
 
 export default function ContactForm() {
   const t = useTranslations("ContactForm");
@@ -13,32 +16,13 @@ export default function ContactForm() {
     "idle" | "success" | "error"
   >("idle");
 
-  const contactSchema = z.object({
-    name: z
-      .string()
-      .min(2, t("validation.name_min"))
-      .max(100, t("validation.name_max")),
-    email: z.string().email(t("validation.email_invalid")),
-    subject: z
-      .string()
-      .min(5, t("validation.subject_min"))
-      .max(200, t("validation.subject_max")),
-    message: z
-      .string()
-      .min(10, t("validation.message_min"))
-      .max(1000, t("validation.message_max")),
-    website: z.string().optional(),
-  });
-
-  type ContactFormData = z.infer<typeof contactSchema>;
-
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema),
+    resolver: zodResolver(contactFormSchema),
   });
 
   const onSubmit = async (data: ContactFormData) => {

@@ -17,6 +17,14 @@ if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) 
     console.error("❌ Failed to initialize Redis rate limiting:", error);
     console.log("⚠️  Falling back to file-based rate limiting");
   }
+} else if (process.env.NODE_ENV === "production") {
+  // In production, Redis is required
+  throw new Error(
+    "❌ Redis is required for production. Please set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN environment variables.\n" +
+    "Get free Redis from https://upstash.com (10,000 commands/day free tier)"
+  );
+} else {
+  console.log("⚠️  Redis not configured. Using file-based rate limiting (development only)");
 }
 
 export interface RateLimitResult {

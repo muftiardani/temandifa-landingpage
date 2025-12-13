@@ -3,6 +3,7 @@
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import NewsletterForm from "@/components/forms/NewsletterForm";
+import { config } from "@/lib/config";
 
 export default function Footer() {
   const t = useTranslations("Footer");
@@ -16,9 +17,9 @@ export default function Footer() {
       aria-label="Footer situs"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-blue-400 dark:border-gray-700 pb-12 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1.5fr] gap-8 lg:gap-12 border-b border-blue-400 dark:border-gray-700 pb-12 mb-8">
           <div className="space-y-4">
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+            <div className="text-2xl font-bold text-white dark:text-blue-400">
               Teman
               <span className="text-yellow-500 dark:text-yellow-400">Difa</span>
             </div>
@@ -30,8 +31,16 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-bold text-lg mb-4">{t("links_title")}</h4>
+            <h4 className="font-bold text-lg mb-4">{t("menu_title")}</h4>
             <ul className="space-y-3 text-blue-100 dark:text-gray-300 font-semibold text-sm">
+              <li>
+                <Link
+                  href="/"
+                  className="hover:text-white hover:underline transition"
+                >
+                  {navT("home")}
+                </Link>
+              </li>
               <li>
                 <Link
                   href="/tentang"
@@ -55,7 +64,7 @@ export default function Footer() {
             <h4 className="font-semibold text-lg mb-4">{t("social_title")}</h4>
             <div className="flex items-center gap-4">
               <a
-                href="https://instagram.com/temandifa"
+                href={config.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-white/10 p-2 rounded-full hover:bg-white/20 transition-all hover:scale-110"
@@ -80,7 +89,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://tiktok.com/@temandifa"
+                href={config.social.tiktok}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-white/10 p-2 rounded-full hover:bg-white/20 transition-all hover:scale-110"
@@ -103,7 +112,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://linkedin.com/company/temandifa-com"
+                href={config.social.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-white/10 p-2 rounded-full hover:bg-white/20 transition-all hover:scale-110"
@@ -129,30 +138,13 @@ export default function Footer() {
             </div>
           </div>
 
+          {/* Newsletter Section - Moved to Column 4 */}
           <div>
-            <h4 className="font-bold text-lg mb-4">{t("help_title")}</h4>
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-1 inline-block w-full max-w-[200px]">
-              <a
-                href="mailto:hello@temandifa.com"
-                className="block w-full text-center text-blue-600 dark:text-blue-400 font-bold py-2 px-4 rounded hover:bg-slate-100 dark:hover:bg-gray-700 transition"
-                aria-label="Kirim email ke hello@temandifa.com"
-              >
-                hello@temandifa.com
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Newsletter Section */}
-        <div className="border-b border-blue-400 dark:border-gray-700 pb-12 mb-8">
-          <div className="max-w-2xl mx-auto text-center">
-            <h3 className="text-2xl font-bold mb-3">{newsletterT("title")}</h3>
-            <p className="text-blue-100 dark:text-gray-300 mb-6">
+            <h4 className="font-bold text-lg mb-4">{newsletterT("title")}</h4>
+            <p className="text-blue-100 dark:text-gray-300 text-sm mb-4">
               {newsletterT("description")}
             </p>
-            <div className="flex justify-center">
-              <NewsletterForm />
-            </div>
+            <NewsletterForm />
           </div>
         </div>
 

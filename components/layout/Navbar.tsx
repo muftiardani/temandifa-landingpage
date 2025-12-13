@@ -5,6 +5,7 @@ import { useState, useTransition, useEffect } from "react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Link, usePathname, useRouter } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
+import { blurDataURL } from "@/lib/image-placeholders";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -60,6 +61,8 @@ const Navbar = () => {
             width={50}
             height={50}
             className="object-contain"
+            placeholder="blur"
+            blurDataURL={blurDataURL.logo}
           />
           <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
             Teman

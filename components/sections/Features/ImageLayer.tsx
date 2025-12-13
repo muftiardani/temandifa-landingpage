@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { blurDataURL } from "@/lib/image-placeholders";
 
 interface ImageLayerProps {
   src: string;
@@ -13,6 +14,15 @@ export function ImageLayer({
   className,
   priority = false,
 }: ImageLayerProps) {
+  // Extract image name from src path for blur placeholder
+  const getBlurPlaceholder = (imageSrc: string) => {
+    if (imageSrc.includes("menu-mockup")) return blurDataURL.menuMockup;
+    if (imageSrc.includes("camera-mockup")) return blurDataURL.cameraMockup;
+    if (imageSrc.includes("mic-mockup")) return blurDataURL.micMockup;
+    if (imageSrc.includes("video-mockup")) return blurDataURL.videoMockup;
+    return blurDataURL.default;
+  };
+
   return (
     <div className={className}>
       <Image
@@ -21,6 +31,8 @@ export function ImageLayer({
         fill
         className="object-contain"
         priority={priority}
+        placeholder="blur"
+        blurDataURL={getBlurPlaceholder(src)}
       />
     </div>
   );
