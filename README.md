@@ -85,11 +85,13 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 - Real-time error alerts
 
 ### 🔒 Security
-- Rate limiting (Redis + File fallback)
-- Security headers (HSTS, CSP, etc.)
-- Input sanitization
-- XSS protection
-- CSRF protection
+- **CSRF Protection** - Token-based validation
+- **Content Security Policy** - XSS prevention
+- **Rate limiting** - Redis + File fallback
+- **Security headers** - HSTS, CSP, X-Frame-Options
+- **Input sanitization** - HTML escaping
+- **XSS protection** - Content filtering
+- **Environment validation** - Runtime checks
 
 ## 🏗️ Diagram Arsitektur
 
@@ -581,6 +583,7 @@ export const fadeIn = {
 
 **Features:**
 - ✅ Zod schema validation
+- ✅ CSRF protection
 - ✅ Rate limiting (3 requests/60s per IP)
 - ✅ Honeypot spam protection
 - ✅ Email via Resend
@@ -629,6 +632,7 @@ X-RateLimit-Reset: 1702345678000
 
 **Features:**
 - ✅ Email validation
+- ✅ CSRF protection
 - ✅ Rate limiting (3 requests/60s per IP)
 - ✅ Honeypot protection
 - ✅ Welcome email automation

@@ -136,11 +136,32 @@
       "email_invalid": "Email tidak valid"
     }
   },
+  "Unsubscribe": {
+    "title": "Berhenti Berlangganan",
+    "subtitle": "Kami sedih melihat Anda pergi",
+    "email_label": "Email Anda",
+    "confirmation_text": "Apakah Anda yakin ingin berhenti berlangganan dari newsletter TemanDifa?",
+    "btn_unsubscribe": "Ya, Berhenti Berlangganan",
+    "btn_cancel": "Batal",
+    "loading_text": "Memproses permintaan Anda...",
+    "success_title": "Berhasil Berhenti Berlangganan!",
+    "error_title": "Terjadi Kesalahan",
+    "btn_home": "Kembali ke Beranda",
+    "btn_retry": "Coba Lagi",
+    "no_email_error": "Email tidak ditemukan. Silakan gunakan link dari email Anda.",
+    "email_required": "Email diperlukan",
+    "success_default": "Berhasil berhenti berlangganan",
+    "error_default": "Gagal berhenti berlangganan",
+    "error_occurred": "Terjadi kesalahan. Silakan coba lagi."
+  },
   "Error": {
     "title": "Terjadi Kesalahan",
     "description": "Maaf, terjadi kesalahan yang tidak terduga. Silakan coba lagi atau kembali ke beranda.",
     "retry": "Coba Lagi",
-    "backHome": "Kembali ke Beranda"
+    "backHome": "Kembali ke Beranda",
+    "error_description": "Maaf, terjadi kesalahan yang tidak terduga. Tim kami telah diberitahu dan akan segera memperbaikinya.",
+    "error_details": "Detail Error (Hanya Development)",
+    "reload_page": "Muat Ulang Halaman"
   },
   "NotFound": {
     "title": "Halaman Tidak Ditemukan",
@@ -150,5 +171,16 @@
     "aboutLink": "Tentang",
     "featuresLink": "Fitur",
     "contactLink": "Kontak"
+  },
+  "Accessibility": {
+    "skip_to_content": "Lewati ke konten utama"
+  },
+  "Theme": {
+    "switch_to_light": "Beralih ke mode terang",
+    "switch_to_dark": "Beralih ke mode gelap",
+    "light_mode": "Mode terang",
+    "dark_mode": "Mode gelap",
+    "sun_icon": "Matahari",
+    "moon_icon": "Bulan"
   }
 }

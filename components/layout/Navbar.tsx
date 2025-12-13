@@ -127,6 +127,8 @@ const Navbar = () => {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="md:hidden flex flex-col gap-1.5 p-2 z-50"
           aria-label="Toggle menu"
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-menu"
         >
           <span
             className={`w-6 h-0.5 bg-blue-600 transition-transform duration-300 ${
@@ -146,7 +148,10 @@ const Navbar = () => {
         </button>
 
         {isMenuOpen && (
-          <div className="absolute top-full left-0 w-screen bg-white dark:bg-gray-900 shadow-lg md:hidden z-40 border-t border-gray-200 dark:border-gray-700 transition-colors -mx-4 sm:-mx-8">
+          <div 
+            id="mobile-menu"
+            className="absolute top-full left-0 w-screen bg-white dark:bg-gray-900 shadow-lg md:hidden z-40 border-t border-gray-200 dark:border-gray-700 transition-colors -mx-4 sm:-mx-8"
+          >
             <div className="flex flex-col gap-4 p-6">
               <Link
                 href="/"

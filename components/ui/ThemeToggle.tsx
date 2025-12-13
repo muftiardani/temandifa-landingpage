@@ -4,8 +4,10 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export function ThemeToggle() {
+  const t = useTranslations("Theme");
   const [mounted, setMounted] = useState(false);
   const { setTheme, resolvedTheme } = useTheme();
 
@@ -29,17 +31,17 @@ export function ThemeToggle() {
       className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
       aria-label={
         resolvedTheme === "dark"
-          ? "Switch to light mode"
-          : "Switch to dark mode"
+          ? t("switch_to_light")
+          : t("switch_to_dark")
       }
-      title={resolvedTheme === "dark" ? "Light mode" : "Dark mode"}
+      title={resolvedTheme === "dark" ? t("light_mode") : t("dark_mode")}
     >
       {resolvedTheme === "dark" ? (
-        <span className="text-2xl" role="img" aria-label="Sun">
+        <span className="text-2xl" role="img" aria-label={t("sun_icon")}>
           ☀️
         </span>
       ) : (
-        <span className="text-2xl" role="img" aria-label="Moon">
+        <span className="text-2xl" role="img" aria-label={t("moon_icon")}>
           🌙
         </span>
       )}

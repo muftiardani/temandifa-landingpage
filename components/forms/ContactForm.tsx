@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import {
   contactFormSchema,
@@ -15,6 +15,21 @@ export default function ContactForm() {
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
+  const [csrfToken, setCSRFToken] = useState<string>("");
+  const [csrfHash, setCSRFHash] = useState<string>("");
+
+  // Fetch CSRF token on mount
+  useEffect(() => {
+    fetch("/api/csrf")
+      .then((res) => res.json())
+      .then((data) => {
+        setCSRFToken(data.token);
+        setCSRFHash(data.hash);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch CSRF token:", error);
+      });
+  }, []);
 
   const {
     register,
@@ -34,8 +49,12 @@ export default function ContactForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          csrfHash,
+        }),
       });
 
       const result = await response.json();
@@ -61,6 +80,7 @@ export default function ContactForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-6"
       aria-label="Form kontak"
+      aria-busy={isSubmitting}
     >
       {/* Name Field */}
       <div>
@@ -262,6 +282,7 @@ export default function ContactForm() {
           className="p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-lg"
           role="alert"
           aria-live="polite"
+          aria-atomic="true"
         >
           <p className="text-green-800 dark:text-green-300 font-medium">
             {t("success_msg")}
@@ -275,6 +296,7 @@ export default function ContactForm() {
           className="p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg"
           role="alert"
           aria-live="polite"
+          aria-atomic="true"
         >
           <p className="text-red-800 dark:text-red-300 font-medium">
             {t("error_msg")}

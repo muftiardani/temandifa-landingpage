@@ -133,14 +133,35 @@
     "success_msg": "✅ Thank you! Check your email for confirmation.",
     "error_msg": "❌ An error occurred. Please try again.",
     "validation": {
-      "email_invalid": "Invalid email"
+      "email_invalid": "Invalid email address"
     }
+  },
+  "Unsubscribe": {
+    "title": "Unsubscribe",
+    "subtitle": "We're sorry to see you go",
+    "email_label": "Your Email",
+    "confirmation_text": "Are you sure you want to unsubscribe from TemanDifa newsletter?",
+    "btn_unsubscribe": "Yes, Unsubscribe",
+    "btn_cancel": "Cancel",
+    "loading_text": "Processing your request...",
+    "success_title": "Successfully Unsubscribed!",
+    "error_title": "An Error Occurred",
+    "btn_home": "Back to Home",
+    "btn_retry": "Try Again",
+    "no_email_error": "Email not found. Please use the link from your email.",
+    "email_required": "Email address is required",
+    "success_default": "Successfully unsubscribed",
+    "error_default": "Failed to unsubscribe",
+    "error_occurred": "An error occurred. Please try again."
   },
   "Error": {
     "title": "Something Went Wrong",
     "description": "Sorry, an unexpected error occurred. Please try again or return to the homepage.",
     "retry": "Try Again",
-    "backHome": "Back to Home"
+    "backHome": "Back to Home",
+    "error_description": "Sorry, an unexpected error occurred. Our team has been notified and will fix it soon.",
+    "error_details": "Error Details (Development Only)",
+    "reload_page": "Reload Page"
   },
   "NotFound": {
     "title": "Page Not Found",
@@ -150,5 +171,16 @@
     "aboutLink": "About",
     "featuresLink": "Features",
     "contactLink": "Contact"
+  },
+  "Accessibility": {
+    "skip_to_content": "Skip to main content"
+  },
+  "Theme": {
+    "switch_to_light": "Switch to light mode",
+    "switch_to_dark": "Switch to dark mode",
+    "light_mode": "Light mode",
+    "dark_mode": "Dark mode",
+    "sun_icon": "Sun",
+    "moon_icon": "Moon"
   }
 }

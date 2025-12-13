@@ -4,6 +4,12 @@ import { z } from "zod";
 import { randomUUID } from "crypto";
 import { checkRateLimit } from "@/lib/redis-rate-limit";
 import { escape } from "html-escaper";
+import {
+  validateCSRFToken,
+  getCSRFTokenFromHeaders,
+  getCSRFSecret,
+  createCSRFErrorResponse,
+} from "@/lib/csrf";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -54,6 +60,27 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
+    
+    // CSRF Protection
+    const csrfToken = getCSRFTokenFromHeaders(request.headers);
+    const csrfHash = body.csrfHash;
+    
+    if (!csrfToken || !csrfHash) {
+      console.log(`[${requestId}] Missing CSRF token or hash`);
+      return NextResponse.json(
+        createCSRFErrorResponse(),
+        { status: 403 }
+      );
+    }
+    
+    const secret = getCSRFSecret();
+    if (!validateCSRFToken(csrfToken, csrfHash, secret)) {
+      console.log(`[${requestId}] Invalid CSRF token`);
+      return NextResponse.json(
+        createCSRFErrorResponse(),
+        { status: 403 }
+      );
+    }
     
     // Honeypot check
     if (body.honeypot) {
@@ -121,6 +148,9 @@ export async function POST(request: NextRequest) {
               © 2025 TemanDifa.com. All rights reserved.<br>
               <a href="https://temandifa.com" style="color: #9ca3af;">Visit our website</a>
             </p>
+            <p style="color: #9ca3af; font-size: 11px; margin: 15px 0 0 0;">
+              Don't want to receive these emails? <a href="https://temandifa.com/unsubscribe?email=${encodeURIComponent(validatedData.email)}" style="color: #9ca3af; text-decoration: underline;">Unsubscribe</a>
+            </p>
           </div>
         </div>
       `,
@@ -145,6 +175,9 @@ LinkedIn: https://linkedin.com/company/temandifa-com
 ---
 © 2025 TemanDifa.com. All rights reserved.
 Visit our website: https://temandifa.com
+
+Don't want to receive these emails?
+Unsubscribe: https://temandifa.com/unsubscribe?email=${encodeURIComponent(validatedData.email)}
       `.trim(),
     });
 
@@ -164,8 +197,31 @@ Visit our website: https://temandifa.com
       resendId: data?.id,
     });
 
-    // TODO: Store email in database or Resend Audiences
-    // For now, we just send the welcome email
+    // Store email in Resend Audiences
+    let audienceId: string | undefined;
+    
+    if (process.env.RESEND_AUDIENCE_ID) {
+      try {
+        const { data: contactData, error: contactError } = await resend.contacts.create({
+          email: validatedData.email,
+          unsubscribed: false,
+          audienceId: process.env.RESEND_AUDIENCE_ID,
+        });
+
+        if (contactError) {
+          console.error(`[${requestId}] Failed to add to audience:`, contactError);
+          // Don't fail the request - welcome email was already sent
+        } else {
+          audienceId = contactData?.id;
+          console.log(`[${requestId}] Added to audience:`, contactData?.id);
+        }
+      } catch (audienceError) {
+        console.error(`[${requestId}] Audience error:`, audienceError);
+        // Don't fail the request - welcome email was already sent
+      }
+    } else {
+      console.warn(`[${requestId}] RESEND_AUDIENCE_ID not configured - subscriber not stored`);
+    }
 
     return NextResponse.json(
       {
@@ -173,6 +229,7 @@ Visit our website: https://temandifa.com
         message: "Successfully subscribed to newsletter",
         requestId,
         id: data?.id,
+        ...(audienceId && { audienceId }),
       },
       { 
         status: 200,

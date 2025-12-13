@@ -5,6 +5,12 @@ import { checkRateLimit, getRateLimitMethod } from "@/lib/redis-rate-limit";
 import { contactFormEmailTemplate } from "@/lib/email-templates";
 import { contactFormSchema } from "@/lib/validation-schemas";
 import { z } from "zod";
+import {
+  validateCSRFToken,
+  getCSRFTokenFromHeaders,
+  getCSRFSecret,
+  createCSRFErrorResponse,
+} from "@/lib/csrf";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -51,6 +57,27 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
+    
+    // CSRF Protection
+    const csrfToken = getCSRFTokenFromHeaders(request.headers);
+    const csrfHash = body.csrfHash;
+    
+    if (!csrfToken || !csrfHash) {
+      console.log(`[${requestId}] Missing CSRF token or hash`);
+      return NextResponse.json(
+        createCSRFErrorResponse(),
+        { status: 403 }
+      );
+    }
+    
+    const secret = getCSRFSecret();
+    if (!validateCSRFToken(csrfToken, csrfHash, secret)) {
+      console.log(`[${requestId}] Invalid CSRF token`);
+      return NextResponse.json(
+        createCSRFErrorResponse(),
+        { status: 403 }
+      );
+    }
     
     if (body.website) {
       console.log(`[${requestId}] Honeypot triggered for IP: ${ip}`);

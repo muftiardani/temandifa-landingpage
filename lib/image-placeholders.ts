@@ -44,15 +44,6 @@ export const blurDataURL = {
 } as const;
 
 /**
- * Helper function to get blur data URL by image name
- * @param imageName - Name of the image (e.g., "logo", "hero", "menuMockup")
- * @returns Base64 blur data URL
- */
-export function getBlurDataURL(imageName: keyof typeof blurDataURL): string {
-  return blurDataURL[imageName] || blurDataURL.default;
-}
-
-/**
  * Shimmer effect for loading images
  * Use as blurDataURL for a shimmer effect
  */

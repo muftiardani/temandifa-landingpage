@@ -58,8 +58,9 @@ export type NewsletterData = z.infer<typeof newsletterSchema>;
 /**
  * Validation error formatter
  * Converts Zod errors to user-friendly messages
+ * @internal - Used internally by safeValidate
  */
-export function formatValidationErrors(error: z.ZodError): Record<string, string> {
+function formatValidationErrors(error: z.ZodError): Record<string, string> {
   const errors: Record<string, string> = {};
   
   error.issues.forEach((issue) => {

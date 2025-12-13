@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 
 export default function NewsletterForm() {
@@ -12,6 +12,21 @@ export default function NewsletterForm() {
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
+  const [csrfToken, setCSRFToken] = useState<string>("");
+  const [csrfHash, setCSRFHash] = useState<string>("");
+
+  // Fetch CSRF token on mount
+  useEffect(() => {
+    fetch("/api/csrf")
+      .then((res) => res.json())
+      .then((data) => {
+        setCSRFToken(data.token);
+        setCSRFHash(data.hash);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch CSRF token:", error);
+      });
+  }, []);
 
   const newsletterSchema = z.object({
     email: z.string().email(t("validation.email_invalid")),
@@ -38,8 +53,12 @@ export default function NewsletterForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          csrfHash,
+        }),
       });
 
       const result = await response.json();
@@ -68,6 +87,7 @@ export default function NewsletterForm() {
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-3"
         aria-label="Newsletter subscription form"
+        aria-busy={isSubmitting}
       >
         <div>
           <label htmlFor="newsletter-email" className="sr-only">
@@ -169,6 +189,7 @@ export default function NewsletterForm() {
             className="p-3 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-lg"
             role="alert"
             aria-live="polite"
+            aria-atomic="true"
           >
             <p className="text-sm text-green-800 dark:text-green-300 font-medium">
               {t("success_msg")}
@@ -182,6 +203,7 @@ export default function NewsletterForm() {
             className="p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg"
             role="alert"
             aria-live="polite"
+            aria-atomic="true"
           >
             <p className="text-sm text-red-800 dark:text-red-300 font-medium">
               {t("error_msg")}
