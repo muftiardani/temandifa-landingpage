@@ -1,28 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateCSRFToken, hashCSRFToken, getCSRFSecret } from "@/lib/security/csrf";
 import { checkRateLimit } from "@/lib/security/redis-rate-limit";
+import { getClientIp } from "@/lib/security/ip-utils";
 import { logger } from "@/lib/logger";
+import { config } from "@/lib/config";
 
 const csrfLogger = logger.child("CSRF");
-function getClientIp(request: NextRequest): string {
-  const cfConnectingIp = request.headers.get("cf-connecting-ip");
-  if (cfConnectingIp) {
-    return cfConnectingIp;
-  }
-
-  const forwardedFor = request.headers.get("x-forwarded-for");
-  if (forwardedFor) {
-    return forwardedFor.split(",")[0].trim();
-  }
-
-  return request.headers.get("x-real-ip") || "unknown";
-}
 
 export async function GET(request: NextRequest) {
   try {
     const ip = getClientIp(request);
 
-    const rateLimitResult = await checkRateLimit(`csrf:${ip}`);
+    const rateLimitResult = await checkRateLimit(`csrf:${ip}`, config.rateLimit.csrf);
 
     if (!rateLimitResult.success) {
       const retryAfter = Math.ceil((rateLimitResult.reset - Date.now()) / 1000);

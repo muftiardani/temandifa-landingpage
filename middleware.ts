@@ -35,6 +35,8 @@ export default function middleware(request: NextRequest) {
     ].join("; ");
     
     response.headers.set("Content-Security-Policy", cspHeader);
+    
+    response.headers.set("Content-Security-Policy-Report-Only", cspHeader);
   }
   
   return response;

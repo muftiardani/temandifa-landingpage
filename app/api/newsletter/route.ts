@@ -3,6 +3,7 @@ import { Resend } from "resend";
 import { z } from "zod";
 import { randomUUID } from "crypto";
 import { checkRateLimit } from "@/lib/security/redis-rate-limit";
+import { getClientIp } from "@/lib/security/ip-utils";
 import { escape } from "html-escaper";
 import {
   validateCSRFToken,
@@ -21,16 +22,6 @@ const newsletterSchema = z.object({
   honeypot: z.string().optional(),
 });
 
-function getClientIp(request: NextRequest): string {
-  const forwardedFor = request.headers.get("x-forwarded-for");
-  
-  if (forwardedFor) {
-    return forwardedFor.split(',')[0].trim();
-  }
-  
-  return request.headers.get("x-real-ip") || "unknown";
-}
-
 export async function POST(request: NextRequest) {
   const requestId = randomUUID();
   const newsletterLogger = logger.withMetadata({ requestId, context: "Newsletter" });
@@ -38,7 +29,7 @@ export async function POST(request: NextRequest) {
   try {
     const ip = getClientIp(request);
 
-    const rateLimitResult = await checkRateLimit(ip);
+    const rateLimitResult = await checkRateLimit(ip, config.rateLimit.newsletter);
     
     if (!rateLimitResult.success) {
       const retryAfter = Math.ceil((rateLimitResult.reset - Date.now()) / 1000);

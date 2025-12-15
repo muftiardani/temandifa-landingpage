@@ -13,8 +13,10 @@ export const config = {
   },
 
   rateLimit: {
-    maxRequests: 3,
-    windowMs: 60 * 1000,
+    default: { maxRequests: 3, windowMs: 60 * 1000 },
+    contact: { maxRequests: 3, windowMs: 60 * 1000 },
+    newsletter: { maxRequests: 5, windowMs: 60 * 1000 },
+    csrf: { maxRequests: 10, windowMs: 60 * 1000 },
   },
 
   locales: ["en", "id"] as const,

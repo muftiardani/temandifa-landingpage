@@ -15,16 +15,19 @@ interface RateLimitData {
   [identifier: string]: RateLimitEntry;
 }
 
-interface RateLimitResult {
+export interface RateLimitResult {
   success: boolean;
   limit: number;
   remaining: number;
   reset: number;
 }
 
+export interface RateLimitConfig {
+  maxRequests: number;
+  windowMs: number;
+}
+
 const RATE_LIMIT_FILE = path.join(process.cwd(), 'tmp', 'rate-limit.json');
-const RATE_LIMIT_WINDOW = config.rateLimit.windowMs;
-const MAX_REQUESTS = config.rateLimit.maxRequests;
 
 async function ensureTmpDir() {
   const tmpDir = path.dirname(RATE_LIMIT_FILE);
@@ -50,12 +53,12 @@ async function writeRateLimitData(data: RateLimitData): Promise<void> {
   await writeFile(RATE_LIMIT_FILE, JSON.stringify(data, null, 2), 'utf-8');
 }
 
-function cleanupExpiredEntries(data: RateLimitData, now: number): RateLimitData {
+function cleanupExpiredEntries(data: RateLimitData, now: number, windowMs: number): RateLimitData {
   const cleaned: RateLimitData = {};
   
   for (const [identifier, entry] of Object.entries(data)) {
     const validTimestamps = entry.timestamps.filter(
-      (timestamp) => now - timestamp < RATE_LIMIT_WINDOW
+      (timestamp) => now - timestamp < windowMs
     );
     
     if (validTimestamps.length > 0) {
@@ -66,27 +69,31 @@ function cleanupExpiredEntries(data: RateLimitData, now: number): RateLimitData 
   return cleaned;
 }
 
-export async function checkRateLimit(identifier: string): Promise<RateLimitResult> {
+export async function checkRateLimit(
+  identifier: string,
+  rateLimitConfig?: RateLimitConfig
+): Promise<RateLimitResult> {
+  const { maxRequests, windowMs } = rateLimitConfig || config.rateLimit.default;
   const now = Date.now();
   
   let data = await readRateLimitData();
   
-  data = cleanupExpiredEntries(data, now);
+  data = cleanupExpiredEntries(data, now, windowMs);
   
   const entry = data[identifier] || { timestamps: [] };
   const validTimestamps = entry.timestamps.filter(
-    (timestamp) => now - timestamp < RATE_LIMIT_WINDOW
+    (timestamp) => now - timestamp < windowMs
   );
   
-  const remaining = Math.max(0, MAX_REQUESTS - validTimestamps.length);
+  const remaining = Math.max(0, maxRequests - validTimestamps.length);
   
   const oldestTimestamp = validTimestamps[0] || now;
-  const reset = oldestTimestamp + RATE_LIMIT_WINDOW;
+  const reset = oldestTimestamp + windowMs;
   
-  if (validTimestamps.length >= MAX_REQUESTS) {
+  if (validTimestamps.length >= maxRequests) {
     return {
       success: false,
-      limit: MAX_REQUESTS,
+      limit: maxRequests,
       remaining: 0,
       reset,
     };
@@ -99,7 +106,7 @@ export async function checkRateLimit(identifier: string): Promise<RateLimitResul
   
   return {
     success: true,
-    limit: MAX_REQUESTS,
+    limit: maxRequests,
     remaining: remaining - 1,
     reset,
   };

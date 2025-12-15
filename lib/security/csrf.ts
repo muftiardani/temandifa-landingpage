@@ -1,4 +1,4 @@
-import { createHash, randomBytes, timingSafeEqual } from "crypto";
+import { createHmac, randomBytes, timingSafeEqual } from "crypto";
 import { logger } from "@/lib/logger";
 
 const CSRF_TOKEN_TTL = 15 * 60 * 1000;
@@ -16,8 +16,8 @@ export function generateCSRFToken(): CSRFTokenData {
 }
 
 export function hashCSRFToken(token: string, secret: string): string {
-  return createHash("sha256")
-    .update(`${token}:${secret}`)
+  return createHmac("sha256", secret)
+    .update(token)
     .digest("base64url");
 }
 
@@ -91,8 +91,8 @@ export function generateSignedUnsubscribeUrl(
   const timestamp = Date.now();
   const data = `${email}:${timestamp}`;
 
-  const signature = createHash("sha256")
-    .update(`${data}:${secret}`)
+  const signature = createHmac("sha256", secret)
+    .update(data)
     .digest("base64url");
 
   const params = new URLSearchParams({
@@ -126,8 +126,8 @@ export function validateSignedUnsubscribeUrl(
 
   try {
     const data = `${email}:${timestamp}`;
-    const expectedSignature = createHash("sha256")
-      .update(`${data}:${secret}`)
+    const expectedSignature = createHmac("sha256", secret)
+      .update(data)
       .digest("base64url");
 
     const sigBuffer = Buffer.from(signature);

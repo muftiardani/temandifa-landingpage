@@ -1,18 +1,14 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
-import { checkRateLimit as fileBasedRateLimit } from "./rate-limit";
+import { checkRateLimit as fileBasedRateLimit, RateLimitConfig, RateLimitResult } from "./rate-limit";
 import { logger } from "@/lib/logger";
+import { config } from "@/lib/config";
 
-let ratelimit: Ratelimit | null = null;
+let redis: Redis | null = null;
 
 if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
   try {
-    ratelimit = new Ratelimit({
-      redis: Redis.fromEnv(),
-      limiter: Ratelimit.slidingWindow(3, "60 s"),
-      analytics: true,
-      prefix: "temandifa:ratelimit",
-    });
+    redis = Redis.fromEnv();
     logger.success("Redis rate limiting initialized", null, "Redis");
   } catch (error) {
     logger.error("Failed to initialize Redis rate limiting", error, "Redis");
@@ -27,16 +23,23 @@ if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) 
   logger.info("Redis not configured. Using file-based rate limiting (development only)", null, "Redis");
 }
 
-export interface RateLimitResult {
-  success: boolean;
-  limit: number;
-  remaining: number;
-  reset: number;
-}
+export type { RateLimitResult, RateLimitConfig };
 
-export async function checkRateLimit(identifier: string): Promise<RateLimitResult> {
-  if (ratelimit) {
+export async function checkRateLimit(
+  identifier: string,
+  rateLimitConfig?: RateLimitConfig
+): Promise<RateLimitResult> {
+  const { maxRequests, windowMs } = rateLimitConfig || config.rateLimit.default;
+  
+  if (redis) {
     try {
+      const ratelimit = new Ratelimit({
+        redis,
+        limiter: Ratelimit.slidingWindow(maxRequests, `${windowMs / 1000} s`),
+        analytics: true,
+        prefix: "temandifa:ratelimit",
+      });
+      
       const { success, limit, reset, remaining } = await ratelimit.limit(identifier);
       
       return {
@@ -50,9 +53,10 @@ export async function checkRateLimit(identifier: string): Promise<RateLimitResul
     }
   }
   
-  return fileBasedRateLimit(identifier);
+  return fileBasedRateLimit(identifier, rateLimitConfig);
 }
 
 export function getRateLimitMethod(): string {
-  return ratelimit ? "Redis (Upstash)" : "File-based";
+  return redis ? "Redis (Upstash)" : "File-based";
 }
+

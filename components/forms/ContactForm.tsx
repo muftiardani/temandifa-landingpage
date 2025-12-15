@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import {
   contactFormSchema,
@@ -21,19 +21,33 @@ export default function ContactForm() {
   const [csrfToken, setCSRFToken] = useState<string>("");
   const [csrfHash, setCSRFHash] = useState<string>("");
   const [csrfExpiresAt, setCSRFExpiresAt] = useState<number>(0);
+  const [isCSRFReady, setIsCSRFReady] = useState(false);
+
+  const fetchCSRFToken = useCallback(async () => {
+    try {
+      const res = await fetch("/api/csrf");
+      const data = await res.json();
+      setCSRFToken(data.token);
+      setCSRFHash(data.hash);
+      setCSRFExpiresAt(data.expiresAt);
+      setIsCSRFReady(true);
+    } catch (error) {
+      logger.error("Failed to fetch CSRF token", error, "Contact");
+      setIsCSRFReady(false);
+    }
+  }, []);
 
   useEffect(() => {
-    fetch("/api/csrf")
-      .then((res) => res.json())
-      .then((data) => {
-        setCSRFToken(data.token);
-        setCSRFHash(data.hash);
-        setCSRFExpiresAt(data.expiresAt);
-      })
-      .catch((error) => {
-        logger.error("Failed to fetch CSRF token", error, "Contact");
-      });
-  }, []);
+    fetchCSRFToken();
+    
+    const refreshInterval = setInterval(() => {
+      if (csrfExpiresAt && Date.now() > csrfExpiresAt - 60000) {
+        fetchCSRFToken();
+      }
+    }, 30000);
+
+    return () => clearInterval(refreshInterval);
+  }, [csrfExpiresAt, fetchCSRFToken]);
 
   const {
     register,
@@ -249,7 +263,7 @@ export default function ContactForm() {
       <div>
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !isCSRFReady}
           className={`w-full py-3 px-6 rounded-lg font-semibold text-white transition-all duration-200 shadow-lg ${
             isSubmitting
               ? "bg-gray-400 dark:bg-gray-600 cursor-not-allowed opacity-75"

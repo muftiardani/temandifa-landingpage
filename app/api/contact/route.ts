@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { randomUUID } from "crypto";
 import { checkRateLimit, getRateLimitMethod } from "@/lib/security/redis-rate-limit";
+import { getClientIp } from "@/lib/security/ip-utils";
 import { contactFormEmailTemplate } from "@/lib/email/templates";
 import { contactFormSchema } from "@/lib/validation/schemas";
 import { z } from "zod";
@@ -12,18 +13,9 @@ import {
   createCSRFErrorResponse,
 } from "@/lib/security/csrf";
 import { logger } from "@/lib/logger";
+import { config } from "@/lib/config";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-function getClientIp(request: NextRequest): string {
-  const forwardedFor = request.headers.get("x-forwarded-for");
-  
-  if (forwardedFor) {
-    return forwardedFor.split(',')[0].trim();
-  }
-  
-  return request.headers.get("x-real-ip") || "unknown";
-}
 
 export async function POST(request: NextRequest) {
   const requestId = randomUUID();
@@ -34,7 +26,7 @@ export async function POST(request: NextRequest) {
   try {
     const ip = getClientIp(request);
 
-    const rateLimitResult = await checkRateLimit(ip);
+    const rateLimitResult = await checkRateLimit(ip, config.rateLimit.contact);
     
     if (!rateLimitResult.success) {
       const retryAfter = Math.ceil((rateLimitResult.reset - Date.now()) / 1000);
