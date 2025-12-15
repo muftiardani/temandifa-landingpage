@@ -9,15 +9,15 @@ export default function ClosingHero() {
   const t = useTranslations("ClosingHero");
 
   return (
-    <section 
-      className="py-20 px-4 relative bg-white dark:bg-gray-950 transition-colors"
+    <section
+      className="relative bg-white px-4 py-20 transition-colors dark:bg-gray-950"
       aria-labelledby="closing-heading"
     >
-      <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-10 w-70 h-70 md:w-80 md:h-80 border-60 border-yellow-400 dark:border-yellow-500 rounded-full z-0"></div>
+      <div className="absolute top-0 left-0 z-0 h-70 w-70 -translate-x-1/2 -translate-y-10 rounded-full border-60 border-yellow-400 md:h-80 md:w-80 dark:border-yellow-500"></div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="relative z-10 mx-auto max-w-7xl">
         <motion.div
-          className="relative w-full h-[400px] md:h-[600px] rounded-[2.5rem] overflow-hidden shadow-2xl bg-blue-600 dark:bg-blue-700"
+          className="relative h-[400px] w-full overflow-hidden rounded-[2.5rem] bg-blue-600 shadow-2xl md:h-[600px] dark:bg-blue-700"
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -36,24 +36,24 @@ export default function ClosingHero() {
             <div className="absolute inset-0 bg-blue-900/10 dark:bg-blue-900/30"></div>
           </div>
 
-          <div className="absolute -top-12 left-0 w-full pt-16 md:pt-24 px-4 text-center z-20">
+          <div className="absolute -top-12 left-0 z-20 w-full px-4 pt-16 text-center md:pt-24">
             <motion.div
               initial="initial"
               whileInView="animate"
               viewport={viewportOptions}
               variants={fadeInUp}
             >
-              <h2 
+              <h2
                 id="closing-heading"
-                className="text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-md"
+                className="mb-6 text-4xl font-bold text-white drop-shadow-md md:text-5xl"
               >
                 {t("title_prefix")}
-                <span className="relative inline-block ml-1">
+                <span className="relative ml-1 inline-block">
                   {t("title_highlight")}
-                  <span className="absolute bottom-1 left-0 w-full h-3 bg-yellow-400 dark:bg-yellow-500 -z-10"></span>
+                  <span className="absolute bottom-1 left-0 -z-10 h-3 w-full bg-yellow-400 dark:bg-yellow-500"></span>
                 </span>
               </h2>
-              <p className="text-white text-lg md:text-2xl max-w-3xl mx-auto font-medium leading-relaxed drop-shadow-md">
+              <p className="mx-auto max-w-3xl text-lg leading-relaxed font-medium text-white drop-shadow-md md:text-2xl">
                 {t.rich("description", {
                   br: () => <br />,
                 })}
@@ -61,9 +61,9 @@ export default function ClosingHero() {
             </motion.div>
           </div>
 
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[500px] md:h-[550px] z-10">
+          <div className="absolute bottom-0 left-1/2 z-10 h-[500px] w-full max-w-4xl -translate-x-1/2 md:h-[550px]">
             <motion.div
-              className="relative w-full h-full"
+              className="relative h-full w-full"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}

@@ -68,7 +68,9 @@ export function getLocaleDisplayName(
   displayLocale: Locale
 ): string {
   const localeCode = getLocaleCode(displayLocale);
-  const displayNames = new Intl.DisplayNames([localeCode], { type: "language" });
+  const displayNames = new Intl.DisplayNames([localeCode], {
+    type: "language",
+  });
   return displayNames.of(getLocaleCode(targetLocale)) || targetLocale;
 }
 

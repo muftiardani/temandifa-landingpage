@@ -10,11 +10,11 @@ interface CounterProps {
   suffix?: string;
 }
 
-export default function Counter({ 
-  end, 
-  duration = 2000, 
+export default function Counter({
+  end,
+  duration = 2000,
   decimals = 0,
-  suffix = ""
+  suffix = "",
 }: CounterProps) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
@@ -31,7 +31,7 @@ export default function Counter({
       const progress = Math.min((currentTime - startTime) / duration, 1);
 
       const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      
+
       setCount(easeProgress * end);
 
       if (progress < 1) {
@@ -50,7 +50,8 @@ export default function Counter({
 
   return (
     <span ref={ref}>
-      {count.toFixed(decimals)}{suffix}
+      {count.toFixed(decimals)}
+      {suffix}
     </span>
   );
 }

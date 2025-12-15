@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { logger } from "./logger";
 
-
 const envSchema = z.object({
   NEXT_PUBLIC_GA_ID: z.string().min(1, "Google Analytics ID is required"),
   RESEND_API_KEY: z.string().min(1, "Resend API key is required"),
@@ -27,12 +26,19 @@ export function validateProductionEnv(): void {
     if (!csrfSecret || csrfSecret.length < 32) {
       throw new Error(
         "CSRF_SECRET is required in production and must be at least 32 characters. " +
-        "Generate with: node -e \"console.log(require('crypto').randomBytes(32).toString('base64'))\""
+          "Generate with: node -e \"console.log(require('crypto').randomBytes(32).toString('base64'))\""
       );
     }
-    
-    if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
-      logger.warn("Redis is recommended for production rate limiting", null, "Env");
+
+    if (
+      !process.env.UPSTASH_REDIS_REST_URL ||
+      !process.env.UPSTASH_REDIS_REST_TOKEN
+    ) {
+      logger.warn(
+        "Redis is recommended for production rate limiting",
+        null,
+        "Env"
+      );
     }
   }
 }
@@ -48,11 +54,15 @@ export function validateEnv(): Env {
       error.issues.forEach((issue) => {
         logger.error(`${issue.path.join(".")}: ${issue.message}`, null, "Env");
       });
-      
+
       if (process.env.NODE_ENV === "development") {
-        logger.info("Tip: Copy .env.example to .env and fill in the values", null, "Env");
+        logger.info(
+          "Tip: Copy .env.example to .env and fill in the values",
+          null,
+          "Env"
+        );
       }
-      
+
       throw new Error("Environment validation failed. Check the errors above.");
     }
     throw error;

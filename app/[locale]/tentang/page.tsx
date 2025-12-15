@@ -46,9 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title: isIndonesian
-        ? "Tentang Kami - TemanDifa"
-        : "About Us - TemanDifa",
+      title: isIndonesian ? "Tentang Kami - TemanDifa" : "About Us - TemanDifa",
       description: isIndonesian
         ? "Memberdayakan penyandang disabilitas melalui teknologi AI inovatif"
         : "Empowering people with disabilities through innovative AI technology",
@@ -67,9 +65,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary",
-      title: isIndonesian
-        ? "Tentang Kami - TemanDifa"
-        : "About Us - TemanDifa",
+      title: isIndonesian ? "Tentang Kami - TemanDifa" : "About Us - TemanDifa",
       description: isIndonesian
         ? "Memberdayakan difabel melalui teknologi AI"
         : "Empowering disabled through AI technology",

@@ -23,23 +23,24 @@ export default function SentryInitializer() {
     try {
       Sentry.init({
         dsn: dsn,
-        
+
         environment: process.env.NODE_ENV || "development",
-        
+
         tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
-        
+
         debug: process.env.NODE_ENV === "development",
-        
+
         replaysOnErrorSampleRate: 1.0,
-        replaysSessionSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
-        
+        replaysSessionSampleRate:
+          process.env.NODE_ENV === "production" ? 0.1 : 1.0,
+
         integrations: [
           Sentry.replayIntegration({
             maskAllText: true,
             blockAllMedia: true,
           }),
         ],
-        
+
         ignoreErrors: [
           "top.GLOBALS",
           "originalCreateNotification",
@@ -53,12 +54,16 @@ export default function SentryInitializer() {
       });
 
       sentryInitialized = true;
-      
-      logger.success("Sentry manually initialized", {
-        dsn: `${dsn.substring(0, 30)}...`,
-        environment: process.env.NODE_ENV,
-        debug: process.env.NODE_ENV === "development",
-      }, "Sentry");
+
+      logger.success(
+        "Sentry manually initialized",
+        {
+          dsn: `${dsn.substring(0, 30)}...`,
+          environment: process.env.NODE_ENV,
+          debug: process.env.NODE_ENV === "development",
+        },
+        "Sentry"
+      );
 
       if (typeof window !== "undefined") {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -43,19 +43,21 @@ export type NewsletterData = z.infer<typeof newsletterSchema>;
 
 function formatValidationErrors(error: z.ZodError): Record<string, string> {
   const errors: Record<string, string> = {};
-  
+
   error.issues.forEach((issue) => {
     const path = issue.path.join(".");
     errors[path] = issue.message;
   });
-  
+
   return errors;
 }
 
 export function safeValidate<T>(
   schema: z.ZodSchema<T>,
   data: unknown
-): { success: true; data: T } | { success: false; errors: Record<string, string> } {
+):
+  | { success: true; data: T }
+  | { success: false; errors: Record<string, string> } {
   try {
     const validated = schema.parse(data);
     return { success: true, data: validated };

@@ -82,18 +82,3 @@ export function useFocusTrap<T extends HTMLElement = HTMLElement>(
 
   return containerRef;
 }
-
-export function useFocusTrapWithToggle<T extends HTMLElement = HTMLElement>(
-  isActive: boolean,
-  toggleButtonRef: React.RefObject<HTMLElement | null>
-) {
-  const containerRef = useFocusTrap<T>(isActive);
-
-  useEffect(() => {
-    if (!isActive && toggleButtonRef.current) {
-      toggleButtonRef.current.focus();
-    }
-  }, [isActive, toggleButtonRef]);
-
-  return containerRef;
-}

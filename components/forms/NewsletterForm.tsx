@@ -36,7 +36,7 @@ export default function NewsletterForm() {
 
   useEffect(() => {
     fetchCSRFToken();
-    
+
     const refreshInterval = setInterval(() => {
       if (csrfExpiresAt && Date.now() > csrfExpiresAt - 60000) {
         fetchCSRFToken();
@@ -62,48 +62,55 @@ export default function NewsletterForm() {
     resolver: zodResolver(newsletterSchema),
   });
 
-  const onSubmit = async (data: NewsletterFormData) => {
-    setIsSubmitting(true);
-    setSubmitStatus("idle");
-    trackForm("newsletter", "submit");
+  const onSubmit = useCallback(
+    async (data: NewsletterFormData) => {
+      setIsSubmitting(true);
+      setSubmitStatus("idle");
+      trackForm("newsletter", "submit");
 
-    try {
-      const response = await fetch("/api/newsletter", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": csrfToken,
-        },
-        body: JSON.stringify({
-          ...data,
-          csrfHash,
-          csrfExpiresAt,
-        }),
-      });
+      try {
+        const response = await fetch("/api/newsletter", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": csrfToken,
+          },
+          body: JSON.stringify({
+            ...data,
+            csrfHash,
+            csrfExpiresAt,
+          }),
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (!response.ok) {
-        throw new Error(result.error || "Failed to subscribe");
+        if (!response.ok) {
+          throw new Error(result.error || "Failed to subscribe");
+        }
+
+        setSubmitStatus("success");
+        reset();
+        trackForm("newsletter", "success");
+        trackNewsletter(true);
+
+        setTimeout(() => setSubmitStatus("idle"), 5000);
+      } catch (error) {
+        logger.error("Error subscribing to newsletter", error, "Newsletter");
+        setSubmitStatus("error");
+        trackForm(
+          "newsletter",
+          "error",
+          error instanceof Error ? error.message : "Unknown error"
+        );
+        trackNewsletter(false);
+
+        setTimeout(() => setSubmitStatus("idle"), 5000);
+      } finally {
+        setIsSubmitting(false);
       }
-
-      setSubmitStatus("success");
-      reset();
-      trackForm("newsletter", "success");
-      trackNewsletter(true);
-
-      setTimeout(() => setSubmitStatus("idle"), 5000);
-    } catch (error) {
-      logger.error("Error subscribing to newsletter", error, "Newsletter");
-      setSubmitStatus("error");
-      trackForm("newsletter", "error", error instanceof Error ? error.message : "Unknown error");
-      trackNewsletter(false);
-      
-      setTimeout(() => setSubmitStatus("idle"), 5000);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    },
+    [csrfToken, csrfHash, csrfExpiresAt, reset, trackForm, trackNewsletter]
+  );
 
   return (
     <div className="w-full max-w-md">
@@ -117,32 +124,34 @@ export default function NewsletterForm() {
           <label htmlFor="newsletter-email" className="sr-only">
             {t("label_email")}
           </label>
-          <div className="flex flex-col sm:flex-row gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <input
               id="newsletter-email"
               type="email"
               {...register("email")}
               disabled={isSubmitting || submitStatus === "success"}
               autoComplete="email"
-              className={`flex-1 px-4 py-2.5 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition disabled:opacity-50 disabled:cursor-not-allowed ${
+              className={`flex-1 rounded-lg border bg-white px-4 py-2.5 text-gray-900 transition focus:border-transparent focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-800 dark:text-gray-100 dark:focus:ring-blue-400 ${
                 errors.email
                   ? "border-red-500 dark:border-red-400"
                   : "border-gray-300 dark:border-gray-600"
               }`}
               placeholder={t("placeholder_email")}
               aria-invalid={errors.email ? "true" : "false"}
-              aria-describedby={errors.email ? "newsletter-email-error" : undefined}
+              aria-describedby={
+                errors.email ? "newsletter-email-error" : undefined
+              }
             />
-            
+
             {/* Honeypot field - hidden from users */}
             <input
               type="text"
               {...register("honeypot")}
-              style={{ 
-                position: 'absolute',
-                left: '-9999px',
-                width: '1px',
-                height: '1px'
+              style={{
+                position: "absolute",
+                left: "-9999px",
+                width: "1px",
+                height: "1px",
               }}
               tabIndex={-1}
               autoComplete="off"
@@ -151,11 +160,13 @@ export default function NewsletterForm() {
 
             <button
               type="submit"
-              disabled={isSubmitting || submitStatus === "success" || !isCSRFReady}
-              className={`px-6 py-2.5 rounded-lg font-semibold text-white transition-all duration-200 shadow-md whitespace-nowrap ${
+              disabled={
+                isSubmitting || submitStatus === "success" || !isCSRFReady
+              }
+              className={`rounded-lg px-6 py-2.5 font-semibold whitespace-nowrap text-white shadow-md transition-all duration-200 ${
                 isSubmitting || submitStatus === "success"
-                  ? "bg-gray-400 dark:bg-gray-600 cursor-not-allowed opacity-75"
-                  : "bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 active:scale-95 hover:shadow-lg"
+                  ? "cursor-not-allowed bg-gray-400 opacity-75 dark:bg-gray-600"
+                  : "bg-blue-600 hover:bg-blue-700 hover:shadow-lg active:scale-95 dark:bg-blue-700 dark:hover:bg-blue-800"
               }`}
               aria-label="Subscribe to newsletter"
               aria-busy={isSubmitting}
@@ -163,7 +174,7 @@ export default function NewsletterForm() {
               {isSubmitting ? (
                 <span className="flex items-center justify-center gap-2">
                   <svg
-                    className="animate-spin h-5 w-5"
+                    className="h-5 w-5 animate-spin"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -186,8 +197,16 @@ export default function NewsletterForm() {
                 </span>
               ) : submitStatus === "success" ? (
                 <span className="flex items-center justify-center gap-2">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  <svg
+                    className="h-5 w-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   {t("btn_subscribed")}
                 </span>
@@ -196,7 +215,7 @@ export default function NewsletterForm() {
               )}
             </button>
           </div>
-          
+
           {errors.email && (
             <p
               id="newsletter-email-error"
@@ -211,12 +230,12 @@ export default function NewsletterForm() {
         {/* Success Message */}
         {submitStatus === "success" && (
           <div
-            className="p-3 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-lg"
+            className="rounded-lg border border-green-200 bg-green-50 p-3 dark:border-green-700 dark:bg-green-900/30"
             role="alert"
             aria-live="polite"
             aria-atomic="true"
           >
-            <p className="text-sm text-green-800 dark:text-green-300 font-medium">
+            <p className="text-sm font-medium text-green-800 dark:text-green-300">
               {t("success_msg")}
             </p>
           </div>
@@ -225,12 +244,12 @@ export default function NewsletterForm() {
         {/* Error Message */}
         {submitStatus === "error" && (
           <div
-            className="p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg"
+            className="rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-700 dark:bg-red-900/30"
             role="alert"
             aria-live="polite"
             aria-atomic="true"
           >
-            <p className="text-sm text-red-800 dark:text-red-300 font-medium">
+            <p className="text-sm font-medium text-red-800 dark:text-red-300">
               {t("error_msg")}
             </p>
           </div>

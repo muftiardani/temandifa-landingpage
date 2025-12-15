@@ -177,7 +177,7 @@ export default async function RootLayout({
   };
 
   const accessibilityT = await getTranslations("Accessibility");
-  
+
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
@@ -204,7 +204,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
         <SentryInitializer />
-        
+
         <ScrollProgress />
         <SkipToContent text={accessibilityT("skip_to_content")} />
         <NextIntlClientProvider messages={messages}>

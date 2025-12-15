@@ -5,23 +5,23 @@ export default function NotFound() {
   const t = useTranslations("NotFound");
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-white dark:bg-gray-950">
-      <div className="max-w-md w-full text-center">
-        <h1 className="text-8xl md:text-9xl font-bold text-blue-600 dark:text-blue-400 mb-4">
+    <div className="flex min-h-screen items-center justify-center bg-white px-4 dark:bg-gray-950">
+      <div className="w-full max-w-md text-center">
+        <h1 className="mb-4 text-8xl font-bold text-blue-600 md:text-9xl dark:text-blue-400">
           404
         </h1>
 
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+        <h2 className="mb-4 text-2xl font-bold text-gray-900 md:text-3xl dark:text-gray-100">
           {t("title")}
         </h2>
 
-        <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+        <p className="mb-8 leading-relaxed text-gray-600 dark:text-gray-400">
           {t("description")}
         </p>
 
         <div className="mb-8 flex justify-center">
           <svg
-            className="w-48 h-48 text-gray-300 dark:text-gray-700"
+            className="h-48 w-48 text-gray-300 dark:text-gray-700"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -37,31 +37,31 @@ export default function NotFound() {
 
         <Link
           href="/"
-          className="inline-block bg-blue-600 dark:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors shadow-md hover:shadow-lg"
+          className="inline-block rounded-lg bg-blue-600 px-8 py-3 font-semibold text-white shadow-md transition-colors hover:bg-blue-700 hover:shadow-lg dark:bg-blue-700 dark:hover:bg-blue-800"
         >
           {t("backHome")}
         </Link>
 
-        <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+        <div className="mt-8 border-t border-gray-200 pt-8 dark:border-gray-700">
+          <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
             {t("quickLinks")}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/tentang"
-              className="text-blue-600 dark:text-blue-400 hover:underline"
+              className="text-blue-600 hover:underline dark:text-blue-400"
             >
               {t("aboutLink")}
             </Link>
             <Link
               href="/produk"
-              className="text-blue-600 dark:text-blue-400 hover:underline"
+              className="text-blue-600 hover:underline dark:text-blue-400"
             >
               {t("featuresLink")}
             </Link>
             <Link
               href="/kontak"
-              className="text-blue-600 dark:text-blue-400 hover:underline"
+              className="text-blue-600 hover:underline dark:text-blue-400"
             >
               {t("contactLink")}
             </Link>

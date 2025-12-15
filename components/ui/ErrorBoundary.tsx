@@ -16,30 +16,36 @@ interface State {
   error?: Error;
 }
 
-function ErrorFallback({ error, onReload }: { error?: Error; onReload: () => void }) {
+function ErrorFallback({
+  error,
+  onReload,
+}: {
+  error?: Error;
+  onReload: () => void;
+}) {
   const t = useTranslations("Error");
-  
+
   return (
-    <div 
-      className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4"
+    <div
+      className="flex min-h-screen items-center justify-center bg-gray-50 px-4 dark:bg-gray-900"
       role="alert"
       aria-live="assertive"
       aria-atomic="true"
     >
-      <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
-        <div className="text-6xl mb-4">⚠️</div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+      <div className="w-full max-w-md rounded-lg bg-white p-8 text-center shadow-lg dark:bg-gray-800">
+        <div className="mb-4 text-6xl">⚠️</div>
+        <h2 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
           {t("title")}
         </h2>
-        <p className="text-gray-600 dark:text-gray-300 mb-6">
+        <p className="mb-6 text-gray-600 dark:text-gray-300">
           {t("error_description")}
         </p>
         {process.env.NODE_ENV === "development" && error && (
-          <details className="text-left mb-6 p-4 bg-red-50 dark:bg-red-900/20 rounded border border-red-200 dark:border-red-800">
-            <summary className="cursor-pointer font-semibold text-red-800 dark:text-red-300 mb-2">
+          <details className="mb-6 rounded border border-red-200 bg-red-50 p-4 text-left dark:border-red-800 dark:bg-red-900/20">
+            <summary className="mb-2 cursor-pointer font-semibold text-red-800 dark:text-red-300">
               {t("error_details")}
             </summary>
-            <pre className="text-xs text-red-700 dark:text-red-400 overflow-auto">
+            <pre className="overflow-auto text-xs text-red-700 dark:text-red-400">
               {error.toString()}
               {"\n\n"}
               {error.stack}
@@ -48,7 +54,7 @@ function ErrorFallback({ error, onReload }: { error?: Error; onReload: () => voi
         )}
         <button
           onClick={onReload}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition"
+          className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
         >
           {t("reload_page")}
         </button>
@@ -96,7 +102,7 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         this.props.fallback || (
-          <ErrorFallback 
+          <ErrorFallback
             error={this.state.error}
             onReload={() => window.location.reload()}
           />

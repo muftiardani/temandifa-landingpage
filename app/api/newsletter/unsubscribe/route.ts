@@ -17,7 +17,10 @@ const unsubscribeSchema = z.object({
 
 export async function POST(request: NextRequest) {
   const requestId = randomUUID();
-  const unsubLogger = logger.withMetadata({ requestId, context: "Unsubscribe" });
+  const unsubLogger = logger.withMetadata({
+    requestId,
+    context: "Unsubscribe",
+  });
 
   try {
     const ip = getClientIp(request);
@@ -60,7 +63,8 @@ export async function POST(request: NextRequest) {
       unsubLogger.warn(`Invalid signature: ${signatureValidation.error}`);
       return NextResponse.json(
         {
-          error: signatureValidation.error || "Invalid or expired unsubscribe link",
+          error:
+            signatureValidation.error || "Invalid or expired unsubscribe link",
           requestId,
         },
         { status: 403 }
@@ -69,12 +73,16 @@ export async function POST(request: NextRequest) {
 
     return await processUnsubscribe(validatedData.email, requestId);
   } catch (error) {
-    unsubLogger.error("Unsubscribe failed", error instanceof Error ? error : undefined);
+    unsubLogger.error(
+      "Unsubscribe failed",
+      error instanceof Error ? error : undefined
+    );
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {
-          error: "Invalid unsubscribe link. Please use the link from your email.",
+          error:
+            "Invalid unsubscribe link. Please use the link from your email.",
           requestId,
         },
         { status: 400 }
@@ -95,8 +103,11 @@ async function processUnsubscribe(
   email: string,
   requestId: string
 ): Promise<NextResponse> {
-  const unsubLogger = logger.withMetadata({ requestId, context: "Unsubscribe" });
-  
+  const unsubLogger = logger.withMetadata({
+    requestId,
+    context: "Unsubscribe",
+  });
+
   if (process.env.RESEND_AUDIENCE_ID) {
     try {
       const { data: contacts } = await resend.contacts.list({
@@ -118,7 +129,10 @@ async function processUnsubscribe(
         unsubLogger.info(`Email not found in audience: ${email}`);
       }
     } catch (audienceError) {
-      unsubLogger.error("Audience removal failed", audienceError instanceof Error ? audienceError : undefined);
+      unsubLogger.error(
+        "Audience removal failed",
+        audienceError instanceof Error ? audienceError : undefined
+      );
     }
   }
 

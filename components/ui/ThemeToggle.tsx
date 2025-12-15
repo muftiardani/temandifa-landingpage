@@ -18,7 +18,7 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 animate-pulse" />
+      <div className="h-10 w-10 animate-pulse rounded-lg bg-gray-100 dark:bg-gray-800" />
     );
   }
 
@@ -31,11 +31,9 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      className="rounded-lg p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
       aria-label={
-        resolvedTheme === "dark"
-          ? t("switch_to_light")
-          : t("switch_to_dark")
+        resolvedTheme === "dark" ? t("switch_to_light") : t("switch_to_dark")
       }
       title={resolvedTheme === "dark" ? t("light_mode") : t("dark_mode")}
     >

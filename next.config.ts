@@ -7,7 +7,7 @@ import { withSentryConfig } from "@sentry/nextjs";
 const withNextIntl = createNextIntlPlugin();
 
 const bundleAnalyzer = withBundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
+  enabled: process.env.ANALYZE === "true",
 });
 
 /** @type {import('next').NextConfig} */
@@ -94,7 +94,6 @@ const nextConfig: NextConfig = {
 };
 
 const sentryWebpackPluginOptions = {
-
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT,
 
@@ -116,7 +115,10 @@ const sentryWebpackPluginOptions = {
 };
 
 const configWithSentry = process.env.NEXT_PUBLIC_SENTRY_DSN
-  ? withSentryConfig(bundleAnalyzer(withNextIntl(nextConfig)), sentryWebpackPluginOptions)
+  ? withSentryConfig(
+      bundleAnalyzer(withNextIntl(nextConfig)),
+      sentryWebpackPluginOptions
+    )
   : bundleAnalyzer(withNextIntl(nextConfig));
 
 export default configWithSentry;

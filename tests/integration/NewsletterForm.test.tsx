@@ -8,7 +8,7 @@ global.fetch = vi.fn() as unknown as typeof fetch;
 describe("NewsletterForm Integration", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
       ok: true,
       json: async () => ({
@@ -60,7 +60,7 @@ describe("NewsletterForm Integration", () => {
 
     const form = screen.getByRole("form");
     const honeypotField = form.querySelector('input[name="honeypot"]');
-    
+
     expect(honeypotField).toBeInTheDocument();
     expect(honeypotField).toHaveAttribute("tabIndex", "-1");
     expect(honeypotField).toHaveAttribute("aria-hidden", "true");

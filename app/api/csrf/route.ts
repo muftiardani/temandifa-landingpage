@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { generateCSRFToken, hashCSRFToken, getCSRFSecret } from "@/lib/security/csrf";
+import {
+  generateCSRFToken,
+  hashCSRFToken,
+  getCSRFSecret,
+} from "@/lib/security/csrf";
 import { checkRateLimit } from "@/lib/security/redis-rate-limit";
 import { getClientIp } from "@/lib/security/ip-utils";
 import { logger } from "@/lib/logger";
@@ -11,7 +15,10 @@ export async function GET(request: NextRequest) {
   try {
     const ip = getClientIp(request);
 
-    const rateLimitResult = await checkRateLimit(`csrf:${ip}`, config.rateLimit.csrf);
+    const rateLimitResult = await checkRateLimit(
+      `csrf:${ip}`,
+      config.rateLimit.csrf
+    );
 
     if (!rateLimitResult.success) {
       const retryAfter = Math.ceil((rateLimitResult.reset - Date.now()) / 1000);
@@ -46,7 +53,7 @@ export async function GET(request: NextRequest) {
         status: 200,
         headers: {
           "Cache-Control": "no-store, no-cache, must-revalidate",
-          "Pragma": "no-cache",
+          Pragma: "no-cache",
           "X-RateLimit-Limit": rateLimitResult.limit.toString(),
           "X-RateLimit-Remaining": rateLimitResult.remaining.toString(),
           "X-RateLimit-Reset": rateLimitResult.reset.toString(),
@@ -54,7 +61,10 @@ export async function GET(request: NextRequest) {
       }
     );
   } catch (error) {
-    csrfLogger.error("Token generation failed", error instanceof Error ? error : undefined);
+    csrfLogger.error(
+      "Token generation failed",
+      error instanceof Error ? error : undefined
+    );
 
     return NextResponse.json(
       {

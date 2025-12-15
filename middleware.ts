@@ -10,13 +10,13 @@ const intlMiddleware = createMiddleware({
 export default function middleware(request: NextRequest) {
   const nonceBytes = crypto.getRandomValues(new Uint8Array(16));
   const nonce = Buffer.from(nonceBytes).toString("base64");
-  
+
   const response = intlMiddleware(request);
-  
+
   response.headers.set("x-nonce", nonce);
-  
+
   const isDev = process.env.NODE_ENV === "development";
-  
+
   if (!isDev) {
     const cspHeader = [
       "default-src 'self'",
@@ -33,22 +33,22 @@ export default function middleware(request: NextRequest) {
       "form-action 'self'",
       "upgrade-insecure-requests",
     ].join("; ");
-    
+
     response.headers.set("Content-Security-Policy", cspHeader);
-    
+
     response.headers.set("Content-Security-Policy-Report-Only", cspHeader);
   }
-  
+
   return response;
 }
 
 export const config = {
   matcher: [
-    '/',
-    '/(id|en)',
-    '/(id|en)/tentang',
-    '/(id|en)/produk',
-    '/(id|en)/kontak',
-    '/(id|en)/unsubscribe',
+    "/",
+    "/(id|en)",
+    "/(id|en)/tentang",
+    "/(id|en)/produk",
+    "/(id|en)/kontak",
+    "/(id|en)/unsubscribe",
   ],
 };

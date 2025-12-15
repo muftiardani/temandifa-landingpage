@@ -14,18 +14,18 @@ export default function Footer() {
 
   return (
     <footer
-      className="bg-[#3b82f6] dark:bg-gray-900 text-white pt-16 pb-8 px-4 sm:px-8 border-t border-blue-400 dark:border-gray-700 transition-colors"
+      className="border-t border-blue-400 bg-[#3b82f6] px-4 pt-16 pb-8 text-white transition-colors sm:px-8 dark:border-gray-700 dark:bg-gray-900"
       role="contentinfo"
       aria-label="Footer situs"
     >
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1.5fr] gap-8 lg:gap-12 border-b border-blue-400 dark:border-gray-700 pb-12 mb-8">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-8 grid grid-cols-1 gap-8 border-b border-blue-400 pb-12 md:grid-cols-[1.5fr_1fr_1fr_1.5fr] lg:gap-12 dark:border-gray-700">
           <div className="space-y-4">
             <div className="text-2xl font-bold text-white dark:text-blue-400">
               Teman
               <span className="text-yellow-500 dark:text-yellow-400">Difa</span>
             </div>
-            <p className="text-blue-100 dark:text-gray-300 text-sm font-semibold leading-relaxed">
+            <p className="text-sm leading-relaxed font-semibold text-blue-100 dark:text-gray-300">
               {t.rich("tagline", {
                 br: () => <br />,
               })}
@@ -33,12 +33,12 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-bold text-lg mb-4">{t("menu_title")}</h4>
-            <ul className="space-y-3 text-blue-100 dark:text-gray-300 font-semibold text-sm">
+            <h4 className="mb-4 text-lg font-bold">{t("menu_title")}</h4>
+            <ul className="space-y-3 text-sm font-semibold text-blue-100 dark:text-gray-300">
               <li>
                 <Link
                   href="/"
-                  className="hover:text-white hover:underline transition"
+                  className="transition hover:text-white hover:underline"
                   onClick={() => trackNavigation("Home", "/")}
                 >
                   {navT("home")}
@@ -47,7 +47,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/tentang"
-                  className="hover:text-white hover:underline transition"
+                  className="transition hover:text-white hover:underline"
                   onClick={() => trackNavigation("About", "/tentang")}
                 >
                   {navT("about")}
@@ -56,7 +56,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/produk"
-                  className="hover:text-white hover:underline transition"
+                  className="transition hover:text-white hover:underline"
                   onClick={() => trackNavigation("Features", "/produk")}
                 >
                   {navT("features")}
@@ -66,13 +66,13 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-lg mb-4">{t("social_title")}</h4>
+            <h4 className="mb-4 text-lg font-semibold">{t("social_title")}</h4>
             <div className="flex items-center gap-4">
               <a
                 href={config.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/10 p-2 rounded-full hover:bg-white/20 transition-all hover:scale-110"
+                className="rounded-full bg-white/10 p-2 transition-all hover:scale-110 hover:bg-white/20"
                 aria-label="Kunjungi Instagram TemanDifa"
                 onClick={() => trackSocial("instagram")}
               >
@@ -86,7 +86,7 @@ export default function Footer() {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="w-5 h-5"
+                  className="h-5 w-5"
                 >
                   <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
                   <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
@@ -98,7 +98,7 @@ export default function Footer() {
                 href={config.social.tiktok}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/10 p-2 rounded-full hover:bg-white/20 transition-all hover:scale-110"
+                className="rounded-full bg-white/10 p-2 transition-all hover:scale-110 hover:bg-white/20"
                 aria-label="Kunjungi TikTok TemanDifa"
                 onClick={() => trackSocial("tiktok")}
               >
@@ -112,7 +112,7 @@ export default function Footer() {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="w-5 h-5"
+                  className="h-5 w-5"
                 >
                   <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
                 </svg>
@@ -122,7 +122,7 @@ export default function Footer() {
                 href={config.social.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/10 p-2 rounded-full hover:bg-white/20 transition-all hover:scale-110"
+                className="rounded-full bg-white/10 p-2 transition-all hover:scale-110 hover:bg-white/20"
                 aria-label="Kunjungi LinkedIn TemanDifa"
                 onClick={() => trackSocial("linkedin")}
               >
@@ -136,7 +136,7 @@ export default function Footer() {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="w-5 h-5"
+                  className="h-5 w-5"
                 >
                   <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                   <rect width="4" height="12" x="2" y="9" />
@@ -147,19 +147,18 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-bold text-lg mb-4">{newsletterT("title")}</h4>
-            <p className="text-blue-100 dark:text-gray-300 text-sm mb-4">
+            <h4 className="mb-4 text-lg font-bold">{newsletterT("title")}</h4>
+            <p className="mb-4 text-sm text-blue-100 dark:text-gray-300">
               {newsletterT("description")}
             </p>
             <NewsletterForm />
           </div>
         </div>
 
-        <div className="text-center text-blue-200 dark:text-gray-400 text-sm font-medium">
+        <div className="text-center text-sm font-medium text-blue-200 dark:text-gray-400">
           {t("copyright")}
         </div>
       </div>
     </footer>
   );
 }
-

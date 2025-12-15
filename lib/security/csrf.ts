@@ -16,9 +16,7 @@ export function generateCSRFToken(): CSRFTokenData {
 }
 
 export function hashCSRFToken(token: string, secret: string): string {
-  return createHmac("sha256", secret)
-    .update(token)
-    .digest("base64url");
+  return createHmac("sha256", secret).update(token).digest("base64url");
 }
 
 export function validateCSRFToken(
@@ -37,7 +35,7 @@ export function validateCSRFToken(
 
   try {
     const tokenHash = hashCSRFToken(token, secret);
-    
+
     const tokenBuffer = Buffer.from(tokenHash);
     const expectedBuffer = Buffer.from(expectedHash);
 
@@ -53,12 +51,14 @@ export function validateCSRFToken(
 
 export function getCSRFSecret(): string {
   const secret = process.env.CSRF_SECRET;
-  
+
   if (!secret) {
     if (process.env.NODE_ENV === "production") {
-      throw new Error("CSRF_SECRET environment variable is required in production");
+      throw new Error(
+        "CSRF_SECRET environment variable is required in production"
+      );
     }
-    
+
     logger.warn(
       "Using default CSRF secret. Set CSRF_SECRET environment variable for production!",
       null,
@@ -66,7 +66,7 @@ export function getCSRFSecret(): string {
     );
     return "development-csrf-secret-change-in-production";
   }
-  
+
   return secret;
 }
 

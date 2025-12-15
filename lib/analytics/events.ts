@@ -31,34 +31,35 @@ export const EventCategory = {
   ERROR: "error",
 } as const;
 
-export type EventCategoryType = (typeof EventCategory)[keyof typeof EventCategory];
+export type EventCategoryType =
+  (typeof EventCategory)[keyof typeof EventCategory];
 
 export const EventName = {
   CTA_CLICK: "cta_click",
   DOWNLOAD_CLICK: "download_click",
   LEARN_MORE_CLICK: "learn_more_click",
-  
+
   PAGE_VIEW: "page_view",
   NAVIGATION_CLICK: "navigation_click",
   LANGUAGE_SWITCH: "language_switch",
   THEME_SWITCH: "theme_switch",
-  
+
   FORM_START: "form_start",
   FORM_SUBMIT: "form_submit",
   FORM_ERROR: "form_error",
   FORM_SUCCESS: "form_success",
-  
+
   SOCIAL_CLICK: "social_click",
   SHARE_CLICK: "share_click",
-  
+
   NEWSLETTER_SUBSCRIBE: "newsletter_subscribe",
   NEWSLETTER_UNSUBSCRIBE: "newsletter_unsubscribe",
-  
+
   CONTACT_SUBMIT: "contact_submit",
   EMAIL_CLICK: "email_click",
-  
+
   SCROLL_DEPTH: "scroll_depth",
-  
+
   ERROR_BOUNDARY: "error_boundary",
   API_ERROR: "api_error",
 } as const;
@@ -229,8 +230,9 @@ export function trackError(
   errorMessage: string,
   errorStack?: string
 ): void {
-  const eventName = errorType === "boundary" ? EventName.ERROR_BOUNDARY : EventName.API_ERROR;
-  
+  const eventName =
+    errorType === "boundary" ? EventName.ERROR_BOUNDARY : EventName.API_ERROR;
+
   trackEvent(eventName, {
     category: EventCategory.ERROR,
     label: errorMessage,

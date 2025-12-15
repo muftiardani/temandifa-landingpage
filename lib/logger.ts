@@ -45,7 +45,7 @@ class Logger {
 
   constructor() {
     const logLevel = (process.env.LOG_LEVEL as LogLevel) || "debug";
-    
+
     this.config = {
       isDevelopment: process.env.NODE_ENV === "development",
       isProduction: process.env.NODE_ENV === "production",
@@ -69,7 +69,9 @@ class Logger {
   }
 
   private shouldLog(level: LogLevel): boolean {
-    return LOG_LEVEL_PRIORITY[level] >= LOG_LEVEL_PRIORITY[this.config.minLevel];
+    return (
+      LOG_LEVEL_PRIORITY[level] >= LOG_LEVEL_PRIORITY[this.config.minLevel]
+    );
   }
 
   private formatMessage(
@@ -125,14 +127,19 @@ class Logger {
         context,
         error
       );
-      const logMethod = level === "error" ? console.error : 
-                       level === "warn" ? console.warn : 
-                       level === "debug" ? console.debug : console.log;
+      const logMethod =
+        level === "error"
+          ? console.error
+          : level === "warn"
+            ? console.warn
+            : level === "debug"
+              ? console.debug
+              : console.log;
       logMethod(JSON.stringify(structuredLog));
     } else {
       const formattedMessage = this.formatMessage(level, message, context);
       const logData = error || data;
-      
+
       switch (level) {
         case "error":
           console.error(formattedMessage, logData || "");
@@ -217,7 +224,7 @@ class Logger {
 
     const errorObj = error instanceof Error ? error : undefined;
     const errorData = error instanceof Error ? undefined : error;
-    
+
     this.output("error", message, errorData, context, errorObj);
     this.sendToSentry("error", message, errorData, errorObj);
   }

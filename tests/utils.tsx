@@ -37,7 +37,11 @@ interface CustomRenderOptions extends Omit<RenderOptions, "wrapper"> {
 
 export function renderWithIntl(
   ui: ReactElement,
-  { locale = "id", messages = defaultMessages, ...options }: CustomRenderOptions = {}
+  {
+    locale = "id",
+    messages = defaultMessages,
+    ...options
+  }: CustomRenderOptions = {}
 ) {
   function Wrapper({ children }: { children: React.ReactNode }) {
     return (

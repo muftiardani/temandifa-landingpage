@@ -19,17 +19,17 @@ export default function Error({
   }, [error]);
 
   return (
-    <div 
-      className="min-h-screen flex items-center justify-center px-4 bg-white dark:bg-gray-950"
+    <div
+      className="flex min-h-screen items-center justify-center bg-white px-4 dark:bg-gray-950"
       role="main"
       aria-labelledby="error-title"
     >
-      <div className="max-w-md w-full text-center">
+      <div className="w-full max-w-md text-center">
         {/* Error Icon */}
         <div className="mb-6 flex justify-center">
-          <div className="w-20 h-20 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
             <svg
-              className="w-10 h-10 text-red-600 dark:text-red-400"
+              className="h-10 w-10 text-red-600 dark:text-red-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -45,38 +45,38 @@ export default function Error({
         </div>
 
         {/* Error Title */}
-        <h2 
+        <h2
           id="error-title"
-          className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4"
+          className="mb-4 text-2xl font-bold text-gray-900 md:text-3xl dark:text-gray-100"
         >
           {t("title")}
         </h2>
 
         {/* Error Description */}
-        <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+        <p className="mb-8 leading-relaxed text-gray-600 dark:text-gray-400">
           {t("description")}
         </p>
 
         {/* Error Details */}
         {process.env.NODE_ENV === "development" && (
-          <div className="mb-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-left">
-            <p className="text-sm font-mono text-red-600 dark:text-red-400 break-all">
+          <div className="mb-6 rounded-lg bg-gray-100 p-4 text-left dark:bg-gray-800">
+            <p className="font-mono text-sm break-all text-red-600 dark:text-red-400">
               {error.message}
             </p>
           </div>
         )}
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="flex flex-col justify-center gap-3 sm:flex-row">
           <button
             onClick={reset}
-            className="bg-blue-600 dark:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors shadow-md hover:shadow-lg"
+            className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow-md transition-colors hover:bg-blue-700 hover:shadow-lg dark:bg-blue-700 dark:hover:bg-blue-800"
           >
             {t("retry")}
           </button>
           <Link
             href="/"
-            className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-center"
+            className="rounded-lg bg-gray-200 px-6 py-3 text-center font-semibold text-gray-900 transition-colors hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
           >
             {t("backHome")}
           </Link>

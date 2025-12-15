@@ -7,13 +7,13 @@ type ScrollMilestone = 25 | 50 | 75 | 100;
 
 interface UseScrollDepthOptions {
   enabled?: boolean;
-  
+
   throttleMs?: number;
 }
 
 export function useScrollDepth(options: UseScrollDepthOptions = {}) {
   const { enabled = true, throttleMs = 100 } = options;
-  
+
   const reachedMilestones = useRef<Set<ScrollMilestone>>(new Set());
   const lastScrollTime = useRef<number>(0);
 
@@ -24,15 +24,16 @@ export function useScrollDepth(options: UseScrollDepthOptions = {}) {
 
     const handleScroll = () => {
       const now = Date.now();
-      
+
       if (now - lastScrollTime.current < throttleMs) {
         return;
       }
       lastScrollTime.current = now;
 
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+
       if (docHeight <= 0) {
         return;
       }
@@ -40,7 +41,7 @@ export function useScrollDepth(options: UseScrollDepthOptions = {}) {
       const scrollPercent = (scrollTop / docHeight) * 100;
 
       const milestones: ScrollMilestone[] = [25, 50, 75, 100];
-      
+
       for (const milestone of milestones) {
         if (
           scrollPercent >= milestone &&

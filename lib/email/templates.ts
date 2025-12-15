@@ -1,5 +1,5 @@
-import { escape } from 'html-escaper';
-import type { ContactFormData } from '@/types';
+import { escape } from "html-escaper";
+import type { ContactFormData } from "@/lib/validation/schemas";
 
 export interface EmailTemplate {
   html: string;
@@ -8,12 +8,12 @@ export interface EmailTemplate {
 
 export function contactFormEmailTemplate(data: ContactFormData): EmailTemplate {
   const { name, email, subject, message } = data;
-  
+
   const escapedName = escape(name);
   const escapedEmail = escape(email);
   const escapedSubject = escape(subject);
   const escapedMessage = escape(message);
-  
+
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <h2 style="color: #3b82f6;">New Contact Form Submission</h2>
@@ -36,7 +36,7 @@ export function contactFormEmailTemplate(data: ContactFormData): EmailTemplate {
       </p>
     </div>
   `;
-  
+
   const text = `
 New Contact Form Submission
 
@@ -50,6 +50,6 @@ ${message}
 ---
 This email was sent from the TemanDifa contact form.
   `.trim();
-  
+
   return { html, text };
 }

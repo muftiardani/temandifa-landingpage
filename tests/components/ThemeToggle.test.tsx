@@ -12,7 +12,7 @@ describe("ThemeToggle", () => {
   it("should have proper aria-label for light mode", () => {
     render(<ThemeToggle />);
     const button = screen.getByRole("button");
-    
+
     expect(button).toHaveAttribute("aria-label", "switch_to_dark");
   });
 
@@ -36,7 +36,7 @@ describe("ThemeToggle", () => {
   it("should have proper title attribute", () => {
     render(<ThemeToggle />);
     const button = screen.getByRole("button");
-    
+
     expect(button).toHaveAttribute("title", "dark_mode");
   });
 });

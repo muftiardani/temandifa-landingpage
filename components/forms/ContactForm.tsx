@@ -39,7 +39,7 @@ export default function ContactForm() {
 
   useEffect(() => {
     fetchCSRFToken();
-    
+
     const refreshInterval = setInterval(() => {
       if (csrfExpiresAt && Date.now() > csrfExpiresAt - 60000) {
         fetchCSRFToken();
@@ -58,46 +58,53 @@ export default function ContactForm() {
     resolver: zodResolver(contactFormSchema),
   });
 
-  const onSubmit = async (data: ContactFormData) => {
-    setIsSubmitting(true);
-    setSubmitStatus("idle");
-    trackForm("contact", "submit");
+  const onSubmit = useCallback(
+    async (data: ContactFormData) => {
+      setIsSubmitting(true);
+      setSubmitStatus("idle");
+      trackForm("contact", "submit");
 
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": csrfToken,
-        },
-        body: JSON.stringify({
-          ...data,
-          csrfHash,
-          csrfExpiresAt,
-        }),
-      });
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": csrfToken,
+          },
+          body: JSON.stringify({
+            ...data,
+            csrfHash,
+            csrfExpiresAt,
+          }),
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (!response.ok) {
-        throw new Error(result.error || "Failed to send message");
+        if (!response.ok) {
+          throw new Error(result.error || "Failed to send message");
+        }
+
+        setSubmitStatus("success");
+        reset();
+        trackForm("contact", "success");
+        trackContact(true);
+
+        setTimeout(() => setSubmitStatus("idle"), 5000);
+      } catch (error) {
+        logger.error("Error submitting form", error, "Contact");
+        setSubmitStatus("error");
+        trackForm(
+          "contact",
+          "error",
+          error instanceof Error ? error.message : "Unknown error"
+        );
+        trackContact(false);
+      } finally {
+        setIsSubmitting(false);
       }
-
-      setSubmitStatus("success");
-      reset();
-      trackForm("contact", "success");
-      trackContact(true);
-
-      setTimeout(() => setSubmitStatus("idle"), 5000);
-    } catch (error) {
-      logger.error("Error submitting form", error, "Contact");
-      setSubmitStatus("error");
-      trackForm("contact", "error", error instanceof Error ? error.message : "Unknown error");
-      trackContact(false);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    },
+    [csrfToken, csrfHash, csrfExpiresAt, reset, trackForm, trackContact]
+  );
 
   return (
     <form
@@ -110,7 +117,7 @@ export default function ContactForm() {
       <div>
         <label
           htmlFor="name"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
         >
           {t("label_name")}{" "}
           <span className="text-red-500 dark:text-red-400">*</span>
@@ -121,7 +128,7 @@ export default function ContactForm() {
           {...register("name")}
           disabled={isSubmitting}
           autoComplete="name"
-          className={`w-full px-4 py-3 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition disabled:opacity-50 disabled:cursor-not-allowed ${
+          className={`w-full rounded-lg border bg-white px-4 py-3 text-gray-900 transition focus:border-transparent focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-800 dark:text-gray-100 dark:focus:ring-blue-400 ${
             errors.name
               ? "border-red-500 dark:border-red-400"
               : "border-gray-300 dark:border-gray-600"
@@ -145,7 +152,7 @@ export default function ContactForm() {
       <div>
         <label
           htmlFor="email"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
         >
           {t("label_email")}{" "}
           <span className="text-red-500 dark:text-red-400">*</span>
@@ -156,7 +163,7 @@ export default function ContactForm() {
           {...register("email")}
           disabled={isSubmitting}
           autoComplete="email"
-          className={`w-full px-4 py-3 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition disabled:opacity-50 disabled:cursor-not-allowed ${
+          className={`w-full rounded-lg border bg-white px-4 py-3 text-gray-900 transition focus:border-transparent focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-800 dark:text-gray-100 dark:focus:ring-blue-400 ${
             errors.email
               ? "border-red-500 dark:border-red-400"
               : "border-gray-300 dark:border-gray-600"
@@ -180,7 +187,7 @@ export default function ContactForm() {
       <div>
         <label
           htmlFor="subject"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
         >
           {t("label_subject")}{" "}
           <span className="text-red-500 dark:text-red-400">*</span>
@@ -190,7 +197,7 @@ export default function ContactForm() {
           type="text"
           {...register("subject")}
           disabled={isSubmitting}
-          className={`w-full px-4 py-3 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition disabled:opacity-50 disabled:cursor-not-allowed ${
+          className={`w-full rounded-lg border bg-white px-4 py-3 text-gray-900 transition focus:border-transparent focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-800 dark:text-gray-100 dark:focus:ring-blue-400 ${
             errors.subject
               ? "border-red-500 dark:border-red-400"
               : "border-gray-300 dark:border-gray-600"
@@ -214,7 +221,7 @@ export default function ContactForm() {
       <div>
         <label
           htmlFor="message"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
         >
           {t("label_message")}{" "}
           <span className="text-red-500 dark:text-red-400">*</span>
@@ -224,7 +231,7 @@ export default function ContactForm() {
           rows={6}
           {...register("message")}
           disabled={isSubmitting}
-          className={`w-full px-4 py-3 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition resize-none disabled:opacity-50 disabled:cursor-not-allowed ${
+          className={`w-full resize-none rounded-lg border bg-white px-4 py-3 text-gray-900 transition focus:border-transparent focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-800 dark:text-gray-100 dark:focus:ring-blue-400 ${
             errors.message
               ? "border-red-500 dark:border-red-400"
               : "border-gray-300 dark:border-gray-600"
@@ -248,11 +255,11 @@ export default function ContactForm() {
       <input
         type="text"
         {...register("website")}
-        style={{ 
-          position: 'absolute',
-          left: '-9999px',
-          width: '1px',
-          height: '1px'
+        style={{
+          position: "absolute",
+          left: "-9999px",
+          width: "1px",
+          height: "1px",
         }}
         tabIndex={-1}
         autoComplete="off"
@@ -264,10 +271,10 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={isSubmitting || !isCSRFReady}
-          className={`w-full py-3 px-6 rounded-lg font-semibold text-white transition-all duration-200 shadow-lg ${
+          className={`w-full rounded-lg px-6 py-3 font-semibold text-white shadow-lg transition-all duration-200 ${
             isSubmitting
-              ? "bg-gray-400 dark:bg-gray-600 cursor-not-allowed opacity-75"
-              : "bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 active:scale-95 hover:shadow-xl"
+              ? "cursor-not-allowed bg-gray-400 opacity-75 dark:bg-gray-600"
+              : "bg-blue-600 hover:bg-blue-700 hover:shadow-xl active:scale-95 dark:bg-blue-700 dark:hover:bg-blue-800"
           }`}
           aria-label="Kirim pesan kontak"
           aria-busy={isSubmitting}
@@ -275,7 +282,7 @@ export default function ContactForm() {
           {isSubmitting ? (
             <span className="flex items-center justify-center gap-2">
               <svg
-                className="animate-spin h-5 w-5"
+                className="h-5 w-5 animate-spin"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -305,12 +312,12 @@ export default function ContactForm() {
       {/* Success Message */}
       {submitStatus === "success" && (
         <div
-          className="p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-lg"
+          className="rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-700 dark:bg-green-900/30"
           role="alert"
           aria-live="polite"
           aria-atomic="true"
         >
-          <p className="text-green-800 dark:text-green-300 font-medium">
+          <p className="font-medium text-green-800 dark:text-green-300">
             {t("success_msg")}
           </p>
         </div>
@@ -319,12 +326,12 @@ export default function ContactForm() {
       {/* Error Message */}
       {submitStatus === "error" && (
         <div
-          className="p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg"
+          className="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-700 dark:bg-red-900/30"
           role="alert"
           aria-live="polite"
           aria-atomic="true"
         >
-          <p className="text-red-800 dark:text-red-300 font-medium">
+          <p className="font-medium text-red-800 dark:text-red-300">
             {t("error_msg")}
           </p>
         </div>

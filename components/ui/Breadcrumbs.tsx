@@ -59,20 +59,20 @@ export function Breadcrumbs() {
       />
       <motion.nav
         aria-label="Breadcrumb"
-        className="mt-4 mb-8 px-4 sm:px-8 max-w-7xl mx-auto"
+        className="mx-auto mt-4 mb-8 max-w-7xl px-4 sm:px-8"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
       >
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 px-4 py-3 transition-colors">
-          <ol className="flex gap-2 text-sm flex-wrap items-center">
+        <div className="rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm transition-colors dark:border-gray-700 dark:bg-gray-800">
+          <ol className="flex flex-wrap items-center gap-2 text-sm">
             <motion.li variants={itemVariants}>
               <Link
                 href="/"
-                className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group"
+                className="group flex items-center gap-2 text-blue-600 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
               >
                 <svg
-                  className="w-4 h-4 group-hover:scale-110 transition-transform"
+                  className="h-4 w-4 transition-transform group-hover:scale-110"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -90,11 +90,11 @@ export function Breadcrumbs() {
             {paths.map((path, index) => (
               <motion.li
                 key={path}
-                className="flex gap-2 items-center"
+                className="flex items-center gap-2"
                 variants={itemVariants}
               >
                 <svg
-                  className="w-4 h-4 text-gray-400 dark:text-gray-500"
+                  className="h-4 w-4 text-gray-400 dark:text-gray-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -108,13 +108,13 @@ export function Breadcrumbs() {
                   />
                 </svg>
                 {index === paths.length - 1 ? (
-                  <span className="text-gray-700 dark:text-gray-200 font-semibold px-2 py-1 bg-blue-50 dark:bg-blue-900/30 rounded-md">
+                  <span className="rounded-md bg-blue-50 px-2 py-1 font-semibold text-gray-700 dark:bg-blue-900/30 dark:text-gray-200">
                     {t(path)}
                   </span>
                 ) : (
                   <Link
                     href={`/${paths.slice(0, index + 1).join("/")}`}
-                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors hover:underline"
+                    className="font-medium text-blue-600 transition-colors hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
                   >
                     {t(path)}
                   </Link>

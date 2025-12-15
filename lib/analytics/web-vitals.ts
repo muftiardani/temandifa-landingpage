@@ -30,7 +30,9 @@ function sendToGoogleAnalytics(metric: Metric) {
     event: "web_vitals",
     event_category: "Web Vitals",
     event_label: metric.id,
-    value: Math.round(metric.name === "CLS" ? metric.value * 1000 : metric.value),
+    value: Math.round(
+      metric.name === "CLS" ? metric.value * 1000 : metric.value
+    ),
     metric_id: metric.id,
     metric_value: metric.value,
     metric_delta: metric.delta,
@@ -38,7 +40,7 @@ function sendToGoogleAnalytics(metric: Metric) {
   };
 
   window.gtag("event", metric.name, eventData);
-  
+
   window.gtag("event", "performance_metric", {
     metric_name: metric.name,
     metric_value: metric.value,
@@ -52,7 +54,7 @@ function sendToSentry(metric: Metric) {
   }
 
   window.Sentry.setMeasurement(metric.name, metric.value, "millisecond");
-  
+
   if (metric.rating === "poor") {
     window.Sentry.addBreadcrumb({
       category: "performance",
@@ -73,23 +75,35 @@ function logToConsole(metric: Metric) {
     return;
   }
 
-  const emoji = metric.rating === "good" ? "✅" : metric.rating === "needs-improvement" ? "⚠️" : "❌";
+  const emoji =
+    metric.rating === "good"
+      ? "✅"
+      : metric.rating === "needs-improvement"
+        ? "⚠️"
+        : "❌";
   const threshold = THRESHOLDS[metric.name as keyof typeof THRESHOLDS];
-  
-  logger.group(`${emoji} ${metric.name}: ${metric.value.toFixed(2)}ms (${metric.rating})`, () => {
-    logger.debug("Value", metric.value, "WebVitals");
-    logger.debug("Rating", metric.rating, "WebVitals");
-    logger.debug("Delta", metric.delta, "WebVitals");
-    logger.debug("ID", metric.id, "WebVitals");
-    
-    if (threshold) {
-      logger.debug("Thresholds", {
-        good: `≤ ${threshold.good}ms`,
-        needsImprovement: `≤ ${threshold.needsImprovement}ms`,
-        poor: `> ${threshold.needsImprovement}ms`,
-      }, "WebVitals");
+
+  logger.group(
+    `${emoji} ${metric.name}: ${metric.value.toFixed(2)}ms (${metric.rating})`,
+    () => {
+      logger.debug("Value", metric.value, "WebVitals");
+      logger.debug("Rating", metric.rating, "WebVitals");
+      logger.debug("Delta", metric.delta, "WebVitals");
+      logger.debug("ID", metric.id, "WebVitals");
+
+      if (threshold) {
+        logger.debug(
+          "Thresholds",
+          {
+            good: `≤ ${threshold.good}ms`,
+            needsImprovement: `≤ ${threshold.needsImprovement}ms`,
+            poor: `> ${threshold.needsImprovement}ms`,
+          },
+          "WebVitals"
+        );
+      }
     }
-  });
+  );
 }
 
 function sendToCustomEndpoint(metric: Metric) {
@@ -98,7 +112,7 @@ function sendToCustomEndpoint(metric: Metric) {
   }
 
   const endpoint = "/api/analytics/performance";
-  
+
   if (navigator.sendBeacon) {
     const body = JSON.stringify({
       metric: metric.name,
@@ -109,7 +123,7 @@ function sendToCustomEndpoint(metric: Metric) {
       url: window.location.href,
       userAgent: navigator.userAgent,
     });
-    
+
     navigator.sendBeacon(endpoint, body);
   }
 }
@@ -119,7 +133,7 @@ export function reportWebVitals(metric: Metric) {
   sendToSentry(metric);
   logToConsole(metric);
   sendToCustomEndpoint(metric);
-  
+
   if (process.env.NODE_ENV === "development" && metric.rating === "poor") {
     logger.warn(
       `Poor ${metric.name} detected! Value: ${metric.value}. Consider optimizing for better performance.`,

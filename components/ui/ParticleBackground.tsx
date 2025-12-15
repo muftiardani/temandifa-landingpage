@@ -92,7 +92,7 @@ export default function ParticleBackground() {
       },
       detectRetina: true,
     }),
-    [],
+    []
   );
 
   if (!init) {
@@ -100,14 +100,12 @@ export default function ParticleBackground() {
   }
 
   return (
-    <div 
-      className="absolute inset-0 z-0 pointer-events-none"
-    >
+    <div className="pointer-events-none absolute inset-0 z-0">
       <Particles
         id="hero-particles"
         particlesLoaded={particlesLoaded}
         options={options}
-        className="absolute inset-0 pointer-events-auto"
+        className="pointer-events-auto absolute inset-0"
       />
     </div>
   );

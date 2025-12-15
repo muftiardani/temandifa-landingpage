@@ -131,7 +131,9 @@ export function generateSoftwareApplicationSchema(
         ? "Aplikasi yang dirancang untuk memberdayakan penyandang disabilitas dengan fitur AI: deteksi objek real-time, voice-to-text, scan dokumen, dan emergency call"
         : "An app designed to empower people with disabilities with AI features: real-time object detection, voice-to-text, document scanning, and emergency call",
     featureList: [
-      locale === "id" ? "Deteksi Objek Real-Time" : "Real-Time Object Detection",
+      locale === "id"
+        ? "Deteksi Objek Real-Time"
+        : "Real-Time Object Detection",
       locale === "id" ? "Voice to Text" : "Voice to Text",
       locale === "id" ? "Scan & Deteksi Teks" : "Scan & Text Detection",
       locale === "id" ? "Emergency Call" : "Emergency Call",

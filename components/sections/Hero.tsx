@@ -19,7 +19,7 @@ export default function Hero() {
   const prefersReducedMotion = useReducedMotion();
 
   const { scrollY } = useScroll();
-  
+
   const y1 = useTransform(
     scrollY,
     [0, 500],
@@ -55,7 +55,7 @@ export default function Hero() {
 
   return (
     <motion.section
-      className="px-4 sm:px-7 max-w-7xl mx-auto pb-10 pt-4"
+      className="mx-auto max-w-7xl px-4 pt-4 pb-10 sm:px-7"
       initial={prefersReducedMotion ? {} : "initial"}
       whileInView="animate"
       viewport={viewportOptions}
@@ -63,22 +63,7 @@ export default function Hero() {
       transition={transition}
     >
       <div
-        className={`bg-linear-to-br from-blue-500 via-blue-600 to-purple-600
-                          dark:bg-linear-to-br dark:from-blue-700 dark:via-blue-800 dark:to-purple-900
-                          ${prefersReducedMotion ? "" : "animate-gradient"}
-                          rounded-[2.5rem] 
-                          p-8 
-                          md:p-12 
-                          md:py-2 
-                          relative 
-                          overflow-hidden 
-                          flex flex-col 
-                          md:flex-row 
-                          items-center
-                          transition-colors
-                          isolate
-                          min-h-[700px]
-                          md:min-h-[550px]`}
+        className={`bg-linear-to-br from-blue-500 via-blue-600 to-purple-600 dark:bg-linear-to-br dark:from-blue-700 dark:via-blue-800 dark:to-purple-900 ${prefersReducedMotion ? "" : "animate-gradient"} relative isolate flex min-h-[700px] flex-col items-center overflow-hidden rounded-[2.5rem] p-8 transition-colors md:min-h-[550px] md:flex-row md:p-12 md:py-2`}
       >
         {!prefersReducedMotion && <ParticleBackground />}
 
@@ -86,9 +71,7 @@ export default function Hero() {
           style={{ y: y1, opacity }}
           animate={floatingAnimation}
           transition={floatingTransition}
-          className="absolute top-20 right-20 w-32 h-32 
-                     bg-yellow-400/20 dark:bg-yellow-500/20 
-                     rounded-full blur-3xl"
+          className="absolute top-20 right-20 h-32 w-32 rounded-full bg-yellow-400/20 blur-3xl dark:bg-yellow-500/20"
           aria-hidden="true"
         />
         <motion.div
@@ -110,72 +93,44 @@ export default function Hero() {
                   ease: "easeInOut",
                 }
           }
-          className="absolute bottom-20 left-20 w-40 h-40 
-                     bg-purple-400/20 dark:bg-purple-500/20 
-                     rounded-full blur-3xl"
+          className="absolute bottom-20 left-20 h-40 w-40 rounded-full bg-purple-400/20 blur-3xl dark:bg-purple-500/20"
           aria-hidden="true"
         />
 
         <div
-          className="absolute 
-                          bottom-0 
-                          left-0 
-                          w-75 
-                          h-75 
-                          border-50
-                          border-black 
-                          bg-transparent
-                          rounded-full 
-                          mix-blend-multiply 
-                          filter 
-                          opacity-30 
-                          -translate-x-1/2 
-                          translate-y-1/2"
+          className="absolute bottom-0 left-0 h-75 w-75 -translate-x-1/2 translate-y-1/2 rounded-full border-50 border-black bg-transparent opacity-30 mix-blend-multiply filter"
           aria-hidden="true"
         ></div>
         <div
-          className="absolute 
-                          top-0 
-                          right-0 
-                          w-75 
-                          h-75 
-                          border-50
-                          border-black
-                          bg-transparent 
-                          rounded-full 
-                          mix-blend-multiply 
-                          filter 
-                          opacity-30 
-                          translate-x-1/2 
-                          -translate-y-1/2"
+          className="absolute top-0 right-0 h-75 w-75 translate-x-1/2 -translate-y-1/2 rounded-full border-50 border-black bg-transparent opacity-30 mix-blend-multiply filter"
           aria-hidden="true"
         ></div>
 
         <motion.div
-          className="relative z-20 w-full md:w-1/2 text-white space-y-6"
+          className="relative z-20 w-full space-y-6 text-white md:w-1/2"
           variants={fadeInLeft}
           transition={transition}
         >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+          <h1 className="text-4xl leading-tight font-bold sm:text-5xl md:text-6xl lg:text-7xl">
             {t.rich("hero_headline", {
               br: () => <br />,
             })}
           </h1>
-          <h2 className="text-yellow-500 dark:text-yellow-300 font-bold text-xl md:text-2xl">
+          <h2 className="text-xl font-bold text-yellow-500 md:text-2xl dark:text-yellow-300">
             {t("hero_subheadline")}
           </h2>
-          <p className="text-white/90 dark:text-blue-100 md:text-lg leading-relaxed max-w-md">
+          <p className="max-w-md leading-relaxed text-white/90 md:text-lg dark:text-blue-100">
             {t("hero_description")}
           </p>
         </motion.div>
 
         {/* Hero Image */}
         <motion.div
-          className="relative z-10 w-full md:w-1/2 mt-8 md:mt-0 flex justify-center md:justify-end"
+          className="relative z-10 mt-8 flex w-full justify-center md:mt-0 md:w-1/2 md:justify-end"
           variants={fadeInRight}
           transition={transition}
         >
-          <div className="relative w-full max-w-[600px] h-[400px] md:h-[500px]">
+          <div className="relative h-[400px] w-full max-w-[600px] md:h-[500px]">
             <Image
               src="/images/woman-man.png"
               alt="TemanDifa app users - accessibility for visually impaired"

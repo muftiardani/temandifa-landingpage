@@ -7,27 +7,27 @@ export async function POST(request: NextRequest) {
     const envelope = await request.text();
     const piece = envelope.split("\n")[0];
     const header = JSON.parse(piece);
-    
+
     const dsn = new URL(header.dsn);
-    
+
     if (!dsn.hostname.endsWith(SENTRY_HOST)) {
       return NextResponse.json(
         { error: "Invalid Sentry host" },
         { status: 400 }
       );
     }
-    
+
     const projectId = dsn.pathname.replace("/", "");
-    
+
     if (!projectId) {
       return NextResponse.json(
         { error: "Invalid project ID" },
         { status: 400 }
       );
     }
-    
+
     const sentryUrl = `https://${dsn.hostname}/api/${projectId}/envelope/`;
-    
+
     const response = await fetch(sentryUrl, {
       method: "POST",
       headers: {
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       },
       body: envelope,
     });
-    
+
     return new NextResponse(response.body, {
       status: response.status,
       headers: {
