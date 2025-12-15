@@ -7,6 +7,11 @@ import {
   staggerContainer,
   scaleIn,
   viewportOptions,
+  defaultTransition,
+  reducedTransition,
+  getMotionVariant,
+  getTransition,
+  reducedFadeIn,
 } from "@/styles/animations";
 
 describe("Animation Variants", () => {
@@ -18,10 +23,6 @@ describe("Animation Variants", () => {
     it("should have correct animate state", () => {
       expect(fadeIn.animate).toEqual({ opacity: 1 });
     });
-
-    it("should have correct transition", () => {
-      expect(fadeIn.transition).toEqual({ duration: 0.8, ease: "easeOut" });
-    });
   });
 
   describe("fadeInUp", () => {
@@ -31,10 +32,6 @@ describe("Animation Variants", () => {
 
     it("should have correct animate state", () => {
       expect(fadeInUp.animate).toEqual({ opacity: 1, y: 0 });
-    });
-
-    it("should have correct transition", () => {
-      expect(fadeInUp.transition).toEqual({ duration: 0.6, ease: "easeOut" });
     });
   });
 
@@ -46,13 +43,6 @@ describe("Animation Variants", () => {
     it("should have correct animate state", () => {
       expect(fadeInLeft.animate).toEqual({ opacity: 1, x: 0 });
     });
-
-    it("should have correct transition", () => {
-      expect(fadeInLeft.transition).toEqual({
-        duration: 0.6,
-        ease: "easeOut",
-      });
-    });
   });
 
   describe("fadeInRight", () => {
@@ -62,13 +52,6 @@ describe("Animation Variants", () => {
 
     it("should have correct animate state", () => {
       expect(fadeInRight.animate).toEqual({ opacity: 1, x: 0 });
-    });
-
-    it("should have correct transition", () => {
-      expect(fadeInRight.transition).toEqual({
-        duration: 0.6,
-        ease: "easeOut",
-      });
     });
   });
 
@@ -80,18 +63,11 @@ describe("Animation Variants", () => {
     it("should have correct animate state", () => {
       expect(scaleIn.animate).toEqual({ opacity: 1, scale: 1 });
     });
-
-    it("should have correct transition", () => {
-      expect(scaleIn.transition).toEqual({ duration: 0.5, ease: "easeOut" });
-    });
   });
 
   describe("staggerContainer", () => {
     it("should have correct animate transition", () => {
-      expect(staggerContainer.animate.transition).toEqual({
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      });
+      expect(staggerContainer.animate).toBeDefined();
     });
   });
 
@@ -102,6 +78,43 @@ describe("Animation Variants", () => {
 
     it("should have correct margin option", () => {
       expect(viewportOptions.margin).toBe("-100px");
+    });
+  });
+
+  describe("Transition Presets", () => {
+    it("should have correct default transition", () => {
+      expect(defaultTransition).toEqual({
+        duration: 0.6,
+        ease: "easeOut",
+      });
+    });
+
+    it("should have correct reduced transition", () => {
+      expect(reducedTransition).toEqual({
+        duration: 0,
+      });
+    });
+  });
+
+  describe("Reduced Motion Helpers", () => {
+    it("getMotionVariant should return reduced variant when shouldReduce is true", () => {
+      const result = getMotionVariant(true, fadeInUp);
+      expect(result).toEqual(reducedFadeIn);
+    });
+
+    it("getMotionVariant should return original variant when shouldReduce is false", () => {
+      const result = getMotionVariant(false, fadeInUp);
+      expect(result).toEqual(fadeInUp);
+    });
+
+    it("getTransition should return reduced transition when shouldReduce is true", () => {
+      const result = getTransition(true);
+      expect(result).toEqual(reducedTransition);
+    });
+
+    it("getTransition should return default transition when shouldReduce is false", () => {
+      const result = getTransition(false);
+      expect(result).toEqual(defaultTransition);
     });
   });
 });

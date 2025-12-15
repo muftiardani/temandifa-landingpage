@@ -1,8 +1,3 @@
-/**
- * Structured Data (JSON-LD) Generators
- * SEO-optimized schemas for TemanDifa
- */
-
 import { config } from "../config";
 
 export interface OrganizationSchema {
@@ -70,9 +65,6 @@ export interface BreadcrumbListSchema {
   }>;
 }
 
-/**
- * Generate Organization schema
- */
 export function generateOrganizationSchema(locale: string): OrganizationSchema {
   return {
     "@context": "https://schema.org",
@@ -98,9 +90,6 @@ export function generateOrganizationSchema(locale: string): OrganizationSchema {
   };
 }
 
-/**
- * Generate WebSite schema
- */
 export function generateWebSiteSchema(locale: string): WebSiteSchema {
   return {
     "@context": "https://schema.org",
@@ -123,9 +112,6 @@ export function generateWebSiteSchema(locale: string): WebSiteSchema {
   };
 }
 
-/**
- * Generate SoftwareApplication schema
- */
 export function generateSoftwareApplicationSchema(
   locale: string
 ): SoftwareApplicationSchema {
@@ -153,9 +139,6 @@ export function generateSoftwareApplicationSchema(
   };
 }
 
-/**
- * Generate BreadcrumbList schema
- */
 export function generateBreadcrumbSchema(
   items: Array<{ name: string; url?: string }>
 ): BreadcrumbListSchema {
@@ -171,9 +154,6 @@ export function generateBreadcrumbSchema(
   };
 }
 
-/**
- * Render JSON-LD script tag
- */
 export function renderJsonLd(data: object) {
   return {
     __html: JSON.stringify(data),

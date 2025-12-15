@@ -1,16 +1,9 @@
-/**
- * Centralized Type Exports
- * Re-export all types from a single entry point
- */
-
-// Form types
 export type {
   ContactFormData,
   NewsletterFormData,
   UnsubscribeFormData,
 } from './forms';
 
-// API types
 export type {
   APIResponse,
   RateLimitResponse,
@@ -21,7 +14,6 @@ export type {
   ContactResponse,
 } from './api';
 
-// Component types
 export type {
   BaseComponentProps,
   ButtonVariant,

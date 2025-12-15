@@ -1,12 +1,6 @@
 import type { Metric } from "web-vitals";
 import { logger } from "@/lib/logger";
 
-/**
- * Web Vitals Reporter
- * Sends performance metrics to Google Analytics, Sentry, and console
- * Tracks: LCP, FID, CLS, FCP, TTFB, INP
- */
-
 interface AnalyticsEvent extends Record<string, unknown> {
   event: string;
   event_category: string;
@@ -18,10 +12,6 @@ interface AnalyticsEvent extends Record<string, unknown> {
   metric_rating: string;
 }
 
-/**
- * Performance thresholds for Core Web Vitals
- * Based on Google's recommendations
- */
 const THRESHOLDS = {
   LCP: { good: 2500, needsImprovement: 4000 },
   FID: { good: 100, needsImprovement: 300 },
@@ -31,9 +21,6 @@ const THRESHOLDS = {
   INP: { good: 200, needsImprovement: 500 },
 };
 
-/**
- * Send metric to Google Analytics via gtag
- */
 function sendToGoogleAnalytics(metric: Metric) {
   if (typeof window === "undefined" || !window.gtag) {
     return;
@@ -59,9 +46,6 @@ function sendToGoogleAnalytics(metric: Metric) {
   });
 }
 
-/**
- * Send metric to Sentry (if available)
- */
 function sendToSentry(metric: Metric) {
   if (typeof window === "undefined" || !window.Sentry) {
     return;
@@ -84,9 +68,6 @@ function sendToSentry(metric: Metric) {
   }
 }
 
-/**
- * Log metric to console in development
- */
 function logToConsole(metric: Metric) {
   if (process.env.NODE_ENV !== "development") {
     return;
@@ -111,9 +92,6 @@ function logToConsole(metric: Metric) {
   });
 }
 
-/**
- * Send performance data to custom endpoint (optional)
- */
 function sendToCustomEndpoint(metric: Metric) {
   if (process.env.NODE_ENV !== "production") {
     return;
@@ -136,10 +114,6 @@ function sendToCustomEndpoint(metric: Metric) {
   }
 }
 
-/**
- * Main Web Vitals reporter function
- * Called by Next.js when metrics are available
- */
 export function reportWebVitals(metric: Metric) {
   sendToGoogleAnalytics(metric);
   sendToSentry(metric);
@@ -152,25 +126,5 @@ export function reportWebVitals(metric: Metric) {
       null,
       "WebVitals"
     );
-  }
-}
-
-declare global {
-  interface Window {
-    gtag?: (
-      command: string,
-      eventName: string,
-      eventParams?: Record<string, unknown>
-    ) => void;
-    Sentry?: {
-      captureException: (error: Error) => void;
-      setMeasurement: (name: string, value: number, unit: string) => void;
-      addBreadcrumb: (breadcrumb: {
-        category: string;
-        message: string;
-        level: string;
-        data?: Record<string, unknown>;
-      }) => void;
-    };
   }
 }

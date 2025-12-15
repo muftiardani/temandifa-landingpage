@@ -20,7 +20,12 @@ function ErrorFallback({ error, onReload }: { error?: Error; onReload: () => voi
   const t = useTranslations("Error");
   
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
+    <div 
+      className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+    >
       <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
         <div className="text-6xl mb-4">⚠️</div>
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -70,6 +75,15 @@ export class ErrorBoundary extends Component<Props, State> {
             componentStack: errorInfo.componentStack,
           },
         },
+      });
+    }
+
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "error_boundary", {
+        category: "error",
+        error_message: error.message,
+        error_name: error.name,
+        component_stack: errorInfo.componentStack?.slice(0, 500),
       });
     }
 

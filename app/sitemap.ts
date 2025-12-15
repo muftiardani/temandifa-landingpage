@@ -9,7 +9,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const sitemapEntries: MetadataRoute.Sitemap = [];
 
-  // Generate entries for each locale and page combination
   locales.forEach((locale) => {
     pages.forEach((page) => {
       const url = page
@@ -19,7 +18,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       let priority = 1.0;
       let changeFrequency: "weekly" | "monthly" = "weekly";
 
-      // Set priority based on page
       if (page === "produk") {
         priority = 0.9;
         changeFrequency = "monthly";
@@ -46,7 +44,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   });
 
-  // Add image URLs for better SEO
   const images = [
     {
       url: `${baseUrl}/images/logo.png`,
@@ -80,7 +77,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Add image entries to sitemap
   images.forEach((image) => {
     sitemapEntries.push({
       url: image.url,

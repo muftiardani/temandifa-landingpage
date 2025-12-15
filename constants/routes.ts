@@ -1,11 +1,3 @@
-/**
- * Application Routes
- * Centralized route path constants
- */
-
-/**
- * Main application routes
- */
 export const ROUTES = {
   HOME: '/',
   ABOUT: '/tentang',
@@ -14,9 +6,6 @@ export const ROUTES = {
   UNSUBSCRIBE: '/unsubscribe',
 } as const;
 
-/**
- * API routes
- */
 export const API_ROUTES = {
   CONTACT: '/api/contact',
   NEWSLETTER: '/api/newsletter',
@@ -24,18 +13,12 @@ export const API_ROUTES = {
   CSRF: '/api/csrf',
 } as const;
 
-/**
- * External routes
- */
 export const EXTERNAL_ROUTES = {
   GITHUB: 'https://github.com/muftiardani/temandifa-landingpage',
   PLAY_STORE: 'https://play.google.com/store/apps/details?id=com.temandifa',
   APP_STORE: 'https://apps.apple.com/app/temandifa',
 } as const;
 
-/**
- * Route type helpers
- */
 export type AppRoute = typeof ROUTES[keyof typeof ROUTES];
 export type APIRoute = typeof API_ROUTES[keyof typeof API_ROUTES];
 export type ExternalRoute = typeof EXTERNAL_ROUTES[keyof typeof EXTERNAL_ROUTES];

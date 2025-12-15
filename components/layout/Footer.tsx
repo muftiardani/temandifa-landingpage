@@ -4,11 +4,13 @@ import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import NewsletterForm from "@/components/forms/NewsletterForm";
 import { config } from "@/lib/config";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 export default function Footer() {
   const t = useTranslations("Footer");
   const navT = useTranslations("Navbar");
   const newsletterT = useTranslations("Newsletter");
+  const { trackSocial, trackNavigation } = useAnalytics();
 
   return (
     <footer
@@ -37,6 +39,7 @@ export default function Footer() {
                 <Link
                   href="/"
                   className="hover:text-white hover:underline transition"
+                  onClick={() => trackNavigation("Home", "/")}
                 >
                   {navT("home")}
                 </Link>
@@ -45,6 +48,7 @@ export default function Footer() {
                 <Link
                   href="/tentang"
                   className="hover:text-white hover:underline transition"
+                  onClick={() => trackNavigation("About", "/tentang")}
                 >
                   {navT("about")}
                 </Link>
@@ -53,6 +57,7 @@ export default function Footer() {
                 <Link
                   href="/produk"
                   className="hover:text-white hover:underline transition"
+                  onClick={() => trackNavigation("Features", "/produk")}
                 >
                   {navT("features")}
                 </Link>
@@ -69,6 +74,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="bg-white/10 p-2 rounded-full hover:bg-white/20 transition-all hover:scale-110"
                 aria-label="Kunjungi Instagram TemanDifa"
+                onClick={() => trackSocial("instagram")}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -94,6 +100,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="bg-white/10 p-2 rounded-full hover:bg-white/20 transition-all hover:scale-110"
                 aria-label="Kunjungi TikTok TemanDifa"
+                onClick={() => trackSocial("tiktok")}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -117,6 +124,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="bg-white/10 p-2 rounded-full hover:bg-white/20 transition-all hover:scale-110"
                 aria-label="Kunjungi LinkedIn TemanDifa"
+                onClick={() => trackSocial("linkedin")}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +146,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Newsletter Section */}
           <div>
             <h4 className="font-bold text-lg mb-4">{newsletterT("title")}</h4>
             <p className="text-blue-100 dark:text-gray-300 text-sm mb-4">

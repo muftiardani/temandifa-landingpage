@@ -1,79 +1,80 @@
-"use client";
+import { Metadata } from "next";
+import { config } from "@/lib/config";
 
-import Navbar from "@/components/layout/Navbar";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
-import { fadeInUp, staggerContainer, viewportOptions } from "@/styles/animations";
-import PageTransition from "@/components/ui/PageTransition";
+const baseUrl = config.baseUrl;
 
-export default function TentangPage() {
-  const t = useTranslations("AboutPage");
+type Props = {
+  params: Promise<{ locale: string }>;
+};
 
-  return (
-    <PageTransition>
-      <main className="bg-white dark:bg-gray-950 min-h-screen transition-colors">
-      <Navbar />
-      <Breadcrumbs />
-      <motion.section 
-        className="max-w-4xl mx-auto px-4 py-16"
-        initial="initial"
-        whileInView="animate"
-        viewport={viewportOptions}
-        variants={fadeInUp}
-      >
-        <h1 className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-8">
-          {t("title")}
-        </h1>
-        <motion.div 
-          className="space-y-6 text-gray-700 dark:text-gray-300 text-lg leading-relaxed"
-          variants={staggerContainer}
-          initial="initial"
-          whileInView="animate"
-          viewport={viewportOptions}
-        >
-          <p>{t("description_1")}</p>
-          <p>{t("description_2")}</p>
-          <motion.div 
-            className="bg-blue-50 dark:bg-gray-800 p-8 rounded-2xl mt-8 transition-colors"
-            variants={fadeInUp}
-          >
-            <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
-              {t("vision_title")}
-            </h2>
-            <p>{t("vision_text")}</p>
-          </motion.div>
-          <motion.div 
-            className="bg-yellow-50 dark:bg-gray-800 p-8 rounded-2xl transition-colors"
-            variants={fadeInUp}
-          >
-            <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
-              {t("mission_title")}
-            </h2>
-            <ul className="space-y-3">
-              <li className="flex gap-3">
-                <span className="text-yellow-500 dark:text-yellow-400 font-bold">
-                  •
-                </span>
-                <span>{t("mission_1")}</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="text-yellow-500 dark:text-yellow-400 font-bold">
-                  •
-                </span>
-                <span>{t("mission_2")}</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="text-yellow-500 dark:text-yellow-400 font-bold">
-                  •
-                </span>
-                <span>{t("mission_3")}</span>
-              </li>
-            </ul>
-          </motion.div>
-        </motion.div>
-      </motion.section>
-    </main>
-    </PageTransition>
-  );
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+
+  const isIndonesian = locale === "id";
+
+  return {
+    title: isIndonesian
+      ? "Tentang Kami - TemanDifa | Visi & Misi Aksesibilitas"
+      : "About Us - TemanDifa | Accessibility Vision & Mission",
+    description: isIndonesian
+      ? "Kenali TemanDifa lebih dekat. Kami berkomitmen untuk memberdayakan penyandang disabilitas melalui teknologi AI yang inovatif. Pelajari visi dan misi kami."
+      : "Get to know TemanDifa. We are committed to empowering people with disabilities through innovative AI technology. Learn about our vision and mission.",
+    keywords: isIndonesian
+      ? [
+          "tentang TemanDifa",
+          "visi misi aksesibilitas",
+          "startup difabel Indonesia",
+          "teknologi untuk tunanetra",
+          "inovasi aksesibilitas",
+          "pemberdayaan difabel",
+          "AI untuk disabilitas",
+        ]
+      : [
+          "about TemanDifa",
+          "accessibility vision mission",
+          "disability startup Indonesia",
+          "technology for blind",
+          "accessibility innovation",
+          "disability empowerment",
+          "AI for disabilities",
+        ],
+    alternates: {
+      canonical: `/${locale}/tentang`,
+      languages: {
+        id: "/id/tentang",
+        en: "/en/tentang",
+      },
+    },
+    openGraph: {
+      title: isIndonesian
+        ? "Tentang Kami - TemanDifa"
+        : "About Us - TemanDifa",
+      description: isIndonesian
+        ? "Memberdayakan penyandang disabilitas melalui teknologi AI inovatif"
+        : "Empowering people with disabilities through innovative AI technology",
+      url: `${baseUrl}/${locale}/tentang`,
+      siteName: "TemanDifa",
+      locale: isIndonesian ? "id_ID" : "en_US",
+      type: "website",
+      images: [
+        {
+          url: `${baseUrl}/images/logo.png`,
+          width: 512,
+          height: 512,
+          alt: "TemanDifa Logo",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary",
+      title: isIndonesian
+        ? "Tentang Kami - TemanDifa"
+        : "About Us - TemanDifa",
+      description: isIndonesian
+        ? "Memberdayakan difabel melalui teknologi AI"
+        : "Empowering disabled through AI technology",
+    },
+  };
 }
+
+export { default } from "./TentangPageClient";

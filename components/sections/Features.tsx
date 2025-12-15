@@ -18,9 +18,7 @@ export default function Features() {
       >
 
         <div className="max-w-6xl mx-auto relative z-10">
-          {/* Single row with phone on left, cards on right */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Left: Phone Mockup */}
             <motion.div
               className="relative w-full h-[500px] md:h-[600px] flex justify-center items-center order-2 lg:order-1"
               variants={fadeInLeft}
@@ -50,7 +48,6 @@ export default function Features() {
               </div>
             </motion.div>
 
-            {/* Right: Both Feature Cards Stacked */}
             <div className="space-y-8 lg:space-y-20 order-1 lg:order-2">
               {/* Feature Card 1 */}
               <motion.div
@@ -99,9 +96,7 @@ export default function Features() {
         aria-label="Voice to Text and Emergency Call Features"
       >
         <div className="max-w-6xl mx-auto relative z-10">
-          {/* Single row with cards on left, phone on right */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Left: Both Feature Cards Stacked */}
             <div className="space-y-8 lg:space-y-20 order-1 lg:order-1 lg:mt-40">
               {/* Feature Card 4 */}
               <motion.div
@@ -143,7 +138,6 @@ export default function Features() {
               </motion.div>
             </div>
 
-            {/* Right: Phone Mockup */}
             <motion.div
               className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] flex justify-center items-center order-2 lg:order-2 -mt-28 md:-mt-32 lg:-mt-96 lg:-ml-64"
               variants={fadeInRight}

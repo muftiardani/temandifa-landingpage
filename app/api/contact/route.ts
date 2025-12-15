@@ -11,6 +11,7 @@ import {
   getCSRFSecret,
   createCSRFErrorResponse,
 } from "@/lib/security/csrf";
+import { logger } from "@/lib/logger";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -26,8 +27,9 @@ function getClientIp(request: NextRequest): string {
 
 export async function POST(request: NextRequest) {
   const requestId = randomUUID();
+  const contactLogger = logger.withMetadata({ requestId, context: "Contact" });
   
-  console.log(`[${requestId}] Rate limiting via: ${getRateLimitMethod()}`);
+  contactLogger.debug(`Rate limiting via: ${getRateLimitMethod()}`);
   
   try {
     const ip = getClientIp(request);
@@ -37,7 +39,7 @@ export async function POST(request: NextRequest) {
     if (!rateLimitResult.success) {
       const retryAfter = Math.ceil((rateLimitResult.reset - Date.now()) / 1000);
       
-      console.log(`[${requestId}] Rate limit exceeded for IP: ${ip}`);
+      contactLogger.warn(`Rate limit exceeded for IP: ${ip}`);
       
       return NextResponse.json(
         {
@@ -58,12 +60,12 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     
-    // CSRF Protection
     const csrfToken = getCSRFTokenFromHeaders(request.headers);
     const csrfHash = body.csrfHash;
+    const csrfExpiresAt = body.csrfExpiresAt;
     
     if (!csrfToken || !csrfHash) {
-      console.log(`[${requestId}] Missing CSRF token or hash`);
+      contactLogger.warn("Missing CSRF token or hash");
       return NextResponse.json(
         createCSRFErrorResponse(),
         { status: 403 }
@@ -71,8 +73,8 @@ export async function POST(request: NextRequest) {
     }
     
     const secret = getCSRFSecret();
-    if (!validateCSRFToken(csrfToken, csrfHash, secret)) {
-      console.log(`[${requestId}] Invalid CSRF token`);
+    if (!validateCSRFToken(csrfToken, csrfHash, secret, csrfExpiresAt)) {
+      contactLogger.warn("Invalid or expired CSRF token");
       return NextResponse.json(
         createCSRFErrorResponse(),
         { status: 403 }
@@ -80,7 +82,7 @@ export async function POST(request: NextRequest) {
     }
     
     if (body.website) {
-      console.log(`[${requestId}] Honeypot triggered for IP: ${ip}`);
+      contactLogger.warn(`Honeypot triggered for IP: ${ip}`);
       
       return NextResponse.json(
         {
@@ -109,7 +111,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (error) {
-      console.error(`[${requestId}] Resend error:`, error);
+      contactLogger.error("Resend error", error instanceof Error ? error : undefined);
       return NextResponse.json(
         {
           error: "Failed to send email. Please try again later.",
@@ -119,7 +121,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`[${requestId}] Email sent successfully`, {
+    contactLogger.success("Email sent successfully", {
       to: toEmail,
       from: validatedData.email,
       resendId: data?.id,
@@ -168,9 +170,9 @@ Email ini dikirim otomatis. Mohon tidak membalas email ini.
         `.trim(),
       });
       
-      console.log(`[${requestId}] Auto-reply sent to ${validatedData.email}`);
+      contactLogger.info(`Auto-reply sent to ${validatedData.email}`);
     } catch (autoReplyError) {
-      console.error(`[${requestId}] Auto-reply error:`, autoReplyError);
+      contactLogger.error("Auto-reply failed", autoReplyError instanceof Error ? autoReplyError : undefined);
     }
 
     return NextResponse.json(
@@ -190,7 +192,7 @@ Email ini dikirim otomatis. Mohon tidak membalas email ini.
       }
     );
   } catch (error) {
-    console.error(`[${requestId}] Contact form error:`, error);
+    contactLogger.error("Contact form submission failed", error instanceof Error ? error : undefined);
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -212,4 +214,3 @@ Email ini dikirim otomatis. Mohon tidak membalas email ini.
     );
   }
 }
-

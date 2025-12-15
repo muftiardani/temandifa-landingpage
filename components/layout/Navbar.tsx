@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition, useEffect, useRef } from "react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Link, usePathname, useRouter } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
 import { blurDataURL } from "@/lib/seo/image-placeholders";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,9 +16,14 @@ const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
+  const { trackNavigation, trackLanguage } = useAnalytics();
+  
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuRef = useFocusTrap<HTMLDivElement>(isMenuOpen);
 
   const toggleLanguage = () => {
     const nextLocale = locale === "id" ? "en" : "id";
+    trackLanguage(nextLocale);
     startTransition(() => {
       router.replace(pathname, { locale: nextLocale });
     });
@@ -26,6 +33,7 @@ const Navbar = () => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isMenuOpen) {
         setIsMenuOpen(false);
+        menuToggleRef.current?.focus();
       }
     };
 
@@ -70,12 +78,12 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
           <Link
             href="/"
             data-testid="nav-home"
             className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            onClick={() => trackNavigation("Home", "/")}
           >
             {t("home")}
           </Link>
@@ -83,6 +91,7 @@ const Navbar = () => {
             href="/tentang"
             data-testid="nav-about"
             className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            onClick={() => trackNavigation("About", "/tentang")}
           >
             {t("about")}
           </Link>
@@ -90,6 +99,7 @@ const Navbar = () => {
             href="/produk"
             data-testid="nav-features"
             className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            onClick={() => trackNavigation("Features", "/produk")}
           >
             {t("features")}
           </Link>
@@ -98,6 +108,7 @@ const Navbar = () => {
             href="/kontak"
             data-testid="nav-contact"
             className="bg-blue-500 dark:bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-600 dark:hover:bg-blue-700 transition shadow-md"
+            onClick={() => trackNavigation("Contact CTA", "/kontak")}
           >
             {t("contact")}
           </Link>
@@ -124,6 +135,7 @@ const Navbar = () => {
         </div>
 
         <button
+          ref={menuToggleRef}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="md:hidden flex flex-col gap-1.5 p-2 z-50"
           aria-label="Toggle menu"
@@ -149,7 +161,11 @@ const Navbar = () => {
 
         {isMenuOpen && (
           <div 
+            ref={mobileMenuRef}
             id="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu navigasi mobile"
             className="absolute top-full left-0 w-screen bg-white dark:bg-gray-900 shadow-lg md:hidden z-40 border-t border-gray-200 dark:border-gray-700 transition-colors -mx-4 sm:-mx-8"
           >
             <div className="flex flex-col gap-4 p-6">
@@ -157,7 +173,7 @@ const Navbar = () => {
                 href="/"
                 data-testid="mobile-nav-home"
                 className="block py-3 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => { trackNavigation("Home", "/", true); setIsMenuOpen(false); }}
               >
                 {t("home")}
               </Link>
@@ -165,7 +181,7 @@ const Navbar = () => {
                 href="/tentang"
                 data-testid="mobile-nav-about"
                 className="block py-3 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => { trackNavigation("About", "/tentang", true); setIsMenuOpen(false); }}
               >
                 {t("about")}
               </Link>
@@ -173,7 +189,7 @@ const Navbar = () => {
                 href="/produk"
                 data-testid="mobile-nav-features"
                 className="block py-3 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => { trackNavigation("Features", "/produk", true); setIsMenuOpen(false); }}
               >
                 {t("features")}
               </Link>
@@ -181,7 +197,7 @@ const Navbar = () => {
                 href="/kontak"
                 data-testid="mobile-nav-contact"
                 className="block py-3 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => { trackNavigation("Contact", "/kontak", true); setIsMenuOpen(false); }}
               >
                 {t("contact")}
               </Link>

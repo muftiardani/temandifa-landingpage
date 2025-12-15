@@ -1,9 +1,3 @@
-/**
- * Centralized Constants Exports
- * Re-export all constants from a single entry point
- */
-
-// Route constants
 export {
   ROUTES,
   API_ROUTES,
@@ -13,7 +7,6 @@ export {
   type ExternalRoute,
 } from './routes';
 
-// Rate limit constants
 export {
   RATE_LIMITS,
   RATE_LIMIT_HEADERS,
@@ -22,7 +15,6 @@ export {
   type RateLimitConfig,
 } from './rate-limits';
 
-// i18n constants
 export {
   LOCALES,
   DEFAULT_LOCALE,

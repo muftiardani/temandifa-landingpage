@@ -14,11 +14,28 @@ const envSchema = z.object({
   SENTRY_ORG: z.string().optional(),
   SENTRY_PROJECT: z.string().optional(),
   SENTRY_AUTH_TOKEN: z.string().optional(),
+  CSRF_SECRET: z.string().optional(),
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
   NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
 });
+
+export function validateProductionEnv(): void {
+  if (process.env.NODE_ENV === "production") {
+    const csrfSecret = process.env.CSRF_SECRET;
+    if (!csrfSecret || csrfSecret.length < 32) {
+      throw new Error(
+        "CSRF_SECRET is required in production and must be at least 32 characters. " +
+        "Generate with: node -e \"console.log(require('crypto').randomBytes(32).toString('base64'))\""
+      );
+    }
+    
+    if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+      logger.warn("Redis is recommended for production rate limiting", null, "Env");
+    }
+  }
+}
 
 export type Env = z.infer<typeof envSchema>;
 

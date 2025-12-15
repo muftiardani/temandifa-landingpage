@@ -1,16 +1,8 @@
-/**
- * Loading Skeleton Components
- * Reusable skeleton components for loading states
- */
-
 interface LoadingSkeletonProps {
   className?: string;
   animation?: "pulse" | "shimmer";
 }
 
-/**
- * Base skeleton component with pulse or shimmer animation
- */
 export function LoadingSkeleton({
   className = "",
   animation = "pulse",
@@ -25,9 +17,6 @@ export function LoadingSkeleton({
   );
 }
 
-/**
- * Hero section skeleton
- */
 export function HeroSkeleton() {
   return (
     <div className="px-4 sm:px-7 max-w-7xl mx-auto pb-10 pt-1">
@@ -40,9 +29,6 @@ export function HeroSkeleton() {
   );
 }
 
-/**
- * Card skeleton for feature cards
- */
 export function CardSkeleton() {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md">
@@ -54,9 +40,6 @@ export function CardSkeleton() {
   );
 }
 
-/**
- * Text block skeleton
- */
 export function TextSkeleton({ lines = 3 }: { lines?: number }) {
   return (
     <div className="space-y-3">
@@ -70,9 +53,6 @@ export function TextSkeleton({ lines = 3 }: { lines?: number }) {
   );
 }
 
-/**
- * Form skeleton
- */
 export function FormSkeleton() {
   return (
     <div className="space-y-6">
@@ -106,9 +86,6 @@ export function FormSkeleton() {
   );
 }
 
-/**
- * Page skeleton with navbar and content
- */
 export function PageSkeleton() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">

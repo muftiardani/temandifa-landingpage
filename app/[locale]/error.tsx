@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { logger } from "@/lib/logger";
 
 export default function Error({
   error,
@@ -14,11 +15,15 @@ export default function Error({
   const t = useTranslations("Error");
 
   useEffect(() => {
-    console.error("Error boundary caught:", error);
+    logger.error("Error page caught error", error, "ErrorPage");
   }, [error]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-white dark:bg-gray-950">
+    <div 
+      className="min-h-screen flex items-center justify-center px-4 bg-white dark:bg-gray-950"
+      role="main"
+      aria-labelledby="error-title"
+    >
       <div className="max-w-md w-full text-center">
         {/* Error Icon */}
         <div className="mb-6 flex justify-center">
@@ -40,7 +45,10 @@ export default function Error({
         </div>
 
         {/* Error Title */}
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+        <h2 
+          id="error-title"
+          className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4"
+        >
           {t("title")}
         </h2>
 
@@ -49,7 +57,7 @@ export default function Error({
           {t("description")}
         </p>
 
-        {/* Error Details (Development only) */}
+        {/* Error Details */}
         {process.env.NODE_ENV === "development" && (
           <div className="mb-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-left">
             <p className="text-sm font-mono text-red-600 dark:text-red-400 break-all">

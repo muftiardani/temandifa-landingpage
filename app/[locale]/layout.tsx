@@ -203,7 +203,6 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
-        {/* Initialize Sentry on client side */}
         <SentryInitializer />
         
         <ScrollProgress />

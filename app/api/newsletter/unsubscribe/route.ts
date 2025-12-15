@@ -3,96 +3,78 @@ import { Resend } from "resend";
 import { z } from "zod";
 import { randomUUID } from "crypto";
 import { checkRateLimit } from "@/lib/security/redis-rate-limit";
+import { validateSignedUnsubscribeUrl } from "@/lib/security/csrf";
+import { getClientIp } from "@/lib/security/ip-utils";
+import { logger } from "@/lib/logger";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const unsubscribeSchema = z.object({
   email: z.string().email(),
+  t: z.number(),
+  sig: z.string(),
 });
-
-function getClientIp(request: NextRequest): string {
-  const forwardedFor = request.headers.get("x-forwarded-for");
-  
-  if (forwardedFor) {
-    return forwardedFor.split(',')[0].trim();
-  }
-  
-  return request.headers.get("x-real-ip") || "unknown";
-}
 
 export async function POST(request: NextRequest) {
   const requestId = randomUUID();
-  
+  const unsubLogger = logger.withMetadata({ requestId, context: "Unsubscribe" });
+
   try {
     const ip = getClientIp(request);
 
-    // Rate limiting: 5 requests per 60 seconds
-    const rateLimitResult = await checkRateLimit(ip);
-    
+    const rateLimitResult = await checkRateLimit(`unsub:${ip}`);
+
     if (!rateLimitResult.success) {
       const retryAfter = Math.ceil((rateLimitResult.reset - Date.now()) / 1000);
-      
-      console.log(`[${requestId}] Unsubscribe rate limit exceeded for IP: ${ip}`);
-      
+
+      unsubLogger.warn(`Rate limit exceeded for IP: ${ip}`);
+
       return NextResponse.json(
         {
           error: "Too many requests. Please try again later.",
           retryAfter,
         },
-        { 
+        {
           status: 429,
           headers: {
-            'Retry-After': retryAfter.toString(),
-          }
+            "Retry-After": retryAfter.toString(),
+            "X-RateLimit-Limit": rateLimitResult.limit.toString(),
+            "X-RateLimit-Remaining": "0",
+            "X-RateLimit-Reset": rateLimitResult.reset.toString(),
+          },
         }
       );
     }
 
     const body = await request.json();
+
     const validatedData = unsubscribeSchema.parse(body);
 
-    if (process.env.RESEND_AUDIENCE_ID) {
-      try {
-        const { data: contacts } = await resend.contacts.list({
-          audienceId: process.env.RESEND_AUDIENCE_ID,
-        });
+    const signatureValidation = validateSignedUnsubscribeUrl(
+      validatedData.email,
+      validatedData.t,
+      validatedData.sig
+    );
 
-        const contact = contacts?.data?.find(
-          (c: { email: string }) => c.email === validatedData.email
-        );
-
-        if (contact) {
-          await resend.contacts.remove({
-            audienceId: process.env.RESEND_AUDIENCE_ID,
-            id: contact.id,
-          });
-
-          console.log(`[${requestId}] Unsubscribed from audience:`, validatedData.email);
-        } else {
-          console.log(`[${requestId}] Email not found in audience:`, validatedData.email);
-        }
-      } catch (audienceError) {
-        console.error(`[${requestId}] Audience error:`, audienceError);
-      }
+    if (!signatureValidation.valid) {
+      unsubLogger.warn(`Invalid signature: ${signatureValidation.error}`);
+      return NextResponse.json(
+        {
+          error: signatureValidation.error || "Invalid or expired unsubscribe link",
+          requestId,
+        },
+        { status: 403 }
+      );
     }
 
-    console.log(`[${requestId}] Unsubscribe successful:`, validatedData.email);
-
-    return NextResponse.json(
-      {
-        success: true,
-        message: "Successfully unsubscribed from newsletter",
-        requestId,
-      },
-      { status: 200 }
-    );
+    return await processUnsubscribe(validatedData.email, requestId);
   } catch (error) {
-    console.error(`[${requestId}] Unsubscribe error:`, error);
+    unsubLogger.error("Unsubscribe failed", error instanceof Error ? error : undefined);
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {
-          error: "Invalid email address",
+          error: "Invalid unsubscribe link. Please use the link from your email.",
           requestId,
         },
         { status: 400 }
@@ -107,4 +89,47 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+async function processUnsubscribe(
+  email: string,
+  requestId: string
+): Promise<NextResponse> {
+  const unsubLogger = logger.withMetadata({ requestId, context: "Unsubscribe" });
+  
+  if (process.env.RESEND_AUDIENCE_ID) {
+    try {
+      const { data: contacts } = await resend.contacts.list({
+        audienceId: process.env.RESEND_AUDIENCE_ID,
+      });
+
+      const contact = contacts?.data?.find(
+        (c: { email: string }) => c.email === email
+      );
+
+      if (contact) {
+        await resend.contacts.remove({
+          audienceId: process.env.RESEND_AUDIENCE_ID,
+          id: contact.id,
+        });
+
+        unsubLogger.success(`Unsubscribed from audience: ${email}`);
+      } else {
+        unsubLogger.info(`Email not found in audience: ${email}`);
+      }
+    } catch (audienceError) {
+      unsubLogger.error("Audience removal failed", audienceError instanceof Error ? audienceError : undefined);
+    }
+  }
+
+  unsubLogger.success(`Unsubscribe successful: ${email}`);
+
+  return NextResponse.json(
+    {
+      success: true,
+      message: "Successfully unsubscribed from newsletter",
+      requestId,
+    },
+    { status: 200 }
+  );
 }

@@ -8,6 +8,15 @@ global.fetch = vi.fn() as unknown as typeof fetch;
 describe("NewsletterForm Integration", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    
+    (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        token: "mock-csrf-token",
+        hash: "mock-csrf-hash",
+        expiresAt: Date.now() + 900000,
+      }),
+    } as Response);
   });
 
   it("should render newsletter form", () => {

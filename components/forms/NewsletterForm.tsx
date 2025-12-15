@@ -6,15 +6,18 @@ import { z } from "zod";
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { logger } from "@/lib/logger";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 export default function NewsletterForm() {
   const t = useTranslations("Newsletter");
+  const { trackForm, trackNewsletter } = useAnalytics();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
   const [csrfToken, setCSRFToken] = useState<string>("");
   const [csrfHash, setCSRFHash] = useState<string>("");
+  const [csrfExpiresAt, setCSRFExpiresAt] = useState<number>(0);
 
   useEffect(() => {
     fetch("/api/csrf")
@@ -22,6 +25,7 @@ export default function NewsletterForm() {
       .then((data) => {
         setCSRFToken(data.token);
         setCSRFHash(data.hash);
+        setCSRFExpiresAt(data.expiresAt);
       })
       .catch((error) => {
         logger.error("Failed to fetch CSRF token", error, "Newsletter");
@@ -47,6 +51,7 @@ export default function NewsletterForm() {
   const onSubmit = async (data: NewsletterFormData) => {
     setIsSubmitting(true);
     setSubmitStatus("idle");
+    trackForm("newsletter", "submit");
 
     try {
       const response = await fetch("/api/newsletter", {
@@ -58,6 +63,7 @@ export default function NewsletterForm() {
         body: JSON.stringify({
           ...data,
           csrfHash,
+          csrfExpiresAt,
         }),
       });
 
@@ -69,11 +75,15 @@ export default function NewsletterForm() {
 
       setSubmitStatus("success");
       reset();
+      trackForm("newsletter", "success");
+      trackNewsletter(true);
 
       setTimeout(() => setSubmitStatus("idle"), 5000);
     } catch (error) {
       logger.error("Error subscribing to newsletter", error, "Newsletter");
       setSubmitStatus("error");
+      trackForm("newsletter", "error", error instanceof Error ? error.message : "Unknown error");
+      trackNewsletter(false);
       
       setTimeout(() => setSubmitStatus("idle"), 5000);
     } finally {
@@ -99,6 +109,7 @@ export default function NewsletterForm() {
               type="email"
               {...register("email")}
               disabled={isSubmitting || submitStatus === "success"}
+              autoComplete="email"
               className={`flex-1 px-4 py-2.5 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition disabled:opacity-50 disabled:cursor-not-allowed ${
                 errors.email
                   ? "border-red-500 dark:border-red-400"

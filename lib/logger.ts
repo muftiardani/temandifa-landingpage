@@ -1,118 +1,259 @@
-/**
- * Logger Service
- * Centralized logging with environment-aware behavior
- */
+import * as Sentry from "@sentry/nextjs";
 
-type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+type LogLevel = "debug" | "info" | "warn" | "error";
 
 interface LoggerConfig {
   isDevelopment: boolean;
   isProduction: boolean;
   enableDebug: boolean;
   enableInfo: boolean;
+  minLevel: LogLevel;
+  enableStructuredLogs: boolean;
 }
+
+interface LogMetadata {
+  context?: string;
+  requestId?: string;
+  userId?: string;
+  [key: string]: unknown;
+}
+
+interface StructuredLog {
+  timestamp: string;
+  level: LogLevel;
+  message: string;
+  context?: string;
+  requestId?: string;
+  data?: unknown;
+  error?: {
+    name: string;
+    message: string;
+    stack?: string;
+  };
+}
+
+const LOG_LEVEL_PRIORITY: Record<LogLevel, number> = {
+  debug: 0,
+  info: 1,
+  warn: 2,
+  error: 3,
+};
 
 class Logger {
   private config: LoggerConfig;
+  private requestId: string | null = null;
 
   constructor() {
+    const logLevel = (process.env.LOG_LEVEL as LogLevel) || "debug";
+    
     this.config = {
-      isDevelopment: process.env.NODE_ENV === 'development',
-      isProduction: process.env.NODE_ENV === 'production',
-      enableDebug: process.env.NODE_ENV === 'development',
-      enableInfo: process.env.NODE_ENV === 'development',
+      isDevelopment: process.env.NODE_ENV === "development",
+      isProduction: process.env.NODE_ENV === "production",
+      enableDebug: process.env.NODE_ENV === "development",
+      enableInfo: process.env.NODE_ENV === "development",
+      minLevel: logLevel,
+      enableStructuredLogs: process.env.STRUCTURED_LOGS === "true",
     };
   }
 
-  /**
-   * Format log message with timestamp and context
-   */
-  private formatMessage(level: LogLevel, message: string, context?: string): string {
-    const timestamp = new Date().toISOString();
-    const contextStr = context ? `[${context}]` : '';
-    return `${timestamp} ${level.toUpperCase()} ${contextStr} ${message}`;
+  setRequestId(requestId: string): void {
+    this.requestId = requestId;
   }
 
-  /**
-   * Send logs to external service (optional)
-   */
-  private sendToExternalService(level: LogLevel, message: string, data?: unknown): void {
-    if (!this.config.isProduction) {
-      return;
+  clearRequestId(): void {
+    this.requestId = null;
+  }
+
+  generateRequestId(): string {
+    return `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  private shouldLog(level: LogLevel): boolean {
+    return LOG_LEVEL_PRIORITY[level] >= LOG_LEVEL_PRIORITY[this.config.minLevel];
+  }
+
+  private formatMessage(
+    level: LogLevel,
+    message: string,
+    context?: string
+  ): string {
+    const timestamp = new Date().toISOString();
+    const contextStr = context ? `[${context}]` : "";
+    const requestIdStr = this.requestId ? `[${this.requestId}]` : "";
+    return `${timestamp} ${level.toUpperCase()} ${requestIdStr}${contextStr} ${message}`;
+  }
+
+  private createStructuredLog(
+    level: LogLevel,
+    message: string,
+    data?: unknown,
+    context?: string,
+    error?: Error
+  ): StructuredLog {
+    const log: StructuredLog = {
+      timestamp: new Date().toISOString(),
+      level,
+      message,
+    };
+
+    if (context) log.context = context;
+    if (this.requestId) log.requestId = this.requestId;
+    if (data !== undefined) log.data = data;
+    if (error) {
+      log.error = {
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      };
     }
 
-    if (typeof window !== 'undefined' && window.Sentry) {
-      if (level === 'error') {
-        window.Sentry.captureException(new Error(message));
-      } else {
-        window.Sentry.addBreadcrumb({
-          category: 'log',
-          message,
-          level: level === 'warn' ? 'warning' : level,
-          data: data as Record<string, unknown>,
-        });
+    return log;
+  }
+
+  private output(
+    level: LogLevel,
+    message: string,
+    data?: unknown,
+    context?: string,
+    error?: Error
+  ): void {
+    if (this.config.enableStructuredLogs) {
+      const structuredLog = this.createStructuredLog(
+        level,
+        message,
+        data,
+        context,
+        error
+      );
+      const logMethod = level === "error" ? console.error : 
+                       level === "warn" ? console.warn : 
+                       level === "debug" ? console.debug : console.log;
+      logMethod(JSON.stringify(structuredLog));
+    } else {
+      const formattedMessage = this.formatMessage(level, message, context);
+      const logData = error || data;
+      
+      switch (level) {
+        case "error":
+          console.error(formattedMessage, logData || "");
+          break;
+        case "warn":
+          console.warn(formattedMessage, logData || "");
+          break;
+        case "debug":
+          console.debug(formattedMessage, logData || "");
+          break;
+        default:
+          console.log(formattedMessage, logData || "");
       }
     }
   }
 
-  /**
-   * Debug logs - only in development
-   */
+  private sendToSentry(
+    level: LogLevel,
+    message: string,
+    data?: unknown,
+    error?: Error
+  ): void {
+    if (!this.config.isProduction) {
+      return;
+    }
+
+    try {
+      if (level === "error") {
+        const errorToCapture = error || new Error(message);
+        Sentry.captureException(errorToCapture, {
+          extra: {
+            originalMessage: message,
+            data,
+            requestId: this.requestId,
+          },
+        });
+      } else if (level === "warn") {
+        Sentry.addBreadcrumb({
+          category: "log",
+          message,
+          level: "warning",
+          data: {
+            ...(data as Record<string, unknown>),
+            requestId: this.requestId,
+          },
+        });
+      }
+    } catch {
+      // Sentry not initialized, silently ignore
+    }
+  }
+
   debug(message: string, data?: unknown, context?: string): void {
-    if (!this.config.enableDebug) {
+    if (!this.shouldLog("debug") || !this.config.enableDebug) {
       return;
     }
 
-    const formattedMessage = this.formatMessage('debug', message, context);
-    console.debug(formattedMessage, data || '');
+    this.output("debug", message, data, context);
   }
 
-  /**
-   * Info logs - only in development
-   */
   info(message: string, data?: unknown, context?: string): void {
-    if (!this.config.enableInfo) {
+    if (!this.shouldLog("info") || !this.config.enableInfo) {
       return;
     }
 
-    const formattedMessage = this.formatMessage('info', message, context);
-    console.log(formattedMessage, data || '');
+    this.output("info", message, data, context);
   }
 
-  /**
-   * Warning logs - always logged
-   */
   warn(message: string, data?: unknown, context?: string): void {
-    const formattedMessage = this.formatMessage('warn', message, context);
-    console.warn(formattedMessage, data || '');
-    this.sendToExternalService('warn', message, data);
-  }
-
-  /**
-   * Error logs - always logged and sent to external service
-   */
-  error(message: string, error?: Error | unknown, context?: string): void {
-    const formattedMessage = this.formatMessage('error', message, context);
-    console.error(formattedMessage, error || '');
-    this.sendToExternalService('error', message, error);
-  }
-
-  /**
-   * Success logs - only in development
-   */
-  success(message: string, data?: unknown, context?: string): void {
-    if (!this.config.enableInfo) {
+    if (!this.shouldLog("warn")) {
       return;
     }
 
-    const emoji = '✅';
-    const formattedMessage = this.formatMessage('info', `${emoji} ${message}`, context);
-    console.log(formattedMessage, data || '');
+    this.output("warn", message, data, context);
+    this.sendToSentry("warn", message, data);
   }
 
-  /**
-   * Group logs - only in development
-   */
+  error(message: string, error?: Error | unknown, context?: string): void {
+    if (!this.shouldLog("error")) {
+      return;
+    }
+
+    const errorObj = error instanceof Error ? error : undefined;
+    const errorData = error instanceof Error ? undefined : error;
+    
+    this.output("error", message, errorData, context, errorObj);
+    this.sendToSentry("error", message, errorData, errorObj);
+  }
+
+  success(message: string, data?: unknown, context?: string): void {
+    if (!this.shouldLog("info") || !this.config.enableInfo) {
+      return;
+    }
+
+    const emoji = "✅";
+    this.output("info", `${emoji} ${message}`, data, context);
+  }
+
+  withMetadata(metadata: LogMetadata) {
+    const childLogger = new Logger();
+    if (metadata.requestId) {
+      childLogger.setRequestId(metadata.requestId);
+    }
+    return {
+      debug: (message: string, data?: unknown) =>
+        childLogger.debug(message, data, metadata.context),
+      info: (message: string, data?: unknown) =>
+        childLogger.info(message, data, metadata.context),
+      warn: (message: string, data?: unknown) =>
+        childLogger.warn(message, data, metadata.context),
+      error: (message: string, error?: Error | unknown) =>
+        childLogger.error(message, error, metadata.context),
+      success: (message: string, data?: unknown) =>
+        childLogger.success(message, data, metadata.context),
+    };
+  }
+
+  child(context: string) {
+    return this.withMetadata({ context });
+  }
+
   group(label: string, callback: () => void): void {
     if (!this.config.enableDebug) {
       callback();
@@ -124,9 +265,6 @@ class Logger {
     console.groupEnd();
   }
 
-  /**
-   * Table logs - only in development
-   */
   table(data: unknown): void {
     if (!this.config.enableDebug) {
       return;
@@ -135,9 +273,6 @@ class Logger {
     console.table(data);
   }
 
-  /**
-   * Time measurement - only in development
-   */
   time(label: string): void {
     if (!this.config.enableDebug) {
       return;
@@ -146,9 +281,6 @@ class Logger {
     console.time(label);
   }
 
-  /**
-   * End time measurement - only in development
-   */
   timeEnd(label: string): void {
     if (!this.config.enableDebug) {
       return;
@@ -156,7 +288,22 @@ class Logger {
 
     console.timeEnd(label);
   }
+
+  async measure<T>(label: string, operation: () => Promise<T>): Promise<T> {
+    const start = performance.now();
+    try {
+      const result = await operation();
+      const duration = performance.now() - start;
+      this.debug(`${label} completed in ${duration.toFixed(2)}ms`);
+      return result;
+    } catch (error) {
+      const duration = performance.now() - start;
+      this.error(`${label} failed after ${duration.toFixed(2)}ms`, error);
+      throw error;
+    }
+  }
 }
 
 export const logger = new Logger();
 
+export type { LogLevel, LogMetadata, StructuredLog };

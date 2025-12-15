@@ -1,20 +1,3 @@
-/**
- * Date Utility Functions
- * Helper functions for date formatting and manipulation
- */
-
-/**
- * Format a date to a localized string
- * 
- * @param date - Date to format
- * @param locale - Locale string (default: 'id')
- * @param options - Intl.DateTimeFormatOptions
- * @returns Formatted date string
- * 
- * @example
- * formatDate(new Date(), 'id'); // "13 Desember 2025"
- * formatDate(new Date(), 'en'); // "December 13, 2025"
- */
 export function formatDate(
   date: Date,
   locale: string = 'id',
@@ -29,16 +12,6 @@ export function formatDate(
   return new Intl.DateTimeFormat(locale, options || defaultOptions).format(date);
 }
 
-/**
- * Format a date to a short format
- * 
- * @param date - Date to format
- * @param locale - Locale string (default: 'id')
- * @returns Short formatted date string
- * 
- * @example
- * formatDateShort(new Date()); // "13/12/2025"
- */
 export function formatDateShort(date: Date, locale: string = 'id'): string {
   return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
@@ -47,16 +20,6 @@ export function formatDateShort(date: Date, locale: string = 'id'): string {
   }).format(date);
 }
 
-/**
- * Get relative time string (e.g., "2 hours ago")
- * 
- * @param date - Date to compare
- * @param locale - Locale string (default: 'id')
- * @returns Relative time string
- * 
- * @example
- * getRelativeTime(new Date(Date.now() - 3600000)); // "1 hour ago"
- */
 export function getRelativeTime(date: Date, locale: string = 'id'): string {
   const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
   const diff = date.getTime() - Date.now();

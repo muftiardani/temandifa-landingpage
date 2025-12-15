@@ -6,10 +6,6 @@ import { logger } from "@/lib/logger";
 
 let sentryInitialized = false;
 
-/**
- * Sentry Initializer Component
- * Manually initializes Sentry on the client side
- */
 export default function SentryInitializer() {
   useEffect(() => {
     if (sentryInitialized) {

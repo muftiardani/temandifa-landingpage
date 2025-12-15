@@ -1,24 +1,7 @@
-/**
- * useLocalStorage Hook
- * Syncs state with localStorage
- */
-
 'use client';
 
 import { useState, useEffect } from 'react';
 
-/**
- * useLocalStorage Hook
- * Persists state to localStorage
- * 
- * @param key - localStorage key
- * @param initialValue - Initial value if key doesn't exist
- * @returns [value, setValue] tuple
- * 
- * @example
- * const [name, setName] = useLocalStorage<string>('userName', 'Guest');
- * const [count, setCount] = useLocalStorage<number>('counter', 0);
- */
 export function useLocalStorage<T>(
   key: string,
   initialValue: T

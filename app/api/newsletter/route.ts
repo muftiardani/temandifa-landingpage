@@ -9,7 +9,10 @@ import {
   getCSRFTokenFromHeaders,
   getCSRFSecret,
   createCSRFErrorResponse,
+  generateSignedUnsubscribeUrl,
 } from "@/lib/security/csrf";
+import { config } from "@/lib/config";
+import { logger } from "@/lib/logger";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -30,17 +33,17 @@ function getClientIp(request: NextRequest): string {
 
 export async function POST(request: NextRequest) {
   const requestId = randomUUID();
+  const newsletterLogger = logger.withMetadata({ requestId, context: "Newsletter" });
   
   try {
     const ip = getClientIp(request);
 
-    // Rate limiting: 3 requests per 60 seconds
     const rateLimitResult = await checkRateLimit(ip);
     
     if (!rateLimitResult.success) {
       const retryAfter = Math.ceil((rateLimitResult.reset - Date.now()) / 1000);
       
-      console.log(`[${requestId}] Newsletter rate limit exceeded for IP: ${ip}`);
+      newsletterLogger.warn(`Rate limit exceeded for IP: ${ip}`);
       
       return NextResponse.json(
         {
@@ -61,12 +64,12 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     
-    // CSRF Protection
     const csrfToken = getCSRFTokenFromHeaders(request.headers);
     const csrfHash = body.csrfHash;
+    const csrfExpiresAt = body.csrfExpiresAt;
     
     if (!csrfToken || !csrfHash) {
-      console.log(`[${requestId}] Missing CSRF token or hash`);
+      newsletterLogger.warn("Missing CSRF token or hash");
       return NextResponse.json(
         createCSRFErrorResponse(),
         { status: 403 }
@@ -74,17 +77,16 @@ export async function POST(request: NextRequest) {
     }
     
     const secret = getCSRFSecret();
-    if (!validateCSRFToken(csrfToken, csrfHash, secret)) {
-      console.log(`[${requestId}] Invalid CSRF token`);
+    if (!validateCSRFToken(csrfToken, csrfHash, secret, csrfExpiresAt)) {
+      newsletterLogger.warn("Invalid or expired CSRF token");
       return NextResponse.json(
         createCSRFErrorResponse(),
         { status: 403 }
       );
     }
     
-    // Honeypot check
     if (body.honeypot) {
-      console.log(`[${requestId}] Newsletter honeypot triggered for IP: ${ip}`);
+      newsletterLogger.warn(`Honeypot triggered for IP: ${ip}`);
       
       return NextResponse.json(
         {
@@ -99,7 +101,8 @@ export async function POST(request: NextRequest) {
     const validatedData = newsletterSchema.parse(body);
     const escapedEmail = escape(validatedData.email);
 
-    // Send welcome email
+    const unsubscribeUrl = generateSignedUnsubscribeUrl(validatedData.email, config.baseUrl);
+
     const fromEmail = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
 
     const { data, error } = await resend.emails.send({
@@ -149,7 +152,7 @@ export async function POST(request: NextRequest) {
               <a href="https://temandifa.com" style="color: #9ca3af;">Visit our website</a>
             </p>
             <p style="color: #9ca3af; font-size: 11px; margin: 15px 0 0 0;">
-              Don't want to receive these emails? <a href="https://temandifa.com/unsubscribe?email=${encodeURIComponent(validatedData.email)}" style="color: #9ca3af; text-decoration: underline;">Unsubscribe</a>
+              Don't want to receive these emails? <a href="${unsubscribeUrl}" style="color: #9ca3af; text-decoration: underline;">Unsubscribe</a>
             </p>
           </div>
         </div>
@@ -177,12 +180,12 @@ LinkedIn: https://linkedin.com/company/temandifa-com
 Visit our website: https://temandifa.com
 
 Don't want to receive these emails?
-Unsubscribe: https://temandifa.com/unsubscribe?email=${encodeURIComponent(validatedData.email)}
+Unsubscribe: ${unsubscribeUrl}
       `.trim(),
     });
 
     if (error) {
-      console.error(`[${requestId}] Newsletter email error:`, error);
+      newsletterLogger.error("Newsletter email failed", error instanceof Error ? error : undefined);
       return NextResponse.json(
         {
           error: "Failed to subscribe. Please try again later.",
@@ -192,12 +195,11 @@ Unsubscribe: https://temandifa.com/unsubscribe?email=${encodeURIComponent(valida
       );
     }
 
-    console.log(`[${requestId}] Newsletter subscription successful`, {
+    newsletterLogger.success("Newsletter subscription successful", {
       email: validatedData.email,
       resendId: data?.id,
     });
 
-    // Store email in Resend Audiences
     let audienceId: string | undefined;
     
     if (process.env.RESEND_AUDIENCE_ID) {
@@ -209,16 +211,16 @@ Unsubscribe: https://temandifa.com/unsubscribe?email=${encodeURIComponent(valida
         });
 
         if (contactError) {
-          console.error(`[${requestId}] Failed to add to audience:`, contactError);
+          newsletterLogger.error("Failed to add to audience", contactError instanceof Error ? contactError : undefined);
         } else {
           audienceId = contactData?.id;
-          console.log(`[${requestId}] Added to audience:`, contactData?.id);
+          newsletterLogger.info(`Added to audience: ${contactData?.id}`);
         }
       } catch (audienceError) {
-        console.error(`[${requestId}] Audience error:`, audienceError);
+        newsletterLogger.error("Audience operation failed", audienceError instanceof Error ? audienceError : undefined);
       }
     } else {
-      console.warn(`[${requestId}] RESEND_AUDIENCE_ID not configured - subscriber not stored`);
+      newsletterLogger.warn("RESEND_AUDIENCE_ID not configured - subscriber not stored");
     }
 
     return NextResponse.json(
@@ -239,7 +241,7 @@ Unsubscribe: https://temandifa.com/unsubscribe?email=${encodeURIComponent(valida
       }
     );
   } catch (error) {
-    console.error(`[${requestId}] Newsletter subscription error:`, error);
+    newsletterLogger.error("Newsletter subscription failed", error instanceof Error ? error : undefined);
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(

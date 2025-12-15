@@ -1,14 +1,5 @@
 import { z } from "zod";
 
-/**
- * Validation Schemas
- * Zod schemas for form validation with TypeScript type inference
- */
-
-/**
- * Contact Form Schema
- * Validates contact form submissions
- */
 export const contactFormSchema = z.object({
   name: z
     .string()
@@ -37,10 +28,6 @@ export const contactFormSchema = z.object({
   website: z.string().optional(),
 });
 
-/**
- * Newsletter subscription validation schema
- * Used in both NewsletterForm component and /api/newsletter route
- */
 export const newsletterSchema = z.object({
   email: z
     .string()
@@ -54,11 +41,6 @@ export const newsletterSchema = z.object({
 export type ContactFormData = z.infer<typeof contactFormSchema>;
 export type NewsletterData = z.infer<typeof newsletterSchema>;
 
-/**
- * Validation error formatter
- * Converts Zod errors to user-friendly messages
- * @internal - Used internally by safeValidate
- */
 function formatValidationErrors(error: z.ZodError): Record<string, string> {
   const errors: Record<string, string> = {};
   
@@ -70,10 +52,6 @@ function formatValidationErrors(error: z.ZodError): Record<string, string> {
   return errors;
 }
 
-/**
- * Safe validation helper
- * Returns either validated data or formatted errors
- */
 export function safeValidate<T>(
   schema: z.ZodSchema<T>,
   data: unknown

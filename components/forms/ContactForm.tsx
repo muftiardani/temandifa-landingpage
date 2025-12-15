@@ -9,15 +9,18 @@ import {
   type ContactFormData,
 } from "@/lib/validation/schemas";
 import { logger } from "@/lib/logger";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 export default function ContactForm() {
   const t = useTranslations("ContactForm");
+  const { trackForm, trackContact } = useAnalytics();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
   const [csrfToken, setCSRFToken] = useState<string>("");
   const [csrfHash, setCSRFHash] = useState<string>("");
+  const [csrfExpiresAt, setCSRFExpiresAt] = useState<number>(0);
 
   useEffect(() => {
     fetch("/api/csrf")
@@ -25,6 +28,7 @@ export default function ContactForm() {
       .then((data) => {
         setCSRFToken(data.token);
         setCSRFHash(data.hash);
+        setCSRFExpiresAt(data.expiresAt);
       })
       .catch((error) => {
         logger.error("Failed to fetch CSRF token", error, "Contact");
@@ -43,6 +47,7 @@ export default function ContactForm() {
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     setSubmitStatus("idle");
+    trackForm("contact", "submit");
 
     try {
       const response = await fetch("/api/contact", {
@@ -54,6 +59,7 @@ export default function ContactForm() {
         body: JSON.stringify({
           ...data,
           csrfHash,
+          csrfExpiresAt,
         }),
       });
 
@@ -65,11 +71,15 @@ export default function ContactForm() {
 
       setSubmitStatus("success");
       reset();
+      trackForm("contact", "success");
+      trackContact(true);
 
       setTimeout(() => setSubmitStatus("idle"), 5000);
     } catch (error) {
       logger.error("Error submitting form", error, "Contact");
       setSubmitStatus("error");
+      trackForm("contact", "error", error instanceof Error ? error.message : "Unknown error");
+      trackContact(false);
     } finally {
       setIsSubmitting(false);
     }
@@ -96,6 +106,7 @@ export default function ContactForm() {
           type="text"
           {...register("name")}
           disabled={isSubmitting}
+          autoComplete="name"
           className={`w-full px-4 py-3 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition disabled:opacity-50 disabled:cursor-not-allowed ${
             errors.name
               ? "border-red-500 dark:border-red-400"
@@ -130,6 +141,7 @@ export default function ContactForm() {
           type="email"
           {...register("email")}
           disabled={isSubmitting}
+          autoComplete="email"
           className={`w-full px-4 py-3 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition disabled:opacity-50 disabled:cursor-not-allowed ${
             errors.email
               ? "border-red-500 dark:border-red-400"

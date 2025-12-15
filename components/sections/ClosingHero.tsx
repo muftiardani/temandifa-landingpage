@@ -23,7 +23,6 @@ export default function ClosingHero() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={viewportOptions}
         >
-          {/* Background */}
           <div className="absolute inset-0 z-0">
             <Image
               src="/images/sky-background.png"

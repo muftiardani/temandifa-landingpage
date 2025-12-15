@@ -1,16 +1,17 @@
 "use client";
 
-/* eslint-disable */
-
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 export function ThemeToggle() {
   const t = useTranslations("Theme");
   const [mounted, setMounted] = useState(false);
   const { setTheme, resolvedTheme } = useTheme();
+  const { trackTheme } = useAnalytics();
 
+  /* eslint-disable */
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -22,7 +23,9 @@ export function ThemeToggle() {
   }
 
   const toggleTheme = () => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+    const newTheme = resolvedTheme === "dark" ? "light" : "dark";
+    trackTheme(newTheme);
+    setTheme(newTheme);
   };
 
   return (
