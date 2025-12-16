@@ -97,26 +97,6 @@ html {
   animation: gradient 15s ease infinite;
 }
 
-/* Gradient Text Animation */
-@keyframes gradient-flow {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-.gradient-text {
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradient-flow 3s ease infinite;
-}
-
 /* Shimmer Animation for Loading Skeletons */
 @keyframes shimmer {
   0% {

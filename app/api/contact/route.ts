@@ -7,6 +7,7 @@ import {
 } from "@/lib/security/redis-rate-limit";
 import { getClientIp } from "@/lib/security/ip-utils";
 import { contactFormEmailTemplate } from "@/lib/email/templates";
+import { contactAutoReplyTemplate } from "@/lib/email/auto-reply";
 import { withTimeout, EMAIL_TIMEOUT_MS } from "@/lib/email/timeout";
 import { contactFormSchema } from "@/lib/validation/schemas";
 import { z } from "zod";
@@ -126,48 +127,20 @@ export async function POST(request: NextRequest) {
     });
 
     try {
+      const autoReplyTemplate = contactAutoReplyTemplate({
+        name: validatedData.name,
+        email: validatedData.email,
+        subject: validatedData.subject,
+      });
+
       await withTimeout(
         () =>
           resend.emails.send({
             from: `TemanDifa <${fromEmail}>`,
             to: [validatedData.email],
             subject: "Terima kasih telah menghubungi TemanDifa",
-            html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #3b82f6;">Terima Kasih!</h2>
-              <p>Halo <strong>${validatedData.name}</strong>,</p>
-              <p>Terima kasih telah menghubungi kami. Kami telah menerima pesan Anda dan akan segera merespons.</p>
-              
-              <div style="background: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                <p style="margin: 0;"><strong>Subjek:</strong> ${validatedData.subject}</p>
-              </div>
-              
-              <p>Kami akan menghubungi Anda melalui email <strong>${validatedData.email}</strong> dalam 1-2 hari kerja.</p>
-              
-              <p style="margin-top: 30px;">Salam hangat,<br><strong>Tim TemanDifa</strong></p>
-              
-              <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;" />
-              
-              <p style="color: #6b7280; font-size: 12px;">
-                Email ini dikirim otomatis. Mohon tidak membalas email ini.
-              </p>
-            </div>
-          `,
-            text: `
-Halo ${validatedData.name},
-
-Terima kasih telah menghubungi kami. Kami telah menerima pesan Anda dan akan segera merespons.
-
-Subjek: ${validatedData.subject}
-
-Kami akan menghubungi Anda melalui email ${validatedData.email} dalam 1-2 hari kerja.
-
-Salam hangat,
-Tim TemanDifa
-
----
-Email ini dikirim otomatis. Mohon tidak membalas email ini.
-          `.trim(),
+            html: autoReplyTemplate.html,
+            text: autoReplyTemplate.text,
           }),
         EMAIL_TIMEOUT_MS,
         "Auto-Reply Email"

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { render } from "../utils";
 import NewsletterForm from "@/components/forms/NewsletterForm";
 
@@ -19,44 +19,58 @@ describe("NewsletterForm Integration", () => {
     } as Response);
   });
 
-  it("should render newsletter form", () => {
+  it("should render newsletter form", async () => {
     render(<NewsletterForm />);
 
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /subscribe/i })
-    ).toBeInTheDocument();
-  });
-
-  it("should have proper ARIA labels", () => {
-    render(<NewsletterForm />);
-
-    const form = screen.getByRole("form", {
-      name: /newsletter/i,
+    await waitFor(() => {
+      expect(screen.getByRole("form")).toBeInTheDocument();
     });
-    expect(form).toBeInTheDocument();
 
-    const button = screen.getByRole("button", { name: /subscribe/i });
-    expect(button).toHaveAttribute("aria-label");
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
+    expect(screen.getByRole("button")).toBeInTheDocument();
   });
 
-  it("should have email input field", () => {
+  it("should have proper ARIA labels", async () => {
     render(<NewsletterForm />);
 
-    const emailInput = screen.getByLabelText(/email/i);
-    expect(emailInput).toHaveAttribute("type", "email");
-    expect(emailInput).toHaveAttribute("id", "newsletter-email");
+    await waitFor(() => {
+      const form = screen.getByRole("form");
+      expect(form).toHaveAttribute(
+        "aria-label",
+        "Newsletter subscription form"
+      );
+    });
+
+    const button = screen.getByRole("button");
+    expect(button).toHaveAttribute("aria-label", "Subscribe to newsletter");
   });
 
-  it("should have submit button", () => {
+  it("should have email input field", async () => {
     render(<NewsletterForm />);
 
-    const submitButton = screen.getByRole("button", { name: /subscribe/i });
-    expect(submitButton).toHaveAttribute("type", "submit");
+    await waitFor(() => {
+      const emailInput = screen.getByRole("textbox");
+      expect(emailInput).toHaveAttribute("type", "email");
+      expect(emailInput).toHaveAttribute("id", "newsletter-email");
+    });
   });
 
-  it("should have honeypot field hidden", () => {
+  it("should have submit button", async () => {
     render(<NewsletterForm />);
+
+    await waitFor(() => {
+      const submitButton = screen.getByRole("button");
+      expect(submitButton).toHaveAttribute("type", "submit");
+    });
+  });
+
+  it("should have honeypot field hidden", async () => {
+    render(<NewsletterForm />);
+
+    await waitFor(() => {
+      const form = screen.getByRole("form");
+      expect(form).toBeInTheDocument();
+    });
 
     const form = screen.getByRole("form");
     const honeypotField = form.querySelector('input[name="honeypot"]');

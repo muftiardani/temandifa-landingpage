@@ -40,14 +40,10 @@ export default function ContactForm() {
   useEffect(() => {
     fetchCSRFToken();
 
-    const refreshInterval = setInterval(() => {
-      if (csrfExpiresAt && Date.now() > csrfExpiresAt - 60000) {
-        fetchCSRFToken();
-      }
-    }, 30000);
+    const refreshInterval = setInterval(fetchCSRFToken, 4 * 60 * 1000);
 
     return () => clearInterval(refreshInterval);
-  }, [csrfExpiresAt, fetchCSRFToken]);
+  }, [fetchCSRFToken]);
 
   const {
     register,

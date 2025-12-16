@@ -1,26 +1,29 @@
 import * as Sentry from "@sentry/nextjs";
 
+const isDev = process.env.NODE_ENV === "development";
+
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
 
   environment: process.env.NODE_ENV || "development",
 
-  tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
+  tracesSampleRate: isDev ? 0.1 : 0.1,
 
-  debug: process.env.NODE_ENV === "development",
+  debug: false,
 
-  replaysOnErrorSampleRate: 1.0,
+  replaysOnErrorSampleRate: isDev ? 0 : 1.0,
+  replaysSessionSampleRate: isDev ? 0 : 0.1,
 
-  replaysSessionSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
-
-  integrations: [
-    Sentry.replayIntegration({
-      maskAllText: true,
-      blockAllMedia: true,
-    }),
-  ],
+  integrations: isDev
+    ? []
+    : [
+        Sentry.replayIntegration({
+          maskAllText: true,
+          blockAllMedia: true,
+        }),
+      ],
 });
 
-if (process.env.NODE_ENV === "development") {
-  console.log("✅ Sentry client initialized");
+if (isDev) {
+  console.info("✅ Sentry initialized (Replay disabled in dev)");
 }

@@ -1,3 +1,4 @@
+import React from "react";
 import "@testing-library/jest-dom";
 import { cleanup } from "@testing-library/react";
 import { afterEach, vi, beforeAll } from "vitest";
@@ -27,17 +28,20 @@ vi.mock("next-themes", () => ({
   }),
 }));
 
-// Mock next-intl
-vi.mock("next-intl", () => ({
-  NextIntlClientProvider: ({ children }: { children: React.ReactNode }) =>
-    children,
-  useTranslations: () => (key: string) => key,
-  useLocale: () => "id",
-}));
-
 // Mock Next.js Image component
 vi.mock("next/image", () => ({
   default: (props: Record<string, unknown>) => props,
+}));
+
+// Mock useAnalytics hook
+vi.mock("@/hooks/useAnalytics", () => ({
+  useAnalytics: () => ({
+    trackForm: vi.fn(),
+    trackContact: vi.fn(),
+    trackNewsletter: vi.fn(),
+    trackTheme: vi.fn(),
+    trackEvent: vi.fn(),
+  }),
 }));
 
 // Mock IntersectionObserver for animation tests

@@ -14,6 +14,7 @@ export default function SentryInitializer() {
     }
 
     const dsn = process.env.NEXT_PUBLIC_SENTRY_DSN;
+    const isDev = process.env.NODE_ENV === "development";
 
     if (!dsn) {
       logger.error("Sentry DSN not configured", null, "Sentry");
@@ -26,20 +27,21 @@ export default function SentryInitializer() {
 
         environment: process.env.NODE_ENV || "development",
 
-        tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
+        tracesSampleRate: isDev ? 0.1 : 0.1,
 
-        debug: process.env.NODE_ENV === "development",
+        debug: false,
 
-        replaysOnErrorSampleRate: 1.0,
-        replaysSessionSampleRate:
-          process.env.NODE_ENV === "production" ? 0.1 : 1.0,
+        replaysOnErrorSampleRate: isDev ? 0 : 1.0,
+        replaysSessionSampleRate: isDev ? 0 : 0.1,
 
-        integrations: [
-          Sentry.replayIntegration({
-            maskAllText: true,
-            blockAllMedia: true,
-          }),
-        ],
+        integrations: isDev
+          ? []
+          : [
+              Sentry.replayIntegration({
+                maskAllText: true,
+                blockAllMedia: true,
+              }),
+            ],
 
         ignoreErrors: [
           "top.GLOBALS",
@@ -56,11 +58,11 @@ export default function SentryInitializer() {
       sentryInitialized = true;
 
       logger.success(
-        "Sentry manually initialized",
+        "Sentry initialized",
         {
           dsn: `${dsn.substring(0, 30)}...`,
           environment: process.env.NODE_ENV,
-          debug: process.env.NODE_ENV === "development",
+          replayEnabled: !isDev,
         },
         "Sentry"
       );

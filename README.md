@@ -22,18 +22,21 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 ## ✨ Fitur Utama
 
 ### 🌐 Internationalization
+
 - Support penuh untuk **Bahasa Indonesia** & **English**
 - SEO-friendly URL structure (`/id/*`, `/en/*`)
 - 150+ translation keys
 - Easy to add more languages
 
 ### 🌙 Dark Mode
+
 - Seamless theme switching dengan `next-themes`
 - System preference detection
 - Persistent storage
 - Smooth transitions untuk semua komponen
 
 ### 🎨 Modern UI/UX
+
 - Responsive design dengan Tailwind CSS 4
 - Mobile-first approach
 - Glassmorphism effects
@@ -41,6 +44,7 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 - Interactive particle backgrounds
 
 ### ♿ Accessibility First
+
 - WCAG 2.1 AA Compliant
 - ARIA labels & semantic HTML
 - Keyboard navigation support
@@ -50,6 +54,7 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 - Reduced motion support
 
 ### 🚀 Performance
+
 - Next.js 16 App Router
 - Image optimization (AVIF/WebP)
 - Code splitting & lazy loading
@@ -58,6 +63,7 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 - Bundle size analysis
 
 ### 📊 SEO Optimized
+
 - Comprehensive metadata
 - Open Graph & Twitter Cards
 - JSON-LD structured data
@@ -66,6 +72,7 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 - Multi-language support
 
 ### 📝 Advanced Forms
+
 - React Hook Form integration
 - Zod schema validation
 - Real-time validation
@@ -74,6 +81,7 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 - Auto-reply emails
 
 ### 🐛 Monitoring & Analytics
+
 - **Google Analytics (GA4)** - Web analytics
 - **Sentry error tracking** - Production-optimized
   - Environment-aware sampling (10% in production)
@@ -88,6 +96,7 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
   - Performance measurement
 
 ### 📝 Logger Service
+
 - **Environment-aware logging** - Different behavior for dev/production
 - **Multiple log levels** - debug, info, warn, error, success
 - **Sentry integration** - Auto-sends errors to Sentry
@@ -96,6 +105,7 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 - **Production-ready** - No debug noise in production
 
 ### 🔒 Security
+
 - **CSRF Protection** - Token-based validation
 - **Content Security Policy** - XSS prevention
 - **Rate limiting** - Redis + File fallback
@@ -113,12 +123,12 @@ graph TB
     subgraph "Client Layer"
         A[User Browser]
     end
-    
+
     subgraph "Next.js Middleware"
         B[Middleware]
         C{Locale Detection}
     end
-    
+
     subgraph "Application Layer"
         D[Indonesian Routes /id/*]
         E[English Routes /en/*]
@@ -127,14 +137,14 @@ graph TB
         H[Section Components]
         I[UI Components]
     end
-    
+
     subgraph "API Layer"
         J[API Routes]
         K[Contact API]
         L[Newsletter API]
         M[Rate Limiter]
     end
-    
+
     subgraph "External Services"
         N[Resend Email]
         O[Google Analytics]
@@ -143,7 +153,7 @@ graph TB
         R[Upstash Redis]
         S[File-based Storage]
     end
-    
+
     A --> B
     B --> C
     C -->|id| D
@@ -153,7 +163,7 @@ graph TB
     F --> G
     F --> H
     F --> I
-    
+
     F --> J
     J --> K
     J --> L
@@ -162,12 +172,12 @@ graph TB
     M --> Q
     Q -->|Yes| R
     Q -->|No| S
-    
+
     K --> N
     L --> N
     F --> O
     F --> P
-    
+
     style A fill:#3b82f6,stroke:#1e40af,color:#fff
     style F fill:#10b981,stroke:#059669,color:#fff
     style J fill:#f59e0b,stroke:#d97706,color:#fff
@@ -184,13 +194,13 @@ graph LR
         C[Product Page]
         D[Contact Page]
     end
-    
+
     subgraph "Layout Components"
         E[Navbar]
         F[Footer]
         G[ThemeProvider]
     end
-    
+
     subgraph "Section Components"
         H[Hero]
         I[Features]
@@ -198,12 +208,12 @@ graph LR
         K[ProblemSection]
         L[ClosingHero]
     end
-    
+
     subgraph "Form Components"
         M[ContactForm]
         N[NewsletterForm]
     end
-    
+
     subgraph "UI Components"
         O[ThemeToggle]
         P[Breadcrumbs]
@@ -211,7 +221,7 @@ graph LR
         R[ScrollProgress]
         S[LoadingSkeleton]
     end
-    
+
     A --> E
     A --> H
     A --> I
@@ -219,21 +229,21 @@ graph LR
     A --> K
     A --> L
     A --> F
-    
+
     B --> E
     B --> F
-    
+
     C --> E
     C --> F
-    
+
     D --> E
     D --> M
     D --> F
-    
+
     E --> O
     F --> N
     H --> Q
-    
+
     style A fill:#3b82f6,stroke:#1e40af,color:#fff
     style E fill:#10b981,stroke:#059669,color:#fff
     style H fill:#f59e0b,stroke:#d97706,color:#fff
@@ -251,17 +261,17 @@ sequenceDiagram
     participant A as API
     participant R as Rate Limiter
     participant E as Email Service
-    
+
     U->>B: Visit /id/kontak
     B->>M: Request
     M->>M: Detect locale (id)
     M->>P: Render Contact Page
     P->>B: Display Form
-    
+
     U->>B: Submit Form
     B->>A: POST /api/contact
     A->>R: Check Rate Limit
-    
+
     alt Rate Limit OK
         R->>A: Allow
         A->>A: Validate with Zod
@@ -281,22 +291,22 @@ sequenceDiagram
 
 ### Core Technologies
 
-| Category | Technology | Version | Purpose |
-|----------|-----------|---------|---------|
-| **Framework** | Next.js | 16.0.7 | React framework dengan App Router |
-| **UI Library** | React | 19.2.0 | Component-based UI |
-| **Language** | TypeScript | 5.0 | Type safety |
-| **Styling** | Tailwind CSS | 4.0 | Utility-first CSS |
-| **Animation** | Framer Motion | 12.23 | Smooth animations |
-| **i18n** | next-intl | 4.5 | Internationalization |
-| **Theme** | next-themes | 0.4 | Dark mode support |
-| **Forms** | react-hook-form | 7.68 | Form state management |
-| **Validation** | Zod | 4.1 | Schema validation |
-| **Email** | Resend | 6.5 | Email delivery |
-| **Analytics** | Google Analytics | GA4 | Web analytics |
-| **Monitoring** | Sentry | 10.30 | Error tracking |
-| **Rate Limit** | Upstash Redis | 2.0 | Rate limiting |
-| **Testing** | Vitest + Playwright | 4.0 + 1.57 | Unit & E2E tests |
+| Category       | Technology          | Version    | Purpose                           |
+| -------------- | ------------------- | ---------- | --------------------------------- |
+| **Framework**  | Next.js             | 16.0.7     | React framework dengan App Router |
+| **UI Library** | React               | 19.2.0     | Component-based UI                |
+| **Language**   | TypeScript          | 5.0        | Type safety                       |
+| **Styling**    | Tailwind CSS        | 4.0        | Utility-first CSS                 |
+| **Animation**  | Framer Motion       | 12.23      | Smooth animations                 |
+| **i18n**       | next-intl           | 4.5        | Internationalization              |
+| **Theme**      | next-themes         | 0.4        | Dark mode support                 |
+| **Forms**      | react-hook-form     | 7.68       | Form state management             |
+| **Validation** | Zod                 | 4.1        | Schema validation                 |
+| **Email**      | Resend              | 6.5        | Email delivery                    |
+| **Analytics**  | Google Analytics    | GA4        | Web analytics                     |
+| **Monitoring** | Sentry              | 10.30      | Error tracking                    |
+| **Rate Limit** | Upstash Redis       | 2.0        | Rate limiting                     |
+| **Testing**    | Vitest + Playwright | 4.0 + 1.57 | Unit & E2E tests                  |
 
 ### Development Tools
 
@@ -509,6 +519,7 @@ temandifa-web/
 **Endpoint:** `POST /api/contact`
 
 **Features:**
+
 - ✅ Zod schema validation
 - ✅ CSRF protection
 - ✅ Rate limiting (3 requests/60s per IP)
@@ -519,6 +530,7 @@ temandifa-web/
 - ✅ Detailed error logging
 
 **Request Body:**
+
 ```json
 {
   "name": "John Doe",
@@ -529,6 +541,7 @@ temandifa-web/
 ```
 
 **Response (Success):**
+
 ```json
 {
   "success": true,
@@ -539,6 +552,7 @@ temandifa-web/
 ```
 
 **Response (Rate Limited):**
+
 ```json
 {
   "error": "Too many requests. Please try again later.",
@@ -547,6 +561,7 @@ temandifa-web/
 ```
 
 **Response Headers:**
+
 ```
 X-RateLimit-Limit: 3
 X-RateLimit-Remaining: 2
@@ -558,6 +573,7 @@ X-RateLimit-Reset: 1702345678000
 **Endpoint:** `POST /api/newsletter`
 
 **Features:**
+
 - ✅ Email validation
 - ✅ CSRF protection
 - ✅ Rate limiting (3 requests/60s per IP)
@@ -566,6 +582,7 @@ X-RateLimit-Reset: 1702345678000
 - ✅ Duplicate prevention
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com"
@@ -573,6 +590,7 @@ X-RateLimit-Reset: 1702345678000
 ```
 
 **Response (Success):**
+
 ```json
 {
   "success": true,
@@ -639,4 +657,4 @@ This project is private and proprietary to TemanDifa.
 
 **Made with ❤️ by TemanDifa Team**
 
-*Empowering accessibility through technology*
+_Empowering accessibility through technology_

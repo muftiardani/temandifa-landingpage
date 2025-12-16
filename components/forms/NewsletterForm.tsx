@@ -37,14 +37,10 @@ export default function NewsletterForm() {
   useEffect(() => {
     fetchCSRFToken();
 
-    const refreshInterval = setInterval(() => {
-      if (csrfExpiresAt && Date.now() > csrfExpiresAt - 60000) {
-        fetchCSRFToken();
-      }
-    }, 30000);
+    const refreshInterval = setInterval(fetchCSRFToken, 4 * 60 * 1000);
 
     return () => clearInterval(refreshInterval);
-  }, [csrfExpiresAt, fetchCSRFToken]);
+  }, [fetchCSRFToken]);
 
   const newsletterSchema = z.object({
     email: z.string().email(t("validation.email_invalid")),

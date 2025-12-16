@@ -28,6 +28,25 @@ const defaultMessages = {
       message_max: "Pesan maksimal 1000 karakter",
     },
   },
+  Theme: {
+    switch_to_dark: "Switch to dark mode",
+    switch_to_light: "Switch to light mode",
+    dark_mode: "Dark mode",
+    light_mode: "Light mode",
+    sun_icon: "Sun icon",
+    moon_icon: "Moon icon",
+  },
+  Newsletter: {
+    label_email: "Email",
+    placeholder_email: "Enter your email",
+    btn_subscribe: "Subscribe",
+    btn_subscribing: "Subscribing...",
+    success: "Thank you for subscribing!",
+    error: "Something went wrong. Please try again.",
+    validation: {
+      email_invalid: "Invalid email address",
+    },
+  },
 };
 
 interface CustomRenderOptions extends Omit<RenderOptions, "wrapper"> {
