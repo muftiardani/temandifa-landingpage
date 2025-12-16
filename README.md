@@ -8,6 +8,7 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 [![React](https://img.shields.io/badge/React-19.2-blue?style=flat-square&logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38bdf8?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![Tests](https://img.shields.io/badge/Tests-26%20passing-green?style=flat-square)](./tests)
 
 ## 📋 Daftar Isi
 
@@ -16,8 +17,10 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 - [Tech Stack](#️-tech-stack)
 - [Quick Start](#-quick-start)
 - [Struktur Proyek](#-struktur-proyek)
-- [Konfigurasi](#-konfigurasi)
+- [Environment Variables](#-environment-variables)
 - [API Routes](#-api-routes)
+- [Testing](#-testing)
+- [Scripts](#-available-scripts)
 
 ## ✨ Fitur Utama
 
@@ -26,14 +29,14 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 - Support penuh untuk **Bahasa Indonesia** & **English**
 - SEO-friendly URL structure (`/id/*`, `/en/*`)
 - 150+ translation keys
-- Easy to add more languages
+- Dynamic locale detection
 
 ### 🌙 Dark Mode
 
 - Seamless theme switching dengan `next-themes`
 - System preference detection
 - Persistent storage
-- Smooth transitions untuk semua komponen
+- Smooth transitions
 
 ### 🎨 Modern UI/UX
 
@@ -49,15 +52,15 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 - ARIA labels & semantic HTML
 - Keyboard navigation support
 - Screen reader optimized
-- Focus indicators
+- Focus trap untuk modals
 - Skip to content link
 - Reduced motion support
 
 ### 🚀 Performance
 
-- Next.js 16 App Router
+- Next.js 16 App Router + Turbopack
 - Image optimization (AVIF/WebP)
-- Code splitting & lazy loading
+- Dynamic imports & code splitting
 - 1-year cache for static assets
 - Font optimization
 - Bundle size analysis
@@ -69,49 +72,33 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 - JSON-LD structured data
 - Dynamic sitemap & robots.txt
 - Canonical URLs
-- Multi-language support
+- Multi-language hreflang
 
 ### 📝 Advanced Forms
 
 - React Hook Form integration
 - Zod schema validation
-- Real-time validation
+- CSRF protection
 - Honeypot spam protection
-- Rate limiting
-- Auto-reply emails
+- Rate limiting (Redis + File fallback)
+- Auto-reply emails dengan timeout
 
 ### 🐛 Monitoring & Analytics
 
-- **Google Analytics (GA4)** - Web analytics
-- **Sentry error tracking** - Production-optimized
-  - Environment-aware sampling (10% in production)
-  - Session replay (100% errors, 10% sessions)
-  - Debug mode (development only)
-  - Performance monitoring
-- **Web Vitals monitoring** - LCP, FID, CLS, FCP, TTFB, INP
-- **Logger Service** - Centralized logging
-  - Environment-aware (dev vs production)
-  - Auto-integration with Sentry
-  - Context tagging
-  - Performance measurement
-
-### 📝 Logger Service
-
-- **Environment-aware logging** - Different behavior for dev/production
-- **Multiple log levels** - debug, info, warn, error, success
-- **Sentry integration** - Auto-sends errors to Sentry
-- **Context tagging** - Organize logs by feature
-- **Performance utilities** - time(), timeEnd(), group()
-- **Production-ready** - No debug noise in production
+- **Google Analytics (GA4)** - Web analytics & scroll depth tracking
+- **Sentry** - Error tracking & session replay
+  - Environment-aware (disabled in dev)
+  - Tunnel route untuk bypass ad blockers
+- **Web Vitals** - LCP, FID, CLS, FCP, TTFB, INP
+- **Logger Service** - Centralized logging dengan Sentry integration
 
 ### 🔒 Security
 
-- **CSRF Protection** - Token-based validation
+- **CSRF Protection** - Token-based dengan HMAC
 - **Content Security Policy** - XSS prevention
-- **Rate limiting** - Redis + File fallback
+- **Rate limiting** - Per-endpoint configuration
 - **Security headers** - HSTS, CSP, X-Frame-Options
 - **Input sanitization** - HTML escaping
-- **XSS protection** - Content filtering
 - **Environment validation** - Runtime checks
 
 ## 🏗️ Diagram Arsitektur
@@ -142,16 +129,17 @@ graph TB
         J[API Routes]
         K[Contact API]
         L[Newsletter API]
-        M[Rate Limiter]
+        M[CSRF API]
+        N[Rate Limiter]
     end
 
     subgraph "External Services"
-        N[Resend Email]
-        O[Google Analytics]
-        P[Sentry Monitoring]
-        Q{Redis Available?}
-        R[Upstash Redis]
-        S[File-based Storage]
+        O[Resend Email]
+        P[Google Analytics]
+        Q[Sentry Monitoring]
+        R{Redis Available?}
+        S[Upstash Redis]
+        T[File-based Storage]
     end
 
     A --> B
@@ -167,87 +155,23 @@ graph TB
     F --> J
     J --> K
     J --> L
-    K --> M
-    L --> M
-    M --> Q
-    Q -->|Yes| R
-    Q -->|No| S
-
+    J --> M
     K --> N
     L --> N
-    F --> O
+    M --> N
+    N --> R
+    R -->|Yes| S
+    R -->|No| T
+
+    K --> O
+    L --> O
     F --> P
+    F --> Q
 
     style A fill:#3b82f6,stroke:#1e40af,color:#fff
     style F fill:#10b981,stroke:#059669,color:#fff
     style J fill:#f59e0b,stroke:#d97706,color:#fff
-    style N fill:#ec4899,stroke:#db2777,color:#fff
-```
-
-### Component Architecture
-
-```mermaid
-graph LR
-    subgraph "Pages"
-        A[Homepage]
-        B[About Page]
-        C[Product Page]
-        D[Contact Page]
-    end
-
-    subgraph "Layout Components"
-        E[Navbar]
-        F[Footer]
-        G[ThemeProvider]
-    end
-
-    subgraph "Section Components"
-        H[Hero]
-        I[Features]
-        J[AboutSection]
-        K[ProblemSection]
-        L[ClosingHero]
-    end
-
-    subgraph "Form Components"
-        M[ContactForm]
-        N[NewsletterForm]
-    end
-
-    subgraph "UI Components"
-        O[ThemeToggle]
-        P[Breadcrumbs]
-        Q[ParticleBackground]
-        R[ScrollProgress]
-        S[LoadingSkeleton]
-    end
-
-    A --> E
-    A --> H
-    A --> I
-    A --> J
-    A --> K
-    A --> L
-    A --> F
-
-    B --> E
-    B --> F
-
-    C --> E
-    C --> F
-
-    D --> E
-    D --> M
-    D --> F
-
-    E --> O
-    F --> N
-    H --> Q
-
-    style A fill:#3b82f6,stroke:#1e40af,color:#fff
-    style E fill:#10b981,stroke:#059669,color:#fff
-    style H fill:#f59e0b,stroke:#d97706,color:#fff
-    style M fill:#ec4899,stroke:#db2777,color:#fff
+    style O fill:#ec4899,stroke:#db2777,color:#fff
 ```
 
 ### Data Flow
@@ -267,6 +191,8 @@ sequenceDiagram
     M->>M: Detect locale (id)
     M->>P: Render Contact Page
     P->>B: Display Form
+    B->>A: GET /api/csrf
+    A->>B: CSRF Token
 
     U->>B: Submit Form
     B->>A: POST /api/contact
@@ -274,8 +200,8 @@ sequenceDiagram
 
     alt Rate Limit OK
         R->>A: Allow
-        A->>A: Validate with Zod
-        A->>E: Send Email
+        A->>A: Validate CSRF + Zod
+        A->>E: Send Email (with timeout)
         E->>A: Success
         A->>E: Send Auto-reply
         A->>B: 200 Success
@@ -288,8 +214,6 @@ sequenceDiagram
 ```
 
 ## 🛠️ Tech Stack
-
-### Core Technologies
 
 | Category       | Technology          | Version    | Purpose                           |
 | -------------- | ------------------- | ---------- | --------------------------------- |
@@ -308,14 +232,6 @@ sequenceDiagram
 | **Rate Limit** | Upstash Redis       | 2.0        | Rate limiting                     |
 | **Testing**    | Vitest + Playwright | 4.0 + 1.57 | Unit & E2E tests                  |
 
-### Development Tools
-
-- **ESLint 9** - Code linting
-- **Prettier** - Code formatting
-- **@next/bundle-analyzer** - Bundle size analysis
-- **TypeScript** - Static type checking
-- **PostCSS** - CSS processing
-
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -327,44 +243,27 @@ npm, yarn, or pnpm
 
 ### Installation
 
-1. **Clone the repository**
+```bash
+# Clone the repository
+git clone https://github.com/muftiardani/temandifa-landingpage.git
+cd temandifa-web
 
-   ```bash
-   git clone https://github.com/muftiardani/temandifa-landingpage.git
-   cd temandifa-web
-   ```
+# Install dependencies
+npm install
 
-2. **Install dependencies**
+# Setup environment variables
+cp .env.example .env
 
-   ```bash
-   npm install
-   ```
+# Run development server
+npm run dev
+```
 
-3. **Setup environment variables**
-
-   ```bash
-   cp .env.example .env
-   ```
-
-   Edit `.env` dengan konfigurasi Anda
-
-4. **Run development server**
-
-   ```bash
-   npm run dev
-   ```
-
-5. **Open browser**
-
-   Navigate to [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:3000](http://localhost:3000)
 
 ### Build for Production
 
 ```bash
-# Build
 npm run build
-
-# Start production server
 npm run start
 ```
 
@@ -374,272 +273,224 @@ npm run start
 temandifa-web/
 ├── app/                          # Next.js App Router
 │   ├── [locale]/                 # Locale-based routing
-│   │   ├── layout.tsx           # Root layout dengan SEO metadata
+│   │   ├── layout.tsx           # Root layout dengan SEO
 │   │   ├── page.tsx             # Homepage
-│   │   ├── tentang/             # About page
-│   │   │   └── page.tsx
-│   │   ├── produk/              # Features page
-│   │   │   └── page.tsx
-│   │   ├── kontak/              # Contact page
-│   │   │   └── page.tsx
-│   │   ├── providers/           # Client providers
-│   │   │   └── ThemeProvider.tsx
+│   │   ├── tentang/page.tsx     # About page
+│   │   ├── produk/page.tsx      # Product page
+│   │   ├── kontak/page.tsx      # Contact page
 │   │   ├── error.tsx            # Error boundary
 │   │   ├── loading.tsx          # Loading state
 │   │   └── not-found.tsx        # 404 page
 │   ├── api/                     # API routes
-│   │   ├── csrf/                # CSRF token endpoint
-│   │   │   └── route.ts
-│   │   ├── contact/
-│   │   │   └── route.ts         # Contact form API
-│   │   └── newsletter/
-│   │       └── route.ts         # Newsletter API
-│   ├── globals.css              # Global styles & animations
-│   ├── robots.ts                # SEO robots configuration
-│   └── sitemap.ts               # SEO sitemap generation
+│   │   ├── csrf/route.ts        # CSRF token endpoint
+│   │   ├── contact/route.ts     # Contact form API
+│   │   └── newsletter/route.ts  # Newsletter API
+│   ├── monitoring/route.ts      # Sentry tunnel route
+│   ├── globals.css              # Global styles
+│   ├── robots.ts                # SEO robots
+│   └── sitemap.ts               # SEO sitemap
 │
 ├── components/                   # React components
+│   ├── analytics/               # Analytics components
+│   │   └── ScrollDepthTracker.tsx
 │   ├── sections/                # Page sections
-│   │   ├── Hero.tsx             # Hero section
-│   │   ├── Features.tsx         # Features showcase
-│   │   ├── AboutSection.tsx     # About section
-│   │   ├── ProblemSection.tsx   # Problem statement
-│   │   ├── ClosingHero.tsx      # Closing CTA
+│   │   ├── Hero.tsx
+│   │   ├── Features.tsx
+│   │   ├── AboutSection.tsx
+│   │   ├── ProblemSection.tsx
+│   │   ├── ClosingHero.tsx
 │   │   └── Features/            # Feature sub-components
 │   │       ├── FeatureCard.tsx
 │   │       ├── ImageLayer.tsx
 │   │       └── PhoneMockup.tsx
 │   ├── layout/                  # Layout components
-│   │   ├── Navbar.tsx           # Navigation bar
-│   │   └── Footer.tsx           # Footer with newsletter
+│   │   ├── Navbar.tsx
+│   │   └── Footer.tsx
 │   ├── forms/                   # Form components
-│   │   ├── ContactForm.tsx      # Contact form with CSRF
-│   │   └── NewsletterForm.tsx   # Newsletter subscription
+│   │   ├── ContactForm.tsx      # With CSRF & auto-refresh
+│   │   └── NewsletterForm.tsx
 │   ├── ui/                      # Reusable UI components
-│   │   ├── ThemeToggle.tsx      # Dark mode toggle
-│   │   ├── Breadcrumbs.tsx      # Navigation breadcrumbs
-│   │   ├── Counter.tsx          # Animated counter
-│   │   ├── ErrorBoundary.tsx    # Error boundary
-│   │   ├── LoadingSkeleton.tsx  # Loading skeletons
-│   │   ├── PageTransition.tsx   # Page transitions
-│   │   ├── ParticleBackground.tsx # Particle effects
-│   │   ├── ScrollProgress.tsx   # Scroll indicator
-│   │   └── SkipToContent.tsx    # Accessibility skip link
-│   └── providers/               # Context providers
-│       └── SentryInitializer.tsx # Sentry client init
-│
-├── types/                       # TypeScript type definitions
-│   ├── forms.ts                 # Form types
-│   ├── api.ts                   # API response types
-│   ├── components.ts            # Component prop types
-│   └── index.ts                 # Centralized exports
-│
-├── constants/                   # Application constants
-│   ├── routes.ts                # Route definitions
-│   ├── rate-limits.ts           # Rate limit configurations
-│   ├── i18n.ts                  # i18n constants
-│   └── index.ts                 # Centralized exports
+│   │   ├── ThemeToggle.tsx
+│   │   ├── Breadcrumbs.tsx
+│   │   ├── Counter.tsx
+│   │   ├── ErrorBoundary.tsx
+│   │   ├── LoadingSkeleton.tsx
+│   │   ├── PageTransition.tsx
+│   │   ├── ParticleBackground.tsx
+│   │   ├── ScrollProgress.tsx
+│   │   └── SkipToContent.tsx
+│   └── providers/
+│       └── SentryInitializer.tsx
 │
 ├── hooks/                       # Custom React hooks
-│   ├── useMediaQuery.ts         # Media query detection
-│   ├── useScrollPosition.ts     # Scroll position tracking
-│   ├── useLocalStorage.ts       # LocalStorage sync
-│   ├── useDebounce.ts           # Value debouncing
-│   └── index.ts                 # Centralized exports
+│   ├── useAnalytics.ts          # GA4 event tracking
+│   ├── useFocusTrap.ts          # Focus trap for modals
+│   ├── useReducedMotion.ts      # Reduced motion detection
+│   └── useScrollDepth.ts        # Scroll depth tracking
 │
-├── utils/                       # Pure utility functions
-│   ├── date.ts                  # Date formatting
-│   ├── string.ts                # String manipulation
-│   ├── number.ts                # Number formatting
-│   └── index.ts                 # Centralized exports
-│
-├── styles/                      # Styling utilities
-│   └── animations.ts            # Framer Motion presets
-│
-├── i18n/                        # Internationalization
-│   └── routing.ts               # i18n routing configuration
-│
-├── lib/                         # Utility functions & helpers
+├── lib/                         # Utility functions
 │   ├── security/                # Security utilities
 │   │   ├── csrf.ts              # CSRF protection
+│   │   ├── ip-utils.ts          # Client IP extraction
 │   │   ├── rate-limit.ts        # File-based rate limiting
 │   │   └── redis-rate-limit.ts  # Redis rate limiting
 │   ├── email/                   # Email utilities
-│   │   └── templates.ts         # Email HTML templates
-│   ├── validation/              # Validation utilities
+│   │   ├── templates.ts         # Admin notification
+│   │   ├── auto-reply.ts        # Contact auto-reply
+│   │   ├── newsletter-welcome.ts # Newsletter welcome
+│   │   └── timeout.ts           # Email timeout wrapper
+│   ├── validation/
 │   │   └── schemas.ts           # Zod schemas
-│   ├── analytics/               # Analytics utilities
+│   ├── analytics/
 │   │   └── web-vitals.ts        # Performance tracking
-│   ├── seo/                     # SEO utilities
+│   ├── seo/
 │   │   ├── structured-data.ts   # JSON-LD generation
-│   │   └── image-placeholders.ts # Blur placeholders
+│   │   └── image-placeholders.ts
 │   ├── logger.ts                # Logger service
 │   ├── config.ts                # App configuration
-│   └── env.ts                   # Environment validation
+│   ├── env.ts                   # Environment validation
+│   └── i18n-utils.ts            # i18n utilities
 │
 ├── messages/                    # Translation files
-│   ├── id.json                  # Indonesian translations
-│   └── en.json                  # English translations
+│   ├── id.json                  # Indonesian (150+ keys)
+│   └── en.json                  # English (150+ keys)
 │
-├── public/                      # Static assets
-│   └── images/                  # Images & mockups
-│       ├── logo.png
-│       ├── woman-man.png
-│       ├── menu-mockup.png
-│       ├── camera-mockup.png
-│       ├── mic-mockup.png
-│       └── video-mockup.png
+├── i18n/
+│   └── routing.ts               # i18n routing config
 │
-├── tests/                       # Test files
+├── styles/
+│   └── animations.ts            # Framer Motion presets
+│
+├── tests/                       # Test files (26 passing)
 │   ├── components/              # Component tests
 │   ├── integration/             # Integration tests
 │   ├── unit/                    # Unit tests
-│   └── e2e/                     # E2E tests
+│   ├── e2e/                     # E2E tests (Playwright)
+│   ├── setup.ts                 # Test setup & mocks
+│   └── utils.tsx                # Test utilities
 │
-├── .env                         # Environment variables (gitignored)
+├── public/                      # Static assets
+│   └── images/
+│
 ├── .env.example                 # Environment template
-├── middleware.ts                # Next.js middleware (i18n)
+├── middleware.ts                # Next.js middleware (i18n + CSP)
 ├── next.config.ts               # Next.js configuration
-├── sentry.client.config.js      # Sentry client configuration
-├── sentry.server.config.js      # Sentry server configuration
-├── sentry.edge.config.js        # Sentry edge configuration
-├── tailwind.config.ts           # Tailwind CSS configuration
-├── tsconfig.json                # TypeScript configuration
+├── sentry.*.config.js           # Sentry configurations
+├── tailwind.config.ts           # Tailwind CSS config
 ├── vitest.config.ts             # Vitest configuration
-├── playwright.config.ts         # Playwright configuration
-├── eslint.config.mjs            # ESLint configuration
-├── .prettierrc.js               # Prettier configuration
-└── package.json                 # Dependencies & scripts
+└── playwright.config.ts         # Playwright configuration
+```
+
+## 🔐 Environment Variables
+
+Create `.env` file based on `.env.example`:
+
+```env
+# Email (Resend) - Required
+RESEND_API_KEY=re_xxxxxxxxxxxxx
+RESEND_FROM_EMAIL=hello@yourdomain.com
+CONTACT_EMAIL=admin@yourdomain.com
+
+# Security - Required
+CSRF_SECRET=your-32-character-secret-key-here
+
+# Rate Limiting (Optional - falls back to file-based)
+UPSTASH_REDIS_REST_URL=https://xxx.upstash.io
+UPSTASH_REDIS_REST_TOKEN=AXxxxx
+
+# Sentry (Optional)
+NEXT_PUBLIC_SENTRY_DSN=https://xxx@xxx.ingest.sentry.io/xxx
+SENTRY_ORG=your-org
+SENTRY_PROJECT=your-project
+SENTRY_AUTH_TOKEN=sntrys_xxx
+
+# Analytics (Optional)
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+
+# App
+NEXT_PUBLIC_BASE_URL=https://yourdomain.com
+NODE_ENV=development
 ```
 
 ## 🔌 API Routes
+
+### CSRF Token API
+
+**Endpoint:** `GET /api/csrf`
+
+Returns CSRF token untuk form submission. Rate limit disabled di development.
 
 ### Contact Form API
 
 **Endpoint:** `POST /api/contact`
 
-**Features:**
+| Feature    | Description                          |
+| ---------- | ------------------------------------ |
+| Validation | Zod schema                           |
+| Protection | CSRF + Rate limit (3/60s) + Honeypot |
+| Email      | Admin notification + Auto-reply      |
+| Timeout    | 10s untuk email operations           |
 
-- ✅ Zod schema validation
-- ✅ CSRF protection
-- ✅ Rate limiting (3 requests/60s per IP)
-- ✅ Honeypot spam protection
-- ✅ Email via Resend
-- ✅ Auto-reply to sender
-- ✅ Request ID tracking
-- ✅ Detailed error logging
-
-**Request Body:**
+**Request:**
 
 ```json
 {
   "name": "John Doe",
   "email": "john@example.com",
-  "subject": "Question about TemanDifa",
-  "message": "Your message here..."
+  "subject": "Question",
+  "message": "Your message..."
 }
-```
-
-**Response (Success):**
-
-```json
-{
-  "success": true,
-  "message": "Email sent successfully",
-  "requestId": "uuid-here",
-  "id": "resend-email-id"
-}
-```
-
-**Response (Rate Limited):**
-
-```json
-{
-  "error": "Too many requests. Please try again later.",
-  "retryAfter": 45
-}
-```
-
-**Response Headers:**
-
-```
-X-RateLimit-Limit: 3
-X-RateLimit-Remaining: 2
-X-RateLimit-Reset: 1702345678000
 ```
 
 ### Newsletter API
 
 **Endpoint:** `POST /api/newsletter`
 
-**Features:**
+| Feature    | Description                                  |
+| ---------- | -------------------------------------------- |
+| Validation | Email format                                 |
+| Protection | CSRF + Rate limit (3/60s) + Honeypot         |
+| Email      | Welcome email dengan signed unsubscribe link |
 
-- ✅ Email validation
-- ✅ CSRF protection
-- ✅ Rate limiting (3 requests/60s per IP)
-- ✅ Honeypot protection
-- ✅ Welcome email automation
-- ✅ Duplicate prevention
+## 🧪 Testing
 
-**Request Body:**
+```bash
+# Run unit tests
+npm run test
 
-```json
-{
-  "email": "user@example.com"
-}
+# Run tests with UI
+npm run test:ui
+
+# Generate coverage report
+npm run test:coverage
+
+# Run E2E tests
+npm run test:e2e
+
+# Run all tests
+npm run test:all
 ```
 
-**Response (Success):**
+**Test Coverage:**
 
-```json
-{
-  "success": true,
-  "message": "Subscription successful"
-}
-```
+- ✅ 26 unit/integration tests passing
+- ✅ Component tests (ThemeToggle)
+- ✅ Integration tests (Forms)
+- ✅ Validation tests (Zod schemas)
+- ✅ E2E tests (Playwright)
 
 ## 📝 Available Scripts
 
-### Development
-
-```bash
-npm run dev          # Start development server (localhost:3000)
-```
-
-### Production
-
-```bash
-npm run build        # Build for production
-npm run start        # Start production server
-```
-
-### Code Quality
-
-```bash
-npm run lint         # Run ESLint
-npm run format       # Format code with Prettier
-npm run format:check # Check code formatting
-```
-
-### Testing
-
-```bash
-npm run test              # Run unit tests
-npm run test:ui           # Run tests with UI
-npm run test:coverage     # Generate coverage report
-npm run test:watch        # Run tests in watch mode
-npm run test:e2e          # Run E2E tests
-npm run test:e2e:ui       # Run E2E tests with UI
-npm run test:e2e:headed   # Run E2E tests in headed mode
-npm run test:e2e:debug    # Debug E2E tests
-npm run test:all          # Run all tests
-```
-
-### Analysis
-
-```bash
-npm run analyze      # Analyze bundle size
-```
+| Script             | Description              |
+| ------------------ | ------------------------ |
+| `npm run dev`      | Start development server |
+| `npm run build`    | Build for production     |
+| `npm run start`    | Start production server  |
+| `npm run lint`     | Run ESLint               |
+| `npm run format`   | Format with Prettier     |
+| `npm run test`     | Run unit tests           |
+| `npm run test:e2e` | Run E2E tests            |
+| `npm run analyze`  | Analyze bundle size      |
 
 ## 📄 License
 
@@ -651,7 +502,6 @@ This project is private and proprietary to TemanDifa.
 - **Instagram:** [@temandifa](https://instagram.com/temandifa)
 - **TikTok:** [@temandifa](https://tiktok.com/@temandifa)
 - **LinkedIn:** [temandifa-com](https://linkedin.com/company/temandifa-com)
-- **Email:** hello@temandifa.com
 
 ---
 
