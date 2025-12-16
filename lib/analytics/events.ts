@@ -1,25 +1,5 @@
 import { logger } from "@/lib/logger";
 
-declare global {
-  interface Window {
-    gtag?: (
-      command: "event" | "config" | "set",
-      eventName: string,
-      eventParams?: Record<string, unknown>
-    ) => void;
-    Sentry?: {
-      captureException: (error: Error) => void;
-      setMeasurement: (name: string, value: number, unit: string) => void;
-      addBreadcrumb: (breadcrumb: {
-        category: string;
-        message: string;
-        level: string;
-        data?: Record<string, unknown>;
-      }) => void;
-    };
-  }
-}
-
 export const EventCategory = {
   ENGAGEMENT: "engagement",
   CONVERSION: "conversion",

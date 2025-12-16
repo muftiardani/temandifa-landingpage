@@ -4,6 +4,7 @@ import { Link } from "@/i18n/routing";
 import { usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
+import { config } from "@/lib/config";
 
 export function Breadcrumbs() {
   const pathname = usePathname();
@@ -23,13 +24,13 @@ export function Breadcrumbs() {
         "@type": "ListItem",
         position: 1,
         name: t("home"),
-        item: "https://temandifa.com",
+        item: config.baseUrl,
       },
       ...paths.map((path, index) => ({
         "@type": "ListItem",
         position: index + 2,
         name: t(path),
-        item: `https://temandifa.com/${paths.slice(0, index + 1).join("/")}`,
+        item: `${config.baseUrl}/${paths.slice(0, index + 1).join("/")}`,
       })),
     ],
   };

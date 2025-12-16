@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import {
   contactFormSchema,
@@ -10,6 +10,7 @@ import {
 } from "@/lib/validation/schemas";
 import { logger } from "@/lib/logger";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { useCSRF } from "@/hooks/useCSRF";
 
 export default function ContactForm() {
   const t = useTranslations("ContactForm");
@@ -18,32 +19,15 @@ export default function ContactForm() {
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
-  const [csrfToken, setCSRFToken] = useState<string>("");
-  const [csrfHash, setCSRFHash] = useState<string>("");
-  const [csrfExpiresAt, setCSRFExpiresAt] = useState<number>(0);
-  const [isCSRFReady, setIsCSRFReady] = useState(false);
 
-  const fetchCSRFToken = useCallback(async () => {
-    try {
-      const res = await fetch("/api/csrf");
-      const data = await res.json();
-      setCSRFToken(data.token);
-      setCSRFHash(data.hash);
-      setCSRFExpiresAt(data.expiresAt);
-      setIsCSRFReady(true);
-    } catch (error) {
-      logger.error("Failed to fetch CSRF token", error, "Contact");
-      setIsCSRFReady(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchCSRFToken();
-
-    const refreshInterval = setInterval(fetchCSRFToken, 4 * 60 * 1000);
-
-    return () => clearInterval(refreshInterval);
-  }, [fetchCSRFToken]);
+  const {
+    token: csrfToken,
+    hash: csrfHash,
+    expiresAt: csrfExpiresAt,
+    isReady: isCSRFReady,
+  } = useCSRF({
+    context: "Contact",
+  });
 
   const {
     register,

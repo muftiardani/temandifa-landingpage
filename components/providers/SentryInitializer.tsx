@@ -68,8 +68,7 @@ export default function SentryInitializer() {
       );
 
       if (typeof window !== "undefined") {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (window as any).Sentry = Sentry;
+        window.Sentry = Sentry;
       }
     } catch (error) {
       logger.error("Failed to initialize Sentry", error, "Sentry");

@@ -11,5 +11,5 @@ Sentry.init({
 });
 
 if (process.env.NODE_ENV === "development") {
-  console.log("✅ Sentry server initialized");
+  console.info("✅ Sentry server initialized");
 }

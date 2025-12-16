@@ -134,7 +134,8 @@ class Logger {
             ? console.warn
             : level === "debug"
               ? console.debug
-              : console.log;
+              : // eslint-disable-next-line no-console
+                console.log;
       logMethod(JSON.stringify(structuredLog));
     } else {
       const formattedMessage = this.formatMessage(level, message, context);
@@ -151,6 +152,7 @@ class Logger {
           console.debug(formattedMessage, logData || "");
           break;
         default:
+          // eslint-disable-next-line no-console
           console.log(formattedMessage, logData || "");
       }
     }

@@ -115,9 +115,3 @@ export async function checkRateLimit(
     reset,
   };
 }
-
-export async function resetRateLimit(identifier: string): Promise<void> {
-  const data = await readRateLimitData();
-  delete data[identifier];
-  await writeRateLimitData(data);
-}

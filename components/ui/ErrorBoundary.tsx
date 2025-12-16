@@ -9,6 +9,7 @@ interface Props {
   children: ReactNode;
   fallback?: ReactNode;
   onError?: (error: Error, errorInfo: React.ErrorInfo) => void;
+  onReset?: () => void;
 }
 
 interface State {
@@ -18,9 +19,11 @@ interface State {
 
 function ErrorFallback({
   error,
+  onReset,
   onReload,
 }: {
   error?: Error;
+  onReset: () => void;
   onReload: () => void;
 }) {
   const t = useTranslations("Error");
@@ -52,12 +55,20 @@ function ErrorFallback({
             </pre>
           </details>
         )}
-        <button
-          onClick={onReload}
-          className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
-        >
-          {t("reload_page")}
-        </button>
+        <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+          <button
+            onClick={onReset}
+            className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
+          >
+            {t("retry")}
+          </button>
+          <button
+            onClick={onReload}
+            className="rounded-lg bg-gray-200 px-6 py-3 font-semibold text-gray-900 transition hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
+          >
+            {t("reload_page")}
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -98,12 +109,18 @@ export class ErrorBoundary extends Component<Props, State> {
     logger.error("ErrorBoundary caught error", error, "ErrorBoundary");
   }
 
+  handleReset = () => {
+    this.setState({ hasError: false, error: undefined });
+    this.props.onReset?.();
+  };
+
   render() {
     if (this.state.hasError) {
       return (
         this.props.fallback || (
           <ErrorFallback
             error={this.state.error}
+            onReset={this.handleReset}
             onReload={() => window.location.reload()}
           />
         )
