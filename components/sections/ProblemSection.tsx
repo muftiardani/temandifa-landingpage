@@ -7,7 +7,6 @@ import {
   viewportOptions,
 } from "@/styles/animations";
 import { useTranslations } from "next-intl";
-import Counter from "@/components/ui/Counter";
 
 export default function ProblemSection() {
   const t = useTranslations("ProblemSection");
@@ -38,34 +37,44 @@ export default function ProblemSection() {
 
       <div className="relative z-10 grid grid-cols-1 gap-12 md:grid-cols-2">
         <motion.div
-          className="flex flex-col justify-center space-y-8 text-lg leading-relaxed text-gray-700 md:pr-12 dark:text-gray-300"
+          className="flex h-full flex-col justify-between gap-6"
           initial="initial"
           whileInView="animate"
           viewport={viewportOptions}
           variants={fadeInUp}
         >
-          <p>
-            {t("global_stats_prefix")}{" "}
-            <span className="mx-1 rounded bg-yellow-400 px-2 py-0.5 font-bold text-[#3b82f6] dark:bg-yellow-500 dark:text-blue-900">
-              <Counter end={2.2} decimals={1} />{" "}
-              {t("global_stats_highlight")
-                .replace(/2[.,]2/, "")
-                .trim()}
-            </span>
-            {t.rich("global_stats_suffix", {
-              br: () => <br />,
-            })}
-          </p>
-          <p>
-            {t("local_stats_prefix")}{" "}
-            <span className="mx-1 rounded bg-yellow-400 px-2 py-0.5 font-bold text-[#3b82f6] dark:bg-yellow-500 dark:text-blue-900">
-              <Counter end={4} decimals={0} />{" "}
-              {t("local_stats_highlight").replace(/4/, "").trim()}
-            </span>
-            {t.rich("local_stats_suffix", {
-              br: () => <br />,
-            })}
-          </p>
+          {/* Stats Card 1 */}
+          <div className="flex flex-1 flex-col justify-center rounded-2xl border border-slate-200 bg-slate-50 p-6 transition-shadow hover:shadow-md dark:border-slate-800 dark:bg-slate-900/50">
+            <p className="text-lg leading-relaxed text-slate-700 dark:text-slate-300">
+              {t("global_stats_prefix")}{" "}
+              <span className="mt-1 block bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-3xl font-bold text-transparent dark:from-blue-400 dark:to-indigo-400">
+                2.2{" "}
+                {t("global_stats_highlight")
+                  .replace(/2[.,]2/, "")
+                  .trim()}
+              </span>
+              <span className="mt-1 block text-sm text-slate-500 dark:text-slate-400">
+                {t.rich("global_stats_suffix", {
+                  br: () => " ",
+                })}
+              </span>
+            </p>
+          </div>
+
+          {/* Stats Card 2 */}
+          <div className="flex flex-1 flex-col justify-center rounded-2xl border border-slate-200 bg-slate-50 p-6 transition-shadow hover:shadow-md dark:border-slate-800 dark:bg-slate-900/50">
+            <p className="text-lg leading-relaxed text-slate-700 dark:text-slate-300">
+              {t("local_stats_prefix")}{" "}
+              <span className="mt-1 block bg-linear-to-r from-yellow-500 to-orange-500 bg-clip-text text-3xl font-bold text-transparent">
+                4 {t("local_stats_highlight").replace(/4/, "").trim()}
+              </span>
+              <span className="mt-1 block text-sm text-slate-500 dark:text-slate-400">
+                {t.rich("local_stats_suffix", {
+                  br: () => " ",
+                })}
+              </span>
+            </p>
+          </div>
         </motion.div>
 
         <motion.div
@@ -78,14 +87,14 @@ export default function ProblemSection() {
           {problems.map((key, index) => (
             <motion.div
               key={index}
-              className="flex h-14 items-stretch gap-3 md:h-16"
+              className="flex items-stretch gap-4 rounded-xl border border-slate-100 bg-white p-4 shadow-sm transition-all hover:border-blue-200 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-800"
               variants={fadeInUp}
             >
-              <div className="flex w-14 shrink-0 items-center justify-center rounded-md bg-[#3b82f6] text-4xl font-bold text-white shadow-sm md:w-16 dark:bg-blue-600">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-blue-100/50 text-xl font-bold text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
                 {String(index + 1).padStart(2, "0")}
               </div>
-              <div className="flex flex-1 items-center rounded-md border-2 border-[#3b82f6] bg-white px-6 dark:border-blue-500 dark:bg-gray-800">
-                <span className="text-base font-bold text-[#3b82f6] md:text-lg dark:text-blue-300">
+              <div className="flex flex-1 items-center">
+                <span className="text-base font-medium text-slate-700 dark:text-slate-300">
                   {t(`problems.${key}`)}
                 </span>
               </div>

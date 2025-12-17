@@ -39,11 +39,6 @@ export const reducedFadeIn: Variants = {
   animate: { opacity: 1 },
 };
 
-export const reducedNoMotion: Variants = {
-  initial: {},
-  animate: {},
-};
-
 export const defaultTransition = {
   duration: 0.6,
   ease: "easeOut" as const,

@@ -1,19 +1,21 @@
 {
+  "Common": {
+    "store_google_play_prefix": "Temukan di",
+    "store_google_play_title": "Google Play",
+    "store_app_store_prefix": "Download di",
+    "store_app_store_title": "App Store"
+  },
   "Navbar": {
     "home": "Beranda",
     "about": "Tentang",
     "features": "Fitur",
-    "contact": "Kontak",
-    "download": "Unduh Sekarang"
+    "contact": "Kontak"
   },
   "Hero": {
     "title1": "Teman",
     "title2": "Difa",
     "hero_headline": "Menjadi bantuan saat dibutuhkan.",
-    "hero_subheadline": "Aksesibilitas Nyata, Inklusi Tanpa Batas",
-    "hero_description": "Sebuah kesempatan yang akan mengubah banyak hal. TemanDifa hadir untuk mendukung setiap langkah menuju kemandirian. Kami ada untuk menjadi bagian dari mereka yang membutuhkan di sekelilingmu.",
-    "cta_primary": "Mulai Sekarang",
-    "cta_secondary": "Pelajari Lebih Lanjut"
+    "hero_subheadline": "Aksesibilitas Nyata, Inklusi Tanpa Batas"
   },
   "AboutSection": {
     "title": "TemanDifa",
@@ -65,14 +67,19 @@
     "mission_title": "Misi Kami",
     "mission_1": "Menyediakan teknologi AI yang mudah diakses untuk difabel",
     "mission_2": "Meningkatkan kemandirian penyandang disabilitas",
-    "mission_3": "Menciptakan inklusi digital tanpa batas"
+    "mission_3": "Menciptakan inklusi digital tanpa batas",
+    "team_title": "Tim Kami",
+    "team_desc": "Orang-orang berdedikasi di balik TemanDifa",
+    "member_1_role": "Chief Technology Officer",
+    "member_2_role": "Chief Operating Officer",
+    "member_3_role": "Chief Product Officer",
+    "member_4_role": "Chief Marketing Officier"
   },
   "ProductPage": {
     "title": "Fitur TemanDifa",
     "subtitle": "Teknologi AI yang dirancang khusus untuk membantu penyandang disabilitas dalam aktivitas sehari-hari",
     "cta_title": "Siap Menggunakan TemanDifa?",
     "cta_desc": "Download aplikasi TemanDifa sekarang dan rasakan kemudahan aksesibilitas di ujung jari Anda",
-    "cta_button": "Download Sekarang",
     "features": {
       "detection_title": "Deteksi Objek Real-Time",
       "detection_desc": "Kamera mendeteksi objek di sekitar pengguna secara langsung, membantu mengenali kondisi sekitar pengguna dengan teknologi AI.",

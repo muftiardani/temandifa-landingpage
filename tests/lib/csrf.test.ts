@@ -4,7 +4,6 @@ import {
   generateCSRFToken,
   hashCSRFToken,
   validateCSRFToken,
-  getCSRFSecret,
   getCSRFTokenFromHeaders,
   createCSRFErrorResponse,
   generateSignedUnsubscribeUrl,
@@ -143,27 +142,30 @@ describe("CSRF Security Functions", () => {
       process.env = originalEnv;
     });
 
-    it("should return CSRF_SECRET from environment", () => {
+    it("should return CSRF_SECRET from environment", async () => {
       process.env.CSRF_SECRET = testSecret;
 
+      const { getCSRFSecret } = await import("@/lib/security/csrf");
       const secret = getCSRFSecret();
 
       expect(secret).toBe(testSecret);
     });
 
-    it("should return fallback secret in development", () => {
+    it("should return fallback secret in development", async () => {
       delete process.env.CSRF_SECRET;
       vi.stubEnv("NODE_ENV", "development");
 
+      const { getCSRFSecret } = await import("@/lib/security/csrf");
       const secret = getCSRFSecret();
 
       expect(secret).toBe("development-csrf-secret-change-in-production");
     });
 
-    it("should throw error in production without secret", () => {
+    it("should throw error in production without secret", async () => {
       delete process.env.CSRF_SECRET;
       vi.stubEnv("NODE_ENV", "production");
 
+      const { getCSRFSecret } = await import("@/lib/security/csrf");
       expect(() => getCSRFSecret()).toThrow();
     });
   });

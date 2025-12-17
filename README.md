@@ -8,7 +8,7 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 [![React](https://img.shields.io/badge/React-19.2-blue?style=flat-square&logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38bdf8?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
-[![Tests](https://img.shields.io/badge/Tests-26%20passing-green?style=flat-square)](./tests)
+[![Tests](https://img.shields.io/badge/Tests-92%20passing-green?style=flat-square)](./tests)
 
 ## 📋 Daftar Isi
 
@@ -28,7 +28,7 @@ Landing page modern untuk TemanDifa - aplikasi AI yang memberdayakan penyandang 
 
 - Support penuh untuk **Bahasa Indonesia** & **English**
 - SEO-friendly URL structure (`/id/*`, `/en/*`)
-- 150+ translation keys
+- 200+ translation keys
 - Dynamic locale detection
 
 ### 🌙 Dark Mode
@@ -284,7 +284,8 @@ temandifa-web/
 │   ├── api/                     # API routes
 │   │   ├── csrf/route.ts        # CSRF token endpoint
 │   │   ├── contact/route.ts     # Contact form API
-│   │   └── newsletter/route.ts  # Newsletter API
+│   │   ├── newsletter/route.ts  # Newsletter API
+│   │   └── analytics/performance/route.ts  # Web Vitals API
 │   ├── monitoring/route.ts      # Sentry tunnel route
 │   ├── globals.css              # Global styles
 │   ├── robots.ts                # SEO robots
@@ -312,9 +313,7 @@ temandifa-web/
 │   ├── ui/                      # Reusable UI components
 │   │   ├── ThemeToggle.tsx
 │   │   ├── Breadcrumbs.tsx
-│   │   ├── Counter.tsx
-│   │   ├── ErrorBoundary.tsx
-│   │   ├── LoadingSkeleton.tsx
+│   │   ├── ErrorBoundary.tsx    # With state reset support
 │   │   ├── PageTransition.tsx
 │   │   ├── ParticleBackground.tsx
 │   │   ├── ScrollProgress.tsx
@@ -324,6 +323,7 @@ temandifa-web/
 │
 ├── hooks/                       # Custom React hooks
 │   ├── useAnalytics.ts          # GA4 event tracking
+│   ├── useCSRF.ts               # CSRF token management
 │   ├── useFocusTrap.ts          # Focus trap for modals
 │   ├── useReducedMotion.ts      # Reduced motion detection
 │   └── useScrollDepth.ts        # Scroll depth tracking
@@ -342,13 +342,13 @@ temandifa-web/
 │   ├── validation/
 │   │   └── schemas.ts           # Zod schemas
 │   ├── analytics/
+│   │   ├── events.ts            # Analytics events
 │   │   └── web-vitals.ts        # Performance tracking
 │   ├── seo/
-│   │   ├── structured-data.ts   # JSON-LD generation
 │   │   └── image-placeholders.ts
 │   ├── logger.ts                # Logger service
 │   ├── config.ts                # App configuration
-│   ├── env.ts                   # Environment validation
+│   ├── env.ts                   # Flexible environment validation
 │   └── i18n-utils.ts            # i18n utilities
 │
 ├── messages/                    # Translation files
@@ -361,9 +361,11 @@ temandifa-web/
 ├── styles/
 │   └── animations.ts            # Framer Motion presets
 │
-├── tests/                       # Test files (26 passing)
+├── tests/                       # Test files (92 passing)
 │   ├── components/              # Component tests
+│   ├── hooks/                   # Hook tests (useCSRF)
 │   ├── integration/             # Integration tests
+│   ├── lib/                     # Library tests (csrf, schemas, ip-utils)
 │   ├── unit/                    # Unit tests
 │   ├── e2e/                     # E2E tests (Playwright)
 │   ├── setup.ts                 # Test setup & mocks
@@ -371,6 +373,9 @@ temandifa-web/
 │
 ├── public/                      # Static assets
 │   └── images/
+│
+├── types/                       # TypeScript type declarations
+│   └── global.d.ts              # Global window types
 │
 ├── .env.example                 # Environment template
 ├── middleware.ts                # Next.js middleware (i18n + CSP)
@@ -473,10 +478,12 @@ npm run test:all
 
 **Test Coverage:**
 
-- ✅ 26 unit/integration tests passing
+- ✅ 92 unit/integration tests passing
 - ✅ Component tests (ThemeToggle)
+- ✅ Hook tests (useCSRF)
 - ✅ Integration tests (Forms)
-- ✅ Validation tests (Zod schemas)
+- ✅ Library tests (CSRF, Schemas, IP-Utils, Rate-Limit)
+- ✅ Animation tests
 - ✅ E2E tests (Playwright)
 
 ## 📝 Available Scripts

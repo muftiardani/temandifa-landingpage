@@ -1,5 +1,6 @@
 import { createHmac, randomBytes, timingSafeEqual } from "crypto";
 import { logger } from "@/lib/logger";
+import { getEnv } from "@/lib/env";
 
 const CSRF_TOKEN_TTL = 15 * 60 * 1000;
 
@@ -50,7 +51,8 @@ export function validateCSRFToken(
 }
 
 export function getCSRFSecret(): string {
-  const secret = process.env.CSRF_SECRET;
+  const env = getEnv();
+  const secret = env.CSRF_SECRET;
 
   if (!secret) {
     if (process.env.NODE_ENV === "production") {

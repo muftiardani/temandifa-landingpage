@@ -15,6 +15,7 @@ import {
 } from "@/lib/security/csrf";
 import { config } from "@/lib/config";
 import { logger } from "@/lib/logger";
+import { getEnv } from "@/lib/env";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -91,13 +92,46 @@ export async function POST(request: NextRequest) {
     }
 
     const validatedData = newsletterSchema.parse(body);
+    const env = getEnv();
 
     const unsubscribeUrl = generateSignedUnsubscribeUrl(
       validatedData.email,
       config.baseUrl
     );
 
-    const fromEmail = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
+    let audienceId: string | undefined;
+
+    if (env.RESEND_AUDIENCE_ID) {
+      try {
+        const { data: contactData, error: contactError } =
+          await resend.contacts.create({
+            email: validatedData.email,
+            unsubscribed: false,
+            audienceId: env.RESEND_AUDIENCE_ID,
+          });
+
+        if (contactError) {
+          newsletterLogger.error(
+            "Failed to add to audience",
+            contactError instanceof Error ? contactError : undefined
+          );
+        } else {
+          audienceId = contactData?.id;
+          newsletterLogger.info(`Added to audience: ${contactData?.id}`);
+        }
+      } catch (audienceError) {
+        newsletterLogger.error(
+          "Audience operation failed",
+          audienceError instanceof Error ? audienceError : undefined
+        );
+      }
+    } else {
+      newsletterLogger.warn(
+        "RESEND_AUDIENCE_ID not configured - subscriber not stored"
+      );
+    }
+
+    const fromEmail = env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
 
     const welcomeTemplate = newsletterWelcomeTemplate({
       email: validatedData.email,
@@ -124,7 +158,7 @@ export async function POST(request: NextRequest) {
       );
       return NextResponse.json(
         {
-          error: "Failed to subscribe. Please try again later.",
+          error: "Failed to send welcome email, but you are subscribed.",
           requestId,
         },
         { status: 500 }
@@ -135,38 +169,6 @@ export async function POST(request: NextRequest) {
       email: validatedData.email,
       resendId: data?.id,
     });
-
-    let audienceId: string | undefined;
-
-    if (process.env.RESEND_AUDIENCE_ID) {
-      try {
-        const { data: contactData, error: contactError } =
-          await resend.contacts.create({
-            email: validatedData.email,
-            unsubscribed: false,
-            audienceId: process.env.RESEND_AUDIENCE_ID,
-          });
-
-        if (contactError) {
-          newsletterLogger.error(
-            "Failed to add to audience",
-            contactError instanceof Error ? contactError : undefined
-          );
-        } else {
-          audienceId = contactData?.id;
-          newsletterLogger.info(`Added to audience: ${contactData?.id}`);
-        }
-      } catch (audienceError) {
-        newsletterLogger.error(
-          "Audience operation failed",
-          audienceError instanceof Error ? audienceError : undefined
-        );
-      }
-    } else {
-      newsletterLogger.warn(
-        "RESEND_AUDIENCE_ID not configured - subscriber not stored"
-      );
-    }
 
     return NextResponse.json(
       {

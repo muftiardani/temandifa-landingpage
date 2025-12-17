@@ -51,188 +51,130 @@ const Navbar = () => {
   }, [isMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/20 bg-white/70 shadow-lg shadow-black/5 backdrop-blur-xl backdrop-saturate-150 transition-colors dark:border-gray-700/20 dark:bg-gray-900/70">
+    <header className="sticky top-6 z-50 mx-auto w-[95%] max-w-7xl">
       <nav
-        className="relative mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-8"
+        className="rounded-full border border-white/20 bg-white/70 px-6 py-3 shadow-xl backdrop-blur-xl backdrop-saturate-150 transition-all dark:border-gray-700/30 dark:bg-gray-900/70"
         role="navigation"
         aria-label="Navigasi utama"
       >
-        <div className="flex items-center gap-2">
-          <Image
-            src="/images/logo.png"
-            alt="Logo Teman Difa"
-            width={50}
-            height={50}
-            className="object-contain"
-            placeholder="blur"
-            blurDataURL={blurDataURL.logo}
-          />
-          <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-            Teman
-            <span className="text-yellow-500 dark:text-yellow-400">Difa</span>
-          </div>
-        </div>
-
-        <div className="hidden items-center gap-6 md:flex">
+        <div className="flex items-center justify-between">
           <Link
             href="/"
-            data-testid="nav-home"
-            className="text-gray-700 transition-colors hover:text-blue-600 dark:text-gray-200 dark:hover:text-blue-400"
+            className="flex items-center gap-3 transition-transform hover:scale-105"
             onClick={() => trackNavigation("Home", "/")}
-            aria-current={pathname === "/" ? "page" : undefined}
           >
-            {t("home")}
-          </Link>
-          <Link
-            href="/tentang"
-            data-testid="nav-about"
-            className="text-gray-700 transition-colors hover:text-blue-600 dark:text-gray-200 dark:hover:text-blue-400"
-            onClick={() => trackNavigation("About", "/tentang")}
-            aria-current={pathname === "/tentang" ? "page" : undefined}
-          >
-            {t("about")}
-          </Link>
-          <Link
-            href="/produk"
-            data-testid="nav-features"
-            className="text-gray-700 transition-colors hover:text-blue-600 dark:text-gray-200 dark:hover:text-blue-400"
-            onClick={() => trackNavigation("Features", "/produk")}
-            aria-current={pathname === "/produk" ? "page" : undefined}
-          >
-            {t("features")}
+            <div className="relative h-10 w-10 overflow-hidden rounded-xl bg-linear-to-br from-blue-500 to-purple-600 p-1 shadow-lg">
+              <div className="flex h-full w-full items-center justify-center rounded-lg bg-white dark:bg-gray-900">
+                <Image
+                  src="/images/logo.png"
+                  alt="Logo Teman Difa"
+                  width={30}
+                  height={30}
+                  className="object-contain"
+                  placeholder="blur"
+                  blurDataURL={blurDataURL.logo}
+                />
+              </div>
+            </div>
+            <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+              Teman
+              <span className="text-blue-600 dark:text-blue-400">Difa</span>
+            </span>
           </Link>
 
-          <Link
-            href="/kontak"
-            data-testid="nav-contact"
-            className="rounded-full bg-blue-500 px-6 py-2 text-white shadow-md transition hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
-            onClick={() => trackNavigation("Contact CTA", "/kontak")}
-            aria-current={pathname === "/kontak" ? "page" : undefined}
-          >
-            {t("contact")}
-          </Link>
+          <div className="hidden items-center gap-2 md:flex">
+            {[
+              { label: t("home"), href: "/" },
+              { label: t("about"), href: "/tentang" },
+              { label: t("features"), href: "/produk" },
+            ].map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`relative rounded-full px-5 py-2 text-sm font-medium transition-all ${
+                    isActive
+                      ? "text-blue-600 dark:text-blue-400"
+                      : "text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
+                  }`}
+                  onClick={() => trackNavigation(link.label, link.href)}
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  {isActive && (
+                    <span className="absolute inset-0 -z-10 rounded-full bg-blue-50 dark:bg-blue-900/20" />
+                  )}
+                  {link.label}
+                </Link>
+              );
+            })}
+
+            <div className="ml-2 flex items-center gap-3 border-l border-gray-200 pl-4 dark:border-gray-700">
+              <button
+                onClick={toggleLanguage}
+                disabled={isPending}
+                className="group relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-gray-200 bg-gray-50 transition-all hover:border-blue-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+                aria-label="Switch language"
+              >
+                <span className="text-xs font-bold text-gray-700 dark:text-gray-300">
+                  {locale === "id" ? "ID" : "EN"}
+                </span>
+                <div className="absolute inset-0 -z-10 bg-linear-to-tr from-blue-500/10 to-purple-500/10 opacity-0 transition-opacity group-hover:opacity-100" />
+              </button>
+
+              <ThemeToggle />
+
+              <Link
+                href="/kontak"
+                className="group relative overflow-hidden rounded-full bg-blue-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-500/30 transition-all hover:scale-105 hover:bg-blue-700 active:scale-95"
+                onClick={() => trackNavigation("Contact CTA", "/kontak")}
+              >
+                <span className="relative z-10">{t("contact")}</span>
+                <div className="absolute inset-0 z-0 translate-y-full bg-linear-to-r from-purple-600 to-blue-600 transition-transform duration-300 group-hover:translate-y-0" />
+              </Link>
+            </div>
+          </div>
 
           <button
-            onClick={toggleLanguage}
-            disabled={isPending}
-            className="h-8 w-8 overflow-hidden rounded-full border border-gray-200 transition-opacity hover:opacity-80 dark:border-gray-700"
-            aria-label="Switch language"
+            ref={menuToggleRef}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-900 transition-colors md:hidden dark:bg-gray-800 dark:text-white"
+            aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
           >
-            {locale === "id" ? (
-              <div className="relative h-full w-full bg-red-600">
-                <div className="absolute top-0 h-1/2 w-full bg-red-600"></div>
-                <div className="absolute bottom-0 h-1/2 w-full bg-white"></div>
-              </div>
-            ) : (
-              <div className="relative flex h-full w-full items-center justify-center bg-blue-800 text-[10px] font-bold text-white">
-                EN
-              </div>
-            )}
+            <span className="text-xl">☰</span>
           </button>
-
-          <ThemeToggle />
         </div>
-
-        <button
-          ref={menuToggleRef}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="z-50 flex flex-col gap-1.5 p-2 md:hidden"
-          aria-label="Toggle menu"
-          aria-expanded={isMenuOpen}
-          aria-controls="mobile-menu"
-        >
-          <span
-            className={`h-0.5 w-6 bg-blue-600 transition-transform duration-300 ${
-              isMenuOpen ? "translate-y-2 rotate-45" : ""
-            }`}
-          ></span>
-          <span
-            className={`h-0.5 w-6 bg-blue-600 transition-opacity duration-300 ${
-              isMenuOpen ? "opacity-0" : ""
-            }`}
-          ></span>
-          <span
-            className={`h-0.5 w-6 bg-blue-600 transition-transform duration-300 ${
-              isMenuOpen ? "-translate-y-2 -rotate-45" : ""
-            }`}
-          ></span>
-        </button>
 
         {isMenuOpen && (
           <div
             ref={mobileMenuRef}
-            id="mobile-menu"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Menu navigasi mobile"
-            className="absolute top-full left-0 z-40 -mx-4 w-screen border-t border-gray-200 bg-white shadow-lg transition-colors sm:-mx-8 md:hidden dark:border-gray-700 dark:bg-gray-900"
+            className="animate-in slide-in-from-top-4 fade-in absolute top-full left-0 mt-4 w-full origin-top duration-200"
           >
-            <div className="flex flex-col gap-4 p-6">
-              <Link
-                href="/"
-                data-testid="mobile-nav-home"
-                className="block py-3 text-gray-700 transition-colors hover:text-blue-600 dark:text-gray-200 dark:hover:text-blue-400"
-                onClick={() => {
-                  trackNavigation("Home", "/", true);
-                  setIsMenuOpen(false);
-                }}
-                aria-current={pathname === "/" ? "page" : undefined}
-              >
-                {t("home")}
-              </Link>
-              <Link
-                href="/tentang"
-                data-testid="mobile-nav-about"
-                className="block py-3 text-gray-700 transition-colors hover:text-blue-600 dark:text-gray-200 dark:hover:text-blue-400"
-                onClick={() => {
-                  trackNavigation("About", "/tentang", true);
-                  setIsMenuOpen(false);
-                }}
-                aria-current={pathname === "/tentang" ? "page" : undefined}
-              >
-                {t("about")}
-              </Link>
-              <Link
-                href="/produk"
-                data-testid="mobile-nav-features"
-                className="block py-3 text-gray-700 transition-colors hover:text-blue-600 dark:text-gray-200 dark:hover:text-blue-400"
-                onClick={() => {
-                  trackNavigation("Features", "/produk", true);
-                  setIsMenuOpen(false);
-                }}
-                aria-current={pathname === "/produk" ? "page" : undefined}
-              >
-                {t("features")}
-              </Link>
-              <Link
-                href="/kontak"
-                data-testid="mobile-nav-contact"
-                className="block py-3 text-gray-700 transition-colors hover:text-blue-600 dark:text-gray-200 dark:hover:text-blue-400"
-                onClick={() => {
-                  trackNavigation("Contact", "/kontak", true);
-                  setIsMenuOpen(false);
-                }}
-                aria-current={pathname === "/kontak" ? "page" : undefined}
-              >
-                {t("contact")}
-              </Link>
-
-              <div className="flex items-center justify-between border-t border-gray-100 pt-4 dark:border-gray-800">
-                <span className="text-gray-600 dark:text-gray-400">Bahasa</span>
-                <button
-                  onClick={toggleLanguage}
-                  className="rounded-lg p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
-                  aria-label={`Switch to ${locale === "id" ? "English" : "Bahasa Indonesia"}`}
-                  title={
-                    locale === "id"
-                      ? "Switch to English"
-                      : "Ganti ke Bahasa Indonesia"
-                  }
-                >
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {locale === "id" ? "EN" : "ID"}
-                  </span>
-                </button>
+            <div className="mx-auto w-[95%] overflow-hidden rounded-3xl border border-white/20 bg-white/90 p-4 shadow-2xl backdrop-blur-2xl dark:border-gray-700/50 dark:bg-gray-900/90">
+              <div className="flex flex-col space-y-2">
+                {[
+                  { label: t("home"), href: "/" },
+                  { label: t("about"), href: "/tentang" },
+                  { label: t("features"), href: "/produk" },
+                  { label: t("contact"), href: "/kontak" },
+                ].map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`block rounded-xl px-5 py-4 text-base font-bold transition-all ${
+                      pathname === link.href
+                        ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
+                        : "text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
+                    }`}
+                    onClick={() => {
+                      trackNavigation(link.label, link.href, true);
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
               </div>
             </div>
           </div>

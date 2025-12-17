@@ -1,4 +1,4 @@
-import { ImageWithSkeleton } from "@/components/ui/ImageWithSkeleton";
+import Image from "next/image";
 
 interface PhoneMockupProps {
   children: React.ReactNode;
@@ -17,14 +17,12 @@ export function PhoneMockup({
     >
       {showLogo && (
         <div className="mb-2 flex items-center justify-center gap-3 px-2 py-1 text-2xl font-bold text-white">
-          <ImageWithSkeleton
+          <Image
             src="/images/logo.png"
             alt="TemanDifa logo - accessibility app for people with disabilities"
             width={100}
             height={100}
-            className="h-12 w-auto object-contain"
-            skeletonClassName="rounded-full"
-            showErrorState={false}
+            className="h-12 w-auto rounded-full object-contain"
           />
           TemanDifa
         </div>

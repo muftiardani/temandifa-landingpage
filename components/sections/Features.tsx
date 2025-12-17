@@ -25,7 +25,9 @@ export default function Features() {
               whileInView="animate"
               viewport={viewportOptions}
             >
-              <div className="relative -ml-12 h-[600px] w-full origin-center scale-[0.6] transform sm:scale-75 md:scale-90 lg:ml-0 lg:w-[450px] lg:origin-left lg:scale-100">
+              <div className="pointer-events-none absolute top-1/2 left-1/2 z-0 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-400/20 blur-[90px] dark:bg-blue-600/20" />
+
+              <div className="relative z-10 -ml-12 h-[600px] w-full origin-center scale-[0.6] transform sm:scale-75 md:scale-90 lg:ml-0 lg:w-[450px] lg:origin-left lg:scale-100">
                 <PhoneMockup className="h-[700px] w-[450px]" showLogo>
                   {/* Menu Mockup Image */}
                   <ImageLayer
@@ -58,8 +60,9 @@ export default function Features() {
                   variant="blue"
                   className="mx-auto w-full max-w-xs md:min-h-[200px] md:max-w-md lg:mx-0 lg:-ml-32"
                   decorativeSquare={{
-                    className: "-bottom-6 right-8 w-[50%] h-10",
-                    bgColor: "bg-yellow-400",
+                    className: "-bottom-6 right-8 w-[60%] h-12",
+                    bgColor:
+                      "bg-yellow-400 mix-blend-multiply dark:mix-blend-normal",
                   }}
                 />
               </motion.div>
@@ -77,8 +80,9 @@ export default function Features() {
                   variant="yellow"
                   className="mx-auto w-full max-w-xs md:min-h-[200px] md:max-w-md lg:mx-0"
                   decorativeSquare={{
-                    className: "top-7 -right-5 w-8 h-12",
-                    bgColor: "bg-blue-500",
+                    className: "top-7 -right-8 w-12 h-16",
+                    bgColor:
+                      "bg-blue-500 mix-blend-multiply dark:mix-blend-normal",
                   }}
                 />
               </motion.div>
@@ -107,8 +111,9 @@ export default function Features() {
                   variant="blue"
                   className="mx-auto w-full max-w-xs md:min-h-[200px] md:max-w-md lg:mx-0 lg:mr-8 lg:ml-auto"
                   decorativeSquare={{
-                    className: "top-7 -right-5 w-8 h-12",
-                    bgColor: "bg-yellow-400",
+                    className: "top-7 -right-5 w-10 h-14",
+                    bgColor:
+                      "bg-yellow-400 mix-blend-multiply dark:mix-blend-normal",
                   }}
                 />
               </motion.div>
@@ -127,8 +132,9 @@ export default function Features() {
                   variant="yellow"
                   className="mx-auto w-full max-w-xs md:min-h-[200px] md:max-w-md lg:mx-0 lg:-mr-36 lg:ml-auto"
                   decorativeSquare={{
-                    className: "-bottom-4 right-8 lg:left-68 w-[50%] h-10",
-                    bgColor: "bg-blue-500",
+                    className: "-bottom-4 right-8 lg:left-68 w-[60%] h-12",
+                    bgColor:
+                      "bg-blue-500 mix-blend-multiply dark:mix-blend-normal",
                   }}
                 />
               </motion.div>
@@ -141,7 +147,9 @@ export default function Features() {
               whileInView="animate"
               viewport={viewportOptions}
             >
-              <div className="relative -ml-64 origin-center scale-[0.75] transform sm:scale-[0.8] md:scale-75 lg:ml-0 lg:origin-right lg:scale-100">
+              <div className="pointer-events-none absolute top-1/2 left-1/2 z-0 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple-400/20 blur-[90px] dark:bg-purple-600/20" />
+
+              <div className="relative z-10 -ml-64 origin-center scale-[0.75] transform sm:scale-[0.8] md:scale-75 lg:ml-0 lg:origin-right lg:scale-100">
                 <PhoneMockup className="h-[500px] w-[350px]">
                   {/* Mic Mockup Image */}
                   <ImageLayer

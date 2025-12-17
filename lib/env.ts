@@ -7,6 +7,7 @@ const baseEnvSchema = z.object({
   RESEND_API_KEY: z.string().optional(),
   RESEND_FROM_EMAIL: z.string().email().optional().or(z.literal("")),
   CONTACT_EMAIL: z.string().email().optional().or(z.literal("")),
+  RESEND_AUDIENCE_ID: z.string().optional(),
 
   UPSTASH_REDIS_REST_URL: z.string().url().optional(),
   UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
@@ -44,37 +45,6 @@ function getEnvSchema() {
   }
 
   return baseEnvSchema;
-}
-
-export function validateProductionEnv(): void {
-  if (process.env.NODE_ENV === "production") {
-    const csrfSecret = process.env.CSRF_SECRET;
-    if (!csrfSecret || csrfSecret.length < 32) {
-      throw new Error(
-        "CSRF_SECRET is required in production and must be at least 32 characters. " +
-          "Generate with: node -e \"console.log(require('crypto').randomBytes(32).toString('base64'))\""
-      );
-    }
-
-    if (
-      !process.env.UPSTASH_REDIS_REST_URL ||
-      !process.env.UPSTASH_REDIS_REST_TOKEN
-    ) {
-      logger.warn(
-        "Redis is recommended for production rate limiting",
-        null,
-        "Env"
-      );
-    }
-
-    if (!process.env.NEXT_PUBLIC_GA_ID) {
-      logger.warn(
-        "Google Analytics ID not set - analytics will be disabled",
-        null,
-        "Env"
-      );
-    }
-  }
 }
 
 export type Env = z.infer<typeof productionEnvSchema>;

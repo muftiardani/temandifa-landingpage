@@ -1,19 +1,21 @@
 {
+  "Common": {
+    "store_google_play_prefix": "Get it on",
+    "store_google_play_title": "Google Play",
+    "store_app_store_prefix": "Download on the",
+    "store_app_store_title": "App Store"
+  },
   "Navbar": {
     "home": "Home",
     "about": "About",
     "features": "Features",
-    "contact": "Contact",
-    "download": "Download Now"
+    "contact": "Contact"
   },
   "Hero": {
     "title1": "Teman",
     "title2": "Difa",
     "hero_headline": "Here to help when needed.",
-    "hero_subheadline": "Real Accessibility, Limitless Inclusion",
-    "hero_description": "An opportunity that will change many things. TemanDifa is here to support every step towards independence. We exist to be part of those who need it around you.",
-    "cta_primary": "Get Started",
-    "cta_secondary": "Learn More"
+    "hero_subheadline": "Real Accessibility, Limitless Inclusion"
   },
   "AboutSection": {
     "title": "TemanDifa",
@@ -65,14 +67,19 @@
     "mission_title": "Our Mission",
     "mission_1": "Provide accessible AI technology for people with disabilities",
     "mission_2": "Increase independence for people with disabilities",
-    "mission_3": "Create digital inclusion without limits"
+    "mission_3": "Create digital inclusion without limits",
+    "team_title": "Our Team",
+    "team_desc": "The dedicated people behind TemanDifa",
+    "member_1_role": "Chief Technology Officer",
+    "member_2_role": "Chief Operating Officer",
+    "member_3_role": "Chief Product Officer",
+    "member_4_role": "Chief Marketing Officier"
   },
   "ProductPage": {
     "title": "TemanDifa Features",
     "subtitle": "AI technology designed specifically to assist people with disabilities in daily activities",
     "cta_title": "Ready to Use TemanDifa?",
     "cta_desc": "Download the TemanDifa app now and experience accessibility ease at your fingertips",
-    "cta_button": "Download Now",
     "features": {
       "detection_title": "Real-Time Object Detection",
       "detection_desc": "Camera detects objects around the user instantly, helping to recognize the surroundings with AI technology.",

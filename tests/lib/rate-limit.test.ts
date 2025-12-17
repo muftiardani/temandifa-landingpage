@@ -70,12 +70,7 @@ describe("Rate Limiting Types and Interfaces", () => {
       const now = Date.now();
       const windowMs = 60000;
 
-      const timestamps = [
-        now - 120000,
-        now - 30000,
-        now - 10000,
-        now,
-      ];
+      const timestamps = [now - 120000, now - 30000, now - 10000, now];
 
       const validTimestamps = timestamps.filter(
         (timestamp) => now - timestamp < windowMs

@@ -19,6 +19,7 @@ import {
 } from "@/lib/security/csrf";
 import { logger } from "@/lib/logger";
 import { config } from "@/lib/config";
+import { getEnv } from "@/lib/env";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -89,8 +90,9 @@ export async function POST(request: NextRequest) {
 
     const emailTemplate = contactFormEmailTemplate(validatedData);
 
-    const fromEmail = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
-    const toEmail = process.env.CONTACT_EMAIL || "hello@temandifa.com";
+    const env = getEnv();
+    const fromEmail = env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
+    const toEmail = env.CONTACT_EMAIL || "hello@temandifa.com";
 
     const { data, error } = await withTimeout(
       () =>

@@ -6,6 +6,7 @@ import { checkRateLimit } from "@/lib/security/redis-rate-limit";
 import { validateSignedUnsubscribeUrl } from "@/lib/security/csrf";
 import { getClientIp } from "@/lib/security/ip-utils";
 import { logger } from "@/lib/logger";
+import { getEnv } from "@/lib/env";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -108,25 +109,21 @@ async function processUnsubscribe(
     context: "Unsubscribe",
   });
 
-  if (process.env.RESEND_AUDIENCE_ID) {
+  const env = getEnv();
+
+  if (env.RESEND_AUDIENCE_ID) {
     try {
-      const { data: contacts } = await resend.contacts.list({
-        audienceId: process.env.RESEND_AUDIENCE_ID,
+      const { error } = await resend.contacts.remove({
+        audienceId: env.RESEND_AUDIENCE_ID,
+        email: email,
       });
 
-      const contact = contacts?.data?.find(
-        (c: { email: string }) => c.email === email
-      );
-
-      if (contact) {
-        await resend.contacts.remove({
-          audienceId: process.env.RESEND_AUDIENCE_ID,
-          id: contact.id,
-        });
-
-        unsubLogger.success(`Unsubscribed from audience: ${email}`);
+      if (error) {
+        unsubLogger.warn(
+          `Failed to remove contact from audience: ${error.message}`
+        );
       } else {
-        unsubLogger.info(`Email not found in audience: ${email}`);
+        unsubLogger.success(`Unsubscribed from audience: ${email}`);
       }
     } catch (audienceError) {
       unsubLogger.error(

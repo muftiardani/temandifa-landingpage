@@ -104,17 +104,15 @@ export default function NewsletterForm() {
           <label htmlFor="newsletter-email" className="sr-only">
             {t("label_email")}
           </label>
-          <div className="flex flex-col gap-2 sm:flex-row">
+          <div className="flex flex-col gap-3">
             <input
               id="newsletter-email"
               type="email"
               {...register("email")}
               disabled={isSubmitting || submitStatus === "success"}
               autoComplete="email"
-              className={`flex-1 rounded-lg border bg-white px-4 py-2.5 text-gray-900 transition focus:border-transparent focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-800 dark:text-gray-100 dark:focus:ring-blue-400 ${
-                errors.email
-                  ? "border-red-500 dark:border-red-400"
-                  : "border-gray-300 dark:border-gray-600"
+              className={`w-full rounded-xl border-0 bg-white/10 px-4 py-3.5 text-white placeholder-slate-400 shadow-inner backdrop-blur-sm transition-all focus:bg-white/15 focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 ${
+                errors.email ? "ring-2 ring-red-500/50" : ""
               }`}
               placeholder={t("placeholder_email")}
               aria-invalid={errors.email ? "true" : "false"}
@@ -143,22 +141,17 @@ export default function NewsletterForm() {
               disabled={
                 isSubmitting || submitStatus === "success" || !isCSRFReady
               }
-              className={`rounded-lg px-6 py-2.5 font-semibold whitespace-nowrap text-white shadow-md transition-all duration-200 ${
+              className={`w-full rounded-xl px-6 py-3.5 font-bold tracking-wide text-white shadow-lg transition-all duration-200 ${
                 isSubmitting || submitStatus === "success"
-                  ? "cursor-not-allowed bg-gray-400 opacity-75 dark:bg-gray-600"
-                  : "bg-blue-600 hover:bg-blue-700 hover:shadow-lg active:scale-95 dark:bg-blue-700 dark:hover:bg-blue-800"
+                  ? "cursor-not-allowed bg-slate-700 opacity-75"
+                  : "bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 hover:shadow-blue-500/25 active:scale-95"
               }`}
               aria-label="Subscribe to newsletter"
               aria-busy={isSubmitting}
             >
               {isSubmitting ? (
                 <span className="flex items-center justify-center gap-2">
-                  <svg
-                    className="h-5 w-5 animate-spin"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24">
                     <circle
                       className="opacity-25"
                       cx="12"
@@ -166,12 +159,13 @@ export default function NewsletterForm() {
                       r="10"
                       stroke="currentColor"
                       strokeWidth="4"
-                    ></circle>
+                      fill="none"
+                    />
                     <path
                       className="opacity-75"
                       fill="currentColor"
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
+                    />
                   </svg>
                   {t("btn_subscribing")}
                 </span>
